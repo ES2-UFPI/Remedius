@@ -35,4 +35,7 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# fake data
+db.json
+
 app-example
