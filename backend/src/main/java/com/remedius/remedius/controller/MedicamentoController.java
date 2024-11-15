@@ -34,12 +34,6 @@ public class MedicamentoController {
         return ResponseEntity.ok(createdMedicamento);
     }
 
-    @PutMapping("/{name}")
-    public ResponseEntity<MedicamentoEntity> updateMedicamentoByName(@PathVariable String name, @RequestBody MedicamentoEntity medicamento) {
-        MedicamentoEntity updatedMedicamento = medicamentoService.updateMedicamentoByName(name, medicamento);
-        return ResponseEntity.ok(updatedMedicamento);
-    }
-
     @DeleteMapping("/{name}")
     public ResponseEntity<Void> deleteMedicamentoByName(@PathVariable String name) {
         medicamentoService.deleteMedicamentoByName(name);
