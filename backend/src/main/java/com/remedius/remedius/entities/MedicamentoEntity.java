@@ -1,9 +1,22 @@
 package com.remedius.remedius.entities;
+
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 
 @Entity
+@Table(name = "medicamentos")
 public class MedicamentoEntity {
     // classe com os atributos do medicamento: nome, dosagem, laboratório, quantidade em estoque, validade
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
     private String nome;
     private String dosagem;
     private String laboratorio;
