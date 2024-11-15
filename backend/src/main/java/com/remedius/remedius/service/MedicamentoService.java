@@ -42,8 +42,7 @@ public class MedicamentoService {
 
 
     public List<MedicamentoEntity> getAllMedicamentos() {
-        medicamentoRepository.findAll();
-        return null;
+        return medicamentoRepository.findAll();
     }
 
 
