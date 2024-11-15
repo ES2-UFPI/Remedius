@@ -20,5 +20,5 @@ public interface MedicamentoRepository extends JpaRepository<MedicamentoEntity, 
 
     // método que deleta um medicamento pelo ID
     @Query("DELETE FROM MedicamentoEntity m WHERE m.id = :id")
-    void deleteById(@Param("id") Long id);
+    void deleteById(@Param("id") int id);
 }
