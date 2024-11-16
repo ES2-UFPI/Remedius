@@ -3,7 +3,9 @@ import com.remedius.remedius.entities.*;
 import com.remedius.remedius.repository.*;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MedicamentoService {
     // quero gerar requisições para o backend -> interage com a classe MedicamanetoRepository para fazer as queries (CRUD)
 
