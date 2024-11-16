@@ -1,37 +1,36 @@
 package com.remedius.remedius.entities;
-import jakarta.persistence.Entity;
-import io.micrometer.common.lang.NonNull;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "medicamento")
 public class MedicamentoEntity {
-    // classe com os atributos do medicamento: nome, dosagem, laboratório, quantidade em estoque, validade
 
+    // Atributos do medicamento
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "nome")
-    @NonNull
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @Column(name = "dosagem")
-    @NonNull
+    @Column(name = "dosagem", nullable = false)
     private String dosagem;
 
-    @Column(name = "laboratorio")
-    @NonNull
+    @Column(name = "laboratorio", nullable = false)
     private String laboratorio;
 
-    @Column(name = "quantidade_estoque")
-    @NonNull
+    @Column(name = "quantidade_estoque", nullable = false)
     private int quantidadeEstoque;
 
-    @Column(name = "validade")
-    @NonNull
+    @Column(name = "validade", nullable = false)
     private String validade;
 
+    // **Construtor padrão (exigido pelo JPA)** 
+    public MedicamentoEntity() {
+    }
+
+    // Construtor com argumentos (opcional, para facilitar a criação de objetos)
     public MedicamentoEntity(String nome, String dosagem, String laboratorio, int quantidadeEstoque, String validade) {
         this.nome = nome;
         this.dosagem = dosagem;
@@ -40,40 +39,49 @@ public class MedicamentoEntity {
         this.validade = validade;
     }
 
+    // Getters e setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDosagem() {
         return dosagem;
     }
 
-    public String getLaboratorio() {
-        return laboratorio;
-    }
-
-    public int getQuantidadeEstoque() {
-        return quantidadeEstoque;
-    }
-
-    public String getValidade() {
-        return validade;
-    }  
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public void setDosagem(String dosagem) {
         this.dosagem = dosagem;
+    }
+
+    public String getLaboratorio() {
+        return laboratorio;
     }
 
     public void setLaboratorio(String laboratorio) {
         this.laboratorio = laboratorio;
     }
 
+    public int getQuantidadeEstoque() {
+        return quantidadeEstoque;
+    }
+
     public void setQuantidadeEstoque(int quantidadeEstoque) {
         this.quantidadeEstoque = quantidadeEstoque;
+    }
+
+    public String getValidade() {
+        return validade;
     }
 
     public void setValidade(String validade) {
@@ -82,7 +90,13 @@ public class MedicamentoEntity {
 
     @Override
     public String toString() {
-        return "MedicamentoModel [dosagem=" + dosagem + ", laboratorio=" + laboratorio + ", nome=" + nome
-                + ", quantidadeEstoque=" + quantidadeEstoque + ", validade=" + validade + "]";
+        return "MedicamentoEntity{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dosagem='" + dosagem + '\'' +
+                ", laboratorio='" + laboratorio + '\'' +
+                ", quantidadeEstoque=" + quantidadeEstoque +
+                ", validade='" + validade + '\'' +
+                '}';
     }
 }
