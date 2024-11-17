@@ -11,3 +11,5 @@ public class RemediusApplication {
 	}
 
 }
+
+// npx expo start
