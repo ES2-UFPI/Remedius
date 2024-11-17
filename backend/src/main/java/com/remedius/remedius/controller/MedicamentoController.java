@@ -9,9 +9,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/medicamentos")
 public class MedicamentoController {
-    // quero gerar requisições para o backend
-    // requisições: GET, POST, PUT, DELETE
-    // gere o codigo para cada uma dessas requisições
     
     @Autowired
     private MedicamentoService medicamentoService;
