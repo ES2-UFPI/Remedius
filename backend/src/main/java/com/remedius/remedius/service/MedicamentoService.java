@@ -11,10 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class MedicamentoService {
-    // quero gerar requisições para o backend -> interage com a classe MedicamentoRepository para fazer as queries (CRUD)
-
-    // requisições: GET, POST, PUT, DELETE
-    // gere o codigo para cada uma dessas requisições
 
     @Autowired
     private MedicamentoRepository medicamentoRepository;
