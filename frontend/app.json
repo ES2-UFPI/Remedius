@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
+    "splash": {
+      "image": "./assets/images/splash.png"
+    },
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
