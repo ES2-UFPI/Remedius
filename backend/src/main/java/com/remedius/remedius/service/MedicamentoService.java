@@ -1,18 +1,17 @@
 package com.remedius.remedius.service;
-
-
 import com.remedius.remedius.entities.*;
 import com.remedius.remedius.repository.*;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 @Service
 public class MedicamentoService {
+    // quero gerar requisições para o backend -> interage com a classe MedicamanetoRepository para fazer as queries (CRUD)
 
-    @Autowired
+    // requisições: GET, POST, PUT, DELETE
+    // gere o codigo para cada uma dessas requisições
+
     private MedicamentoRepository medicamentoRepository;
 
     public List<MedicamentoEntity> getAllMedicamentos() {
@@ -50,8 +49,6 @@ public class MedicamentoService {
             updatedMedicamento.setNome(medicamento.getNome());
             updatedMedicamento.setDosagem(medicamento.getDosagem());
             updatedMedicamento.setLaboratorio(medicamento.getLaboratorio());
-            updatedMedicamento.setQuantidadeEstoque(medicamento.getQuantidadeEstoque());
-            updatedMedicamento.setValidade(medicamento.getValidade());
 
             return medicamentoRepository.save(updatedMedicamento);
         } else {
@@ -62,6 +59,6 @@ public class MedicamentoService {
     // Deleta um medicamento pelo ID
     public void deleteMedicamentoById(Long id) {
         Optional<MedicamentoEntity> medicamento = medicamentoRepository.findById(id);
-        medicamento.ifPresent(medicamentoRepository::delete); // o que o 2 pontos faz?
+        medicamento.ifPresent(medicamentoRepository::delete);
     }
 }

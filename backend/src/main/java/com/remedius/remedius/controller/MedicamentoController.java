@@ -9,6 +9,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/medicamentos")
 public class MedicamentoController {
+    // quero gerar requisições para o backend
+    // requisições: GET, POST, PUT, DELETE
     
     @Autowired
     private MedicamentoService medicamentoService;
@@ -19,27 +21,23 @@ public class MedicamentoController {
         return ResponseEntity.ok(medicamentos);
     }
 
-    
-    @PostMapping
-    public ResponseEntity<MedicamentoEntity> createMedicamento(@RequestBody MedicamentoEntity medicamento) {
-        MedicamentoEntity createdMedicamento = medicamentoService.createMedicamento(medicamento);
-        return ResponseEntity.ok(createdMedicamento);
-    }
-
-
-    /*
     @GetMapping("/{name}")
     public ResponseEntity<MedicamentoEntity> getMedicamentoByName(@PathVariable String name) {
         MedicamentoEntity medicamento = medicamentoService.getMedicamentoByName(name);
         return ResponseEntity.ok(medicamento);
     }
 
-    
+    @PostMapping
+    public ResponseEntity<MedicamentoEntity> createMedicamento(@RequestBody MedicamentoEntity medicamento) {
+        MedicamentoEntity createdMedicamento = medicamentoService.createMedicamento(medicamento);
+        return ResponseEntity.ok(createdMedicamento);
+    }
+
     @DeleteMapping("/{name}")
     public ResponseEntity<Void> deleteMedicamentoByName(@PathVariable String name) {
         medicamentoService.deleteMedicamentoByName(name);
         return ResponseEntity.noContent().build();
-    }*/
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MedicamentoEntity> getMedicamentoById(@PathVariable Long id) {
