@@ -34,7 +34,9 @@ public class UsuarioService {
 
     // PUT: Atualiza um usuário existente pelo ID
     public UsuarioEntity updateUsuarioById(Integer id, UsuarioEntity usuario) {
+        
         Optional<UsuarioEntity> existingUsuario = usuarioRepository.findById(id);
+
         if (existingUsuario.isPresent()) {
             UsuarioEntity updatedUsuario = existingUsuario.get();
             updatedUsuario.setNome(usuario.getNome());

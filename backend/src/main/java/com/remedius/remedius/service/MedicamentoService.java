@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MedicamentoService {
-    // quero gerar requisições para o backend -> interage com a classe MedicamanetoRepository para fazer as queries (CRUD)
+    // gerar requisições para o backend -> interage com a classe MedicamanetoRepository para fazer as queries (CRUD)
 
     // requisições: GET, POST, PUT, DELETE
     // gere o codigo para cada uma dessas requisições

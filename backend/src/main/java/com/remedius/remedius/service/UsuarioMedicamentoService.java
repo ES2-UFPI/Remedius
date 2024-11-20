@@ -4,6 +4,7 @@ import com.remedius.remedius.entities.*;
 import com.remedius.remedius.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -37,5 +38,9 @@ public class UsuarioMedicamentoService {
 
     public void removerMedicamentoDoUsuario(Integer usuarioMedicamentoId) {
         usuarioMedicamentoRepository.deleteById(usuarioMedicamentoId);
+    }
+
+    public List<UsuarioMedicamentoEntity> buscarMedicamentosDoUsuario(Integer usuarioId) {
+        return usuarioMedicamentoRepository.findByUsuarioId(usuarioId);
     }
 }
