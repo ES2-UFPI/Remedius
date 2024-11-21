@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 
 @Service
 public class UsuarioMedicamentoService {
@@ -17,13 +17,17 @@ public class UsuarioMedicamentoService {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private MedicamentoService medicamentoService;
+
     public UsuarioMedicamentoEntity adicionarMedicamentoAoUsuario(
             Integer usuarioId,
-            MedicamentoEntity medicamento,
-            LocalDateTime dataInicial,
-            LocalDateTime frequencia) {
+            Long medicamentoId,
+            String dataInicial,
+            String frequencia) {
 
         UsuarioEntity usuario = usuarioService.getUsuarioById(usuarioId);
+        MedicamentoEntity medicamento = medicamentoService.getMedicamentoById(medicamentoId);
 
         UsuarioMedicamentoEntity relacao = new UsuarioMedicamentoEntity();
 
