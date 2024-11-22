@@ -4,9 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 import * as SplashScreen from 'expo-splash-screen';
-import MedicationSchedule from '../components/MedicationSchedule';
-import MedicationStock from '../components/MedicationStock';
-import "../global.css"
+import MedicationSchedule from '../../components/MedicationSchedule';
+import MedicationStock from '../../components/MedicationStock';
+import "../../global.css"
 
 // Mantem a splash screen visível enquanto carregamos as fontes
 SplashScreen.preventAutoHideAsync();
