@@ -1,4 +1,5 @@
 import MedicationSchedule from '@/components/MedicationSchedule';
+import MedicationStock from '@/components/MedicationStock';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,13 +18,13 @@ const Home = () => {
       <ScrollView className="flex-1 p-6">
 
         {/* Seção para a próxima medicação */}
-        <View className="bg-[#74B2C3] rounded-lg mb-6 p-4 shadow-sm">
-          <Text className="text-lg font-semibold text-gray-800 mb-2">Próxima medicação</Text>
+        <View className="bg-[#74B2C3] rounded-lg mb-6 p-4 shadow-sm space-y-4">
+          <Text className="text-lg font-semibold text-gray-800">Próxima medicação</Text>
           <MedicationCard name="ZOLPIDEM" dosage="1 comp." time="HOJE: 07:00" />
         </View>
 
         {/* Seção para o cronograma de medicações */}
-        <View className="bg-[#74B2C3] rounded-lg mb-6 p-4 space-y-4">
+        <View className="bg-[#74B2C3] rounded-lg mb-6 p-4 shadow-sm space-y-4">
           <Text className="text-lg font-semibold text-gray-800">Cronograma</Text>
           <MedicationSchedule />
         </View>

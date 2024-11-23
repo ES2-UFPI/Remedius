@@ -31,7 +31,7 @@ const TabsLayout = () => {
             borderTopWidth: 1,
             height: 60,
           },
-          tabBarActiveTintColor: 'red',
+          tabBarActiveTintColor: '[#66919D]',
           tabBarInactiveTintColor: 'white',
           tabBarLabelStyle: {
             fontSize: 12,

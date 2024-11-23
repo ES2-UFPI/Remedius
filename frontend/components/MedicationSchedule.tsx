@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addDays, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import "../global.css"
 
 interface Medication {
   id: string;
@@ -25,25 +26,25 @@ const MedicationCard = ({ medication }: { medication: Medication }) => (
 );
 
 const MedicationSchedule = () => {
-  const { width: windowWidth } = useWindowDimensions();
+  const viewRef = useRef(null);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [startDate, setStartDate] = useState(new Date());
   const [visibleColumns, setVisibleColumns] = useState(3);
+  const [viewWidth, setViewWidth] = useState(0);
 
   const calculateVisibleColumns = () => {
-    const minColumnWidth = 150; // Largura mínima desejada para cada coluna
-    const columns = Math.floor(windowWidth / minColumnWidth);
+    const baleColumnWidth = 120; // Largura mínima desejada para cada coluna
+    const columns = Math.round(viewWidth / baleColumnWidth);
     setVisibleColumns(columns);
   };
 
   const getColumnWidth = () => {
-    const availableWidth = windowWidth - 20; // Ajuste para padding/margin
-    return availableWidth / visibleColumns;
+    return Math.floor(viewWidth / visibleColumns); // Divida o espaço igualmente entre as colunas visíveis
   };
 
   useEffect(() => {
     calculateVisibleColumns();
-  }, [windowWidth]);
+  }, [viewWidth]);
 
   useEffect(() => {
     fetchMedications();
@@ -75,6 +76,14 @@ const MedicationSchedule = () => {
           frequencyHours: 72,
           dosage: '1 comprimido',
           color: '#45D35A',
+        },
+        {
+          id: '4',
+          name: 'Venvanse',
+          startDate: '2024-11-16T18:00:00',
+          frequencyHours: 48,
+          dosage: '1 comprimido',
+          color: '#D34547',
         },
       ];
       setMedications(data);
@@ -108,15 +117,22 @@ const MedicationSchedule = () => {
   };
 
   return (
-    <View className="flex-1 bg-[#D8F1F5] rounded-md">
+    <View
+      ref={viewRef}
+      onLayout={(event) => {
+        const { width } = event.nativeEvent.layout;
+        setViewWidth(width);
+      }}
+      className="flex-1 bg-[#D8F1F5] rounded-md"
+    >
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        className="flex-1"
+        className="flex-1 pl-1 pt-1"
       >
         {getDays().map((date, index) => (
-          <View key={index} className="pt-2" style={{ width: getColumnWidth() }}>
-            <View className="p-1 items-center border-b">
+          <View key={index} className="p-1" style={{ width: getColumnWidth() }}>
+            <View className="mb-2">
               <Text className="text-sm font-bold text-center" numberOfLines={1}>
                 {format(date, 'dd/MM', { locale: ptBR })}
               </Text>
@@ -126,7 +142,7 @@ const MedicationSchedule = () => {
               </Text>
             </View>
 
-            <ScrollView className="p-2 flex-1" showsVerticalScrollIndicator={false}>
+            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
               {getMedicationsForDay(date).map((med, medIndex) => (
                 <MedicationCard key={medIndex} medication={med} />
               ))}
@@ -135,7 +151,7 @@ const MedicationSchedule = () => {
         ))}
       </ScrollView>
 
-      <View className="flex-row justify-center items-center p-2">
+      <View className="flex-row justify-center items-center">
         <TouchableOpacity className="p-3 rounded-full m-4" onPress={backDays}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
