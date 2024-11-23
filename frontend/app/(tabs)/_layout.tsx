@@ -3,14 +3,19 @@ import React from 'react'
 import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 
 const Header = () => {
+  const [fontsLoaded] = useFonts({
+    Katibeh_400Regular,
+  });
+  
   return (
-    <View className="flex-row justify-between items-center px-10 py-5 bg-white rounded">
+    <View className="flex-row justify-between items-center px-10 py-5 bg-white rounded shadow-lg">
       <TouchableOpacity>
         <Ionicons name="menu" size={24} color="#333" />
       </TouchableOpacity>
-      <Text className="text-2xl font-bold text-gray-800">Remedius</Text>
+      <Text className="text-[#36555E] text-5xl mt-4 font-normal" style={{ fontFamily: 'Katibeh_400Regular' }}>Remedius</Text>
       <TouchableOpacity>
         <Ionicons name="notifications-outline" size={24} color="#333" />
       </TouchableOpacity>

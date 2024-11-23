@@ -123,7 +123,7 @@ const MedicationSchedule = () => {
         const { width } = event.nativeEvent.layout;
         setViewWidth(width);
       }}
-      className="flex-1 bg-[#D8F1F5] rounded-md"
+      className="flex-1 bg-[#D8F1F5] bg-opacity-67 rounded-md"
     >
       <ScrollView
         horizontal
@@ -152,10 +152,10 @@ const MedicationSchedule = () => {
       </ScrollView>
 
       <View className="flex-row justify-center items-center">
-        <TouchableOpacity className="p-3 rounded-full m-4" onPress={backDays}>
+        <TouchableOpacity className="bg-white p-3 rounded-full m-4" onPress={backDays}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity className="p-3 rounded-full m-4" onPress={advanceDays}>
+        <TouchableOpacity className="bg-white p-3 rounded-full m-4" onPress={advanceDays}>
           <Ionicons name="chevron-forward" size={24} color="black" />
         </TouchableOpacity>
       </View>
