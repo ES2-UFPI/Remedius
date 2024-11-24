@@ -40,7 +40,7 @@ const Home = () => {
     Katibeh_400Regular,
   });
   const { width } = useWindowDimensions();
-  const cardWidth = Math.min(width - 32, 1024); // 1024px is equivalent to max-w-screen-lg
+  const cardWidth = Math.min(width - 32, 768); // 768px is equivalent to max-w-screen-md
   const scrollY = useRef(new Animated.Value(0)).current; // Gerencia o estado de scroll
 
   return (
