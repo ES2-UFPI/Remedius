@@ -3,6 +3,8 @@ package com.remedius.remedius.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.remedius.remedius.DTOs.MedicamentoRequest;
 import com.remedius.remedius.entities.*;
 import com.remedius.remedius.service.*;
 import java.time.LocalDateTime;
@@ -37,14 +39,16 @@ public class UsuarioMedicamentoController {
      * @return A relação criada entre o usuário e a medicação.
      */
     @PostMapping("/{usuarioId}")
-    public ResponseEntity<UsuarioMedicamentoEntity> addMedicationToUser(
+    public UsuarioMedicamentoEntity addMedicationToUser(
             @PathVariable Integer usuarioId,
-            @RequestBody Long medicamentoId,
-            @RequestBody String dataInicial,
-            @RequestBody String frequencia) {
+            @RequestBody MedicamentoRequest medicamentoRequest) {
+
+        Long medicamentoId = medicamentoRequest.getMedicamentoId();
+        String dataInicial = medicamentoRequest.getDataInicial();
+        String frequencia = medicamentoRequest.getFrequencia();
 
         UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(usuarioId, medicamentoId, dataInicial, frequencia);
-        return ResponseEntity.ok(relacao);
+        return relacao;
     }
 
     /**

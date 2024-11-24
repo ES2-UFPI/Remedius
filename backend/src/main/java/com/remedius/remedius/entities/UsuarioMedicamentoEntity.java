@@ -21,14 +21,15 @@ public class UsuarioMedicamentoEntity {
 
     private String frequencia;
 
-    public UsuarioMedicamentoEntity() {
-    }
 
     public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, String dataInicial, String frequencia) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.dataInicial = dataInicial;
         this.frequencia = frequencia;
+    }
+
+    public UsuarioMedicamentoEntity() {
     }
 
     // getId da relação 
