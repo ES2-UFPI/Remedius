@@ -27,6 +27,9 @@ public class UsuarioEntity {
         this.senha = senha;
     }
 
+    public UsuarioEntity() {
+    }
+
     public Integer getId() {
         return id;
     }

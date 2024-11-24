@@ -39,11 +39,11 @@ public class UsuarioMedicamentoController {
     @PostMapping("/{usuarioId}")
     public ResponseEntity<UsuarioMedicamentoEntity> addMedicationToUser(
             @PathVariable Integer usuarioId,
-            @RequestBody MedicamentoEntity medicamento,
-            @RequestParam("dataInicial") LocalDateTime dataInicial,
-            @RequestParam("frequencia") LocalDateTime frequencia) {
+            @RequestBody Long medicamentoId,
+            @RequestBody String dataInicial,
+            @RequestBody String frequencia) {
 
-        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(usuarioId, medicamento, dataInicial, frequencia);
+        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(usuarioId, medicamentoId, dataInicial, frequencia);
         return ResponseEntity.ok(relacao);
     }
 

@@ -35,6 +35,9 @@ public class MedicamentoEntity {
         this.laboratorio = laboratorio;
     }
 
+    public MedicamentoEntity() {
+    }
+
     public String getNome() {
         return nome;
     }

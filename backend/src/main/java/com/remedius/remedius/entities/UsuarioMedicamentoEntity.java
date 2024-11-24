@@ -1,7 +1,6 @@
 package com.remedius.remedius.entities;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuario_medicacoes")
@@ -18,14 +17,14 @@ public class UsuarioMedicamentoEntity {
     @JoinColumn(name = "medicacao_id", nullable = false)
     private MedicamentoEntity medicamento;
 
-    private LocalDateTime dataInicial;
+    private String dataInicial;
 
-    private LocalDateTime frequencia;
+    private String frequencia;
 
     public UsuarioMedicamentoEntity() {
     }
 
-    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, LocalDateTime dataInicial, LocalDateTime frequencia) {
+    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, String dataInicial, String frequencia) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.dataInicial = dataInicial;
@@ -45,11 +44,11 @@ public class UsuarioMedicamentoEntity {
         return medicamento;
     }
 
-    public LocalDateTime getDataInicial() {
+    public String getDataInicial() {
         return dataInicial;
     }
 
-    public LocalDateTime getFrequencia() {
+    public String getFrequencia() {
         return frequencia;
     }
 
@@ -61,11 +60,11 @@ public class UsuarioMedicamentoEntity {
         this.medicamento = medicamento;
     }
 
-    public void setDataInicial(LocalDateTime dataInicial) {
+    public void setDataInicial(String dataInicial) {
         this.dataInicial = dataInicial;
     }
 
-    public void setFrequencia(LocalDateTime frequencia) {
+    public void setFrequencia(String frequencia) {
         this.frequencia = frequencia;
     }
 
