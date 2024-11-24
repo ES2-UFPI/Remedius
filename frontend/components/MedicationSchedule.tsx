@@ -1,55 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { format, addDays, addHours, differenceInDays } from 'date-fns';
+import { format, addDays, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import "../global.css"
 
 interface Medication {
   id: string;
   name: string;
-  startDate: string; // Data inicial do uso
-  frequencyHours: number; // Frequência em horas
+  startDate: string;
+  frequencyHours: number;
   dosage: string;
   color: string;
 }
 
 const MedicationCard = ({ medication }: { medication: Medication }) => (
-  <View style={[styles.medicationCard, { backgroundColor: medication.color }]}>
-    <Text style={styles.medicationName} numberOfLines={1}>
+  <View className="p-3 rounded-lg mb-2" style={{ backgroundColor: medication.color }}>
+    <Text className="text-sm font-bold text-white" numberOfLines={1}>
       {medication.name}
     </Text>
-    <Text style={styles.medicationDosage} numberOfLines={1}>
+    <Text className="text-xs text-white" numberOfLines={1}>
       {medication.dosage}
     </Text>
   </View>
 );
 
-export default function MedicationSchedule() {
-  const { width: windowWidth } = useWindowDimensions();
+const MedicationSchedule = () => {
+  const viewRef = useRef(null);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [startDate, setStartDate] = useState(new Date());
   const [visibleColumns, setVisibleColumns] = useState(3);
+  const [viewWidth, setViewWidth] = useState(0);
 
-  useEffect(() => {
-    const calculateVisibleColumns = () => {
-      if (windowWidth < 300) {
-        setVisibleColumns(2);
-      } else if (windowWidth < 768) {
-        setVisibleColumns(3);
-      } else if (windowWidth < 1024) {
-        setVisibleColumns(5);
-      } else {
-        setVisibleColumns(7);
-      }
-    };
-
-    calculateVisibleColumns();
-  }, [windowWidth]);
+  const calculateVisibleColumns = () => {
+    const baleColumnWidth = 120; // Largura mínima desejada para cada coluna
+    const columns = Math.round(viewWidth / baleColumnWidth);
+    setVisibleColumns(columns);
+  };
 
   const getColumnWidth = () => {
-    const availableWidth = Math.max(windowWidth - 20, 200); // Garante uma largura mínima
-    return availableWidth / visibleColumns;
+    return Math.floor(viewWidth / visibleColumns); // Divida o espaço igualmente entre as colunas visíveis
   };
+
+  useEffect(() => {
+    calculateVisibleColumns();
+  }, [viewWidth]);
 
   useEffect(() => {
     fetchMedications();
@@ -72,7 +67,7 @@ export default function MedicationSchedule() {
           startDate: '2024-11-16T12:00:00',
           frequencyHours: 24,
           dosage: '1 comprimido',
-          color: '#D34547',
+          color: '#FF6347',
         },
         {
           id: '3',
@@ -81,6 +76,14 @@ export default function MedicationSchedule() {
           frequencyHours: 72,
           dosage: '1 comprimido',
           color: '#45D35A',
+        },
+        {
+          id: '4',
+          name: 'Venvanse',
+          startDate: '2024-11-16T18:00:00',
+          frequencyHours: 48,
+          dosage: '1 comprimido',
+          color: '#D34547',
         },
       ];
       setMedications(data);
@@ -98,10 +101,9 @@ export default function MedicationSchedule() {
       const medicationStartDate = new Date(med.startDate);
       const diffInDays = differenceInDays(date, medicationStartDate);
 
-      // Calcula se o medicamento deve ser exibido neste dia
       return (
-        diffInDays >= 0 && // A medicação já começou
-        (diffInDays * 24) % med.frequencyHours === 0 // É um horário válido dentro da frequência
+        diffInDays >= 0 &&
+        (diffInDays * 24) % med.frequencyHours === 0
       );
     });
   };
@@ -115,113 +117,50 @@ export default function MedicationSchedule() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.scheduleContainer}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.scrollView}
-        >
-          {getDays().map((date, index) => (
-            <View key={index} style={[styles.column, { width: getColumnWidth() }]}>
-              <View style={styles.dateHeader}>
-                <Text style={styles.dateText} numberOfLines={1}>
-                  {format(date, 'dd/MM', { locale: ptBR })}
-                </Text>
-                <Text style={styles.dayText} numberOfLines={1}>
-                  {format(date, 'EEEE', { locale: ptBR })}
-                </Text>
-              </View>
-              <ScrollView style={styles.medicationsContainer} showsVerticalScrollIndicator={false}>
-                {getMedicationsForDay(date).map((med, medIndex) => (
-                  <MedicationCard key={medIndex} medication={med} />
-                ))}
-              </ScrollView>
+    <View
+      ref={viewRef}
+      onLayout={(event) => {
+        const { width } = event.nativeEvent.layout;
+        setViewWidth(width);
+      }}
+      className="flex-1 bg-[#E8F4F6] bg-opacity-67 rounded-md"
+    >
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className="flex-1 pl-1 pt-1"
+      >
+        {getDays().map((date, index) => (
+          <View key={index} className="p-1" style={{ width: getColumnWidth() }}>
+            <View className="mb-2">
+              <Text className="text-sm font-bold text-center" numberOfLines={1}>
+                {format(date, 'dd/MM', { locale: ptBR })}
+              </Text>
+
+              <Text className="text-xs text-gray-600 text-center" numberOfLines={1}>
+                {format(date, 'EEEE', { locale: ptBR })}
+              </Text>
             </View>
-          ))}
-        </ScrollView>
-      </View>
-      <View style={styles.navigationContainer}>
-        <TouchableOpacity style={styles.navigationButton} onPress={backDays}>
+
+            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+              {getMedicationsForDay(date).map((med, medIndex) => (
+                <MedicationCard key={medIndex} medication={med} />
+              ))}
+            </ScrollView>
+          </View>
+        ))}
+      </ScrollView>
+
+      <View className="flex-row justify-center items-center">
+        <TouchableOpacity className="bg-white p-3 rounded-full m-4" onPress={backDays}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navigationButton} onPress={advanceDays}>
+        <TouchableOpacity className="bg-white p-3 rounded-full m-4" onPress={advanceDays}>
           <Ionicons name="chevron-forward" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  scheduleContainer: {
-    flex: 1,
-  },
-  navigationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 8,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  column: {
-    borderRightWidth: 1,
-    borderRightColor: '#eee',
-    height: '100%',
-    minWidth: 100,
-  },
-  dateHeader: {
-    padding: 8,
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  dateText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  dayText: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
-  },
-  medicationsContainer: {
-    padding: 8,
-    flex: 1,
-  },
-  medicationCard: {
-    padding: 8,
-    borderRadius: 8,
-    marginBottom: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  medicationName: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  medicationDosage: {
-    fontSize: 12,
-    color: '#fff',
-  },
-  navigationButton: {
-    padding: 12,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 20,
-    marginHorizontal: 16,
-    elevation: 2,
-  },
-});
+export default MedicationSchedule;

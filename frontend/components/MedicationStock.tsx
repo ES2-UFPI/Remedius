@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 
 // Componente responsável pelo Estoque de Medicamentos
-export default function MedicationStock() {
+const MedicationStock = () => {
   const [medicationStock, setMedicationStock] = useState<
     { name: string; stock: number; frequency: number; startDate: string }[]
   >([]);
@@ -44,7 +44,7 @@ export default function MedicationStock() {
   }, []);
 
   return (
-    <View>
+    <ScrollView className="flex-1 bg-[#D8F1F5] rounded-3xl px-4 py-2">
       {medicationStock.map((medication, index) => {
         const { totalDays, endDate } = calculateStockDuration(
           medication.stock,
@@ -53,60 +53,23 @@ export default function MedicationStock() {
         );
 
         return (
-          <View key={index} style={styles.stockItem}>
-            <Text style={styles.medicationName}>{medication.name}</Text>
-            <Text style={styles.stockInfo}>
+          <View key={index} className="bg-white rounded-2xl p-4 my-3 shadow-md">
+            <Text className="text-2xl font-bold text-[#36555E] mb-2">
+              {medication.name}
+            </Text>
+            <Text className="text-lg text-black mb-1">
               Estoque atual: {medication.stock} unidades
             </Text>
-            <Text style={styles.stockInfo}>
+            <Text className="text-lg text-black">
               Estoque durará {totalDays} dias (até{' '}
               {endDate.toLocaleDateString('pt-BR')})
             </Text>
           </View>
         );
       })}
-      </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    minHeight: 180,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  sectionTitle: {
-    fontSize: 40,
-    fontFamily: 'Katibeh_400Regular',
-    color: '#36555E',
-    marginBottom: 10,
-  },
-  stockItem: {
-    margin: 12,
-    backgroundColor: '#FFFFFF',
-    padding: 16,
-    borderRadius: 16
-  },
-  medicationName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#36555E',
-  },
-  stockInfo: {
-    fontSize: 19,
-    color: '#000',
-  },
-  blueContainer: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: '#D8F1F5',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-});
+export default MedicationStock;
+

@@ -1,20 +1,13 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { View, Text } from 'react-native'
+import React, { useEffect } from 'react'
+import { SplashScreen, Stack } from 'expo-router'
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import BottomNav from '../components/BottomNav';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+const RootLayout = () => {
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -30,13 +23,21 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <GestureHandlerRootView className='flex-1'>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false
+          }} />
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false
+          }} />
       </Stack>
-      <StatusBar style="auto" />
-      <BottomNav />
-    </ThemeProvider>
-  );
+    </GestureHandlerRootView>
+  )
 }
+
+export default RootLayout
