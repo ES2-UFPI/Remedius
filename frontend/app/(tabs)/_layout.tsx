@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 
+/*
 const Header = () => {
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
@@ -22,11 +23,11 @@ const Header = () => {
     </View>
   )
 }
+*/
 
 const TabsLayout = () => {
   return (
     <SafeAreaView className="flex-1 bg-[#F0F4F8]">
-      <Header />
       <Tabs
         screenOptions={{
           headerShown: false,

@@ -123,7 +123,7 @@ const MedicationSchedule = () => {
         const { width } = event.nativeEvent.layout;
         setViewWidth(width);
       }}
-      className="flex-1 bg-[#D8F1F5] bg-opacity-67 rounded-md"
+      className="flex-1 bg-[#E8F4F6] bg-opacity-67 rounded-md"
     >
       <ScrollView
         horizontal

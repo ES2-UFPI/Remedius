@@ -44,10 +44,7 @@ const MedicationStock = () => {
   }, []);
 
   return (
-    <ScrollView className="flex-1 bg-[#D8F1F5] rounded-t-3xl px-4 py-6">
-      <Text className="text-4xl font-['Katibeh_400Regular'] text-[#36555E] mb-2">
-        Estoque de Medicamentos
-      </Text>
+    <ScrollView className="flex-1 bg-[#D8F1F5] rounded-3xl px-4 py-2">
       {medicationStock.map((medication, index) => {
         const { totalDays, endDate } = calculateStockDuration(
           medication.stock,

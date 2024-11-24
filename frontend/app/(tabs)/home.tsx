@@ -1,9 +1,11 @@
 import MedicationSchedule from '@/components/MedicationSchedule';
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, useWindowDimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Menu, Bell, User, FileText, Plus } from 'lucide-react-native';
 import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
+import Header from '../../components/Header';
+import AnimatedHeader from '../../components/Header';
 
 const MedicationCard = ({ name, dosage, time }) => (
   <View className="w-full flex-row justify-between items-center">
@@ -39,10 +41,24 @@ const Home = () => {
   });
   const { width } = useWindowDimensions();
   const cardWidth = Math.min(width - 32, 1024); // 1024px is equivalent to max-w-screen-lg
+  const scrollY = useRef(new Animated.Value(0)).current; // Gerencia o estado de scroll
 
   return (
-    <SafeAreaView className="flex-1 bg-[#E8F4F6]">
-      <ScrollView className="flex-1 px-4">
+    <SafeAreaView className="flex-1 bg-[#D8F1F5]">
+      {/* Header Animado */}
+      <AnimatedHeader scrollY={scrollY} />
+
+      {/* Conteúdo com scroll detectável */}
+      <Animated.ScrollView
+        className="flex-1"
+        contentContainerStyle={{ paddingTop: 100 }} // Espaço para o header
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true } // Usa animações nativas para desempenho
+        )}
+        scrollEventThrottle={16} // Atualiza o evento a cada 16ms
+      >
+      {/*<ScrollView className="flex-1 px-4">*/}
         <View className="items-center">
           {/* Seção para a próxima medicação */}
           <View className="mb-6 mt-6 w-full" style={{ maxWidth: cardWidth }}>
@@ -64,7 +80,8 @@ const Home = () => {
             </View>
           </View>
         </View>
-      </ScrollView>
+      {/*</ScrollView>*/}
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 }
