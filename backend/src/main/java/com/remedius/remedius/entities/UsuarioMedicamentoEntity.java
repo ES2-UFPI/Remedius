@@ -1,9 +1,11 @@
 package com.remedius.remedius.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "usuario_medicacoes")
+@AllArgsConstructor
 public class UsuarioMedicamentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +23,10 @@ public class UsuarioMedicamentoEntity {
 
     private String frequencia;
 
+    private double dosagem;
 
-    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, String dataInicial, String frequencia) {
+    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, String dataInicial,
+            String frequencia) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.dataInicial = dataInicial;
@@ -32,7 +36,7 @@ public class UsuarioMedicamentoEntity {
     public UsuarioMedicamentoEntity() {
     }
 
-    // getId da relação 
+    // getId da relação
     public Integer getId() {
         return id;
     }
@@ -53,6 +57,10 @@ public class UsuarioMedicamentoEntity {
         return frequencia;
     }
 
+    public double getDosagem() {
+        return dosagem;
+    }
+
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
@@ -67,6 +75,10 @@ public class UsuarioMedicamentoEntity {
 
     public void setFrequencia(String frequencia) {
         this.frequencia = frequencia;
+    }
+
+    public void setDosagem(double dosagem) {
+        this.dosagem = dosagem;
     }
 
     @Override

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import com.remedius.remedius.DTOs.MedicamentoRequest;
 import com.remedius.remedius.entities.*;
 import com.remedius.remedius.service.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -43,11 +42,7 @@ public class UsuarioMedicamentoController {
             @PathVariable Integer usuarioId,
             @RequestBody MedicamentoRequest medicamentoRequest) {
 
-        Long medicamentoId = medicamentoRequest.getMedicamentoId();
-        String dataInicial = medicamentoRequest.getDataInicial();
-        String frequencia = medicamentoRequest.getFrequencia();
-
-        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(usuarioId, medicamentoId, dataInicial, frequencia);
+        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario( usuarioId,medicamentoRequest);
         return relacao;
     }
 

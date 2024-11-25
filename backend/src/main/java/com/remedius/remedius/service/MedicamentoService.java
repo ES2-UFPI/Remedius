@@ -50,7 +50,6 @@ public class MedicamentoService {
         if (existingMedicamento.isPresent()) {
             MedicamentoEntity updatedMedicamento = existingMedicamento.get();
             updatedMedicamento.setNome(medicamento.getNome());
-            updatedMedicamento.setDosagem(medicamento.getDosagem());
             updatedMedicamento.setLaboratorio(medicamento.getLaboratorio());
 
             return medicamentoRepository.save(updatedMedicamento);

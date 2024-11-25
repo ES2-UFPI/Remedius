@@ -18,9 +18,6 @@ public class MedicamentoEntity {
     @NonNull
     private String nome;
 
-    @Column(name = "dosagem")
-    @NonNull
-    private String dosagem;
 
     @Column(name = "laboratorio")
     @NonNull
@@ -29,9 +26,8 @@ public class MedicamentoEntity {
     @OneToMany(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UsuarioMedicamentoEntity> usuarioMedicacoes = new HashSet<>();
 
-    public MedicamentoEntity(String nome, String dosagem, String laboratorio) {
+    public MedicamentoEntity(String nome, String laboratorio) {
         this.nome = nome;
-        this.dosagem = dosagem;
         this.laboratorio = laboratorio;
     }
 
@@ -42,10 +38,6 @@ public class MedicamentoEntity {
         return nome;
     }
 
-    public String getDosagem() {
-        return dosagem;
-    }
-
     public String getLaboratorio() {
         return laboratorio;
     }
@@ -54,9 +46,6 @@ public class MedicamentoEntity {
         this.nome = nome;
     }
 
-    public void setDosagem(String dosagem) {
-        this.dosagem = dosagem;
-    }
 
     public void setLaboratorio(String laboratorio) {
         this.laboratorio = laboratorio;
@@ -64,7 +53,7 @@ public class MedicamentoEntity {
 
     @Override
     public String toString() {
-        return "MedicamentoModel [dosagem=" + dosagem + ", laboratorio=" + laboratorio + ", nome=" + nome
+        return "MedicamentoModel , laboratorio=" + laboratorio + ", nome=" + nome
                 + "]";
     }
 }
