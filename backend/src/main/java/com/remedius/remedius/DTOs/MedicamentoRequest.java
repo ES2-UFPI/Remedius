@@ -1,13 +1,15 @@
 package com.remedius.remedius.DTOs;
 
+import java.time.LocalDateTime;
+
 public class MedicamentoRequest {
 
     private Long medicamentoId;
-    private String dataInicial;
+    private LocalDateTime dataInicial;
     private String frequencia;
     private double dosagem;
 
-    public MedicamentoRequest(Long medicamentoId, String dataInicial, String frequencia, double dosagem) {
+    public MedicamentoRequest(Long medicamentoId, LocalDateTime dataInicial, String frequencia, double dosagem) {
         this.medicamentoId = medicamentoId;
         this.dataInicial = dataInicial;
         this.frequencia = frequencia;
@@ -18,7 +20,7 @@ public class MedicamentoRequest {
         return this.medicamentoId;
     }
 
-    public String getDataInicial() {
+    public LocalDateTime getDataInicial() {
         return this.dataInicial;
     }
 
@@ -30,7 +32,7 @@ public class MedicamentoRequest {
         return this.dosagem;
     }
 
-    public void setDataInicial(String dataInicial) {
+    public void setDataInicial(LocalDateTime dataInicial) {
         this.dataInicial = dataInicial;
     }
 
