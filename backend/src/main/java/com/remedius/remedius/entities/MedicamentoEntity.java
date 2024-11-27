@@ -12,7 +12,7 @@ public class MedicamentoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "nome")
     @NonNull
@@ -31,7 +31,13 @@ public class MedicamentoEntity {
         this.laboratorio = laboratorio;
     }
 
+
+
     public MedicamentoEntity(){
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getNome() {
@@ -40,6 +46,10 @@ public class MedicamentoEntity {
 
     public String getLaboratorio() {
         return laboratorio;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {
