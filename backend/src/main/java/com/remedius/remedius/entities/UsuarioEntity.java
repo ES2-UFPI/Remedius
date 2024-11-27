@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "usuario")
 @AllArgsConstructor
@@ -32,6 +34,7 @@ public class UsuarioEntity {
     private LocalDate dataNascimento;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<UsuarioMedicamentoEntity> usuarioMedicacacoes = new HashSet<>();
 
     public UsuarioEntity(String nome, String email, String senha) {
