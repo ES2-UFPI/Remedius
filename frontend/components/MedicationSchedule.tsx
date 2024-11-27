@@ -1,26 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { format, addDays, differenceInDays } from 'date-fns';
+import { format, addDays, differenceInDays, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import axios from 'axios';
 import "../global.css"
 
+// Cores para as medicações
+const MEDICATION_COLORS = [
+  '#D34547',   // Vermelho
+  '#74B2C3',   // Azul
+  '#45D35A',   // Verde
+  '#B5CC06',   // Amarelo
+  '#808080'    // Cinza (para suspensas)
+];
+
 interface Medication {
-  id: string;
-  name: string;
-  startDate: string;
-  frequencyHours: number;
-  dosage: string;
-  color: string;
+  id: number;
+  medicamento: {
+    id: number;
+    nome: string;
+    laboratorio: string;
+  };
+  dataInicial: string;
+  frequencia: string;
+  dosagem: number;
+  cor?: string;
 }
 
 const MedicationCard = ({ medication }: { medication: Medication }) => (
-  <View className="p-3 rounded-lg mb-2" style={{ backgroundColor: medication.color }}>
+  <View 
+    className="p-3 rounded-lg mb-2" 
+    style={{ 
+      backgroundColor: medication.cor || 
+        MEDICATION_COLORS[medication.id % MEDICATION_COLORS.length] 
+    }}
+  >
     <Text className="text-sm font-bold text-white" numberOfLines={1}>
-      {medication.name}
+      {medication.medicamento.nome.toUpperCase()}
     </Text>
     <Text className="text-xs text-white" numberOfLines={1}>
-      {medication.dosage}
+      {medication.dosagem} comp.
     </Text>
   </View>
 );
@@ -33,13 +53,13 @@ const MedicationSchedule = () => {
   const [viewWidth, setViewWidth] = useState(0);
 
   const calculateVisibleColumns = () => {
-    const baleColumnWidth = 120; // Largura mínima desejada para cada coluna
-    const columns = Math.round(viewWidth / baleColumnWidth);
-    setVisibleColumns(columns);
+    const columnWidth = 120;
+    const columns = Math.round(viewWidth / columnWidth);
+    setVisibleColumns(Math.max(columns, 1));
   };
 
   const getColumnWidth = () => {
-    return Math.floor(viewWidth / visibleColumns); // Divida o espaço igualmente entre as colunas visíveis
+    return Math.floor(viewWidth / visibleColumns);
   };
 
   useEffect(() => {
@@ -52,41 +72,12 @@ const MedicationSchedule = () => {
 
   const fetchMedications = async () => {
     try {
-      const data: Medication[] = [
-        {
-          id: '1',
-          name: 'Dipirona',
-          startDate: '2024-11-16T08:00:00',
-          frequencyHours: 48,
-          dosage: '2 comprimidos',
-          color: '#74B2C3',
-        },
-        {
-          id: '2',
-          name: 'Paracetamol',
-          startDate: '2024-11-16T12:00:00',
-          frequencyHours: 24,
-          dosage: '1 comprimido',
-          color: '#FF6347',
-        },
-        {
-          id: '3',
-          name: 'Mirtazapina',
-          startDate: '2024-11-16T18:00:00',
-          frequencyHours: 72,
-          dosage: '1 comprimido',
-          color: '#45D35A',
-        },
-        {
-          id: '4',
-          name: 'Zolpidem',
-          startDate: '2024-11-16T18:00:00',
-          frequencyHours: 48,
-          dosage: '1 comprimido',
-          color: '#D34547',
-        },
-      ];
-      setMedications(data);
+      const response = await axios.get('http://localhost:8080/usuarios-medicamentos/1');
+      const medicationsData: Medication[] = response.data.map((med: Medication, index: number) => ({
+        ...med,
+        cor: MEDICATION_COLORS[index % MEDICATION_COLORS.length]
+      }));
+      setMedications(medicationsData);
     } catch (error) {
       console.error('Erro ao buscar medicações:', error);
     }
@@ -98,12 +89,13 @@ const MedicationSchedule = () => {
 
   const getMedicationsForDay = (date: Date) => {
     return medications.filter((med) => {
-      const medicationStartDate = new Date(med.startDate);
+      const medicationStartDate = parseISO(med.dataInicial);
       const diffInDays = differenceInDays(date, medicationStartDate);
+      const frequencyHours = parseInt(med.frequencia);
 
       return (
         diffInDays >= 0 &&
-        (diffInDays * 24) % med.frequencyHours === 0
+        (diffInDays * 24) % frequencyHours === 0
       );
     });
   };
