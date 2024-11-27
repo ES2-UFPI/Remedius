@@ -71,7 +71,7 @@ const MedicationSchedule = () => {
         },
         {
           id: '3',
-          name: 'Ibuprofeno',
+          name: 'Mirtazapina',
           startDate: '2024-11-16T18:00:00',
           frequencyHours: 72,
           dosage: '1 comprimido',
@@ -79,7 +79,7 @@ const MedicationSchedule = () => {
         },
         {
           id: '4',
-          name: 'Venvanse',
+          name: 'Zolpidem',
           startDate: '2024-11-16T18:00:00',
           frequencyHours: 48,
           dosage: '1 comprimido',
