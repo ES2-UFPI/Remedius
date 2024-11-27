@@ -1,5 +1,7 @@
 package com.remedius.remedius.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 
@@ -9,7 +11,7 @@ import lombok.AllArgsConstructor;
 public class UsuarioMedicamentoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -19,13 +21,13 @@ public class UsuarioMedicamentoEntity {
     @JoinColumn(name = "medicacao_id", nullable = false)
     private MedicamentoEntity medicamento;
 
-    private String dataInicial;
+    private LocalDateTime dataInicial;
 
     private String frequencia;
 
     private double dosagem;
 
-    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, String dataInicial,
+    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, LocalDateTime dataInicial,
             String frequencia) {
         this.usuario = usuario;
         this.medicamento = medicamento;
@@ -37,7 +39,7 @@ public class UsuarioMedicamentoEntity {
     }
 
     // getId da relação
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -49,7 +51,7 @@ public class UsuarioMedicamentoEntity {
         return medicamento;
     }
 
-    public String getDataInicial() {
+    public LocalDateTime getDataInicial() {
         return dataInicial;
     }
 
@@ -69,7 +71,7 @@ public class UsuarioMedicamentoEntity {
         this.medicamento = medicamento;
     }
 
-    public void setDataInicial(String dataInicial) {
+    public void setDataInicial(LocalDateTime dataInicial) {
         this.dataInicial = dataInicial;
     }
 

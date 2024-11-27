@@ -5,6 +5,8 @@ import com.remedius.remedius.entities.*;
 import com.remedius.remedius.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 //import java.time.LocalDateTime;
@@ -25,7 +27,8 @@ public class UsuarioMedicamentoService {
             MedicamentoRequest medicamentoRequest) {
 
         Long medicamentoId = medicamentoRequest.getMedicamentoId();
-        String dataInicial = medicamentoRequest.getDataInicial();
+        LocalDateTime dataInicial = medicamentoRequest.getDataInicial();
+                
         String frequencia = medicamentoRequest.getFrequencia();
         Double dosagem = medicamentoRequest.getDosagem();
         
