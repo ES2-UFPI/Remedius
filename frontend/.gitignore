@@ -35,4 +35,12 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# fake data
+db.json
+
 app-example
+
+## Google services
+
+google-services.json
+remedius-68716-firebase-adminsdk-indh1-5e86c87894.json
