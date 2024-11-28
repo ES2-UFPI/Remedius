@@ -11,7 +11,6 @@ import { Provider as PaperProvider } from 'react-native-paper';
 const RegisterMedication = () => {
   const [medicationName, setMedicationName] = useState('');
   const [dosage, setDosage] = useState('');
-  const [dosageType, setDosageType] = useState('1');
   const [startDate, setStartDate] = useState(new Date());
   const [frequency, setFrequency] = useState('');
   const [startTime, setStartTime] = useState('00:00');
@@ -31,13 +30,6 @@ const RegisterMedication = () => {
     today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
     return date >= today;
   };
-
-  const dosageOptions = [
-    { label: 'comprimidos', value: '1' },
-    { label: 'ml', value: '2' },
-    { label: 'mg', value: '3' },
-    { label: 'g', value: '4' },
-  ];
 
   const frequencyOptions = [
     { label: '1 em 1 hora', value: '1' },
@@ -110,16 +102,7 @@ const RegisterMedication = () => {
                       placeholder="Quantidade de medicamento por dose (ex.: 1, 2, 0.5)"
                     />
                     <View className="bg-[#F3F3F3] px-4 rounded-lg flex-row items-center justify-between min-w-[150px]">
-                      <Picker
-                        selectedValue={dosageType}
-                        onValueChange={(itemValue) => setDosageType(itemValue)}
-                        className='bg-[#F3F3F3] p-3 rounded-lg'
-                      >
-                        <Picker.Item label="Selecionar dosagem" value="" />
-                        {dosageOptions.map((option) => (
-                          <Picker.Item key={option.value} label={option.label} value={option.value} />
-                        ))}
-                      </Picker>
+                      <Text className="text-[#2F4858]">Comprimidos</Text>
                     </View>
                   </View>
                 </View>
@@ -199,16 +182,7 @@ const RegisterMedication = () => {
                       keyboardType="numeric"
                     />
                     <View className="bg-[#F3F3F3] px-4 rounded-lg flex-row items-center justify-between min-w-[150px]">
-                      <Picker
-                        selectedValue={dosageType}
-                        onValueChange={(itemValue) => setDosageType(itemValue)}
-                        className='bg-[#F3F3F3] p-3 rounded-lg'
-                      >
-                        <Picker.Item label="Selecionar dosagem" value="" />
-                        {dosageOptions.map((option) => (
-                          <Picker.Item key={option.value} label={option.label} value={option.value} />
-                        ))}
-                      </Picker>
+                      <Text className="text-[#2F4858]">Comprimidos</Text>
                     </View>
                   </View>
 
