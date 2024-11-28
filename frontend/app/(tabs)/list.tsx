@@ -31,6 +31,33 @@ interface UsuarioMedicamento {
   frequencia: string;
   dosagem: number;
 }
+import { router } from 'expo-router';
+
+interface MedicationCardProps {
+  name: string;
+  status?: string;
+  color?: string;
+}
+
+const MedicationCard: React.FC<MedicationCardProps> = ({ name, color='#E5E5E5', status='inactive' }) => (
+  <View style={{ backgroundColor: color }} className="flex-row justify-between items-center p-4 rounded-lg mb-2">
+    <Text className="text-base text-[#2F4858]">{name}</Text>
+    <View className="flex-row gap-3">
+      <TouchableOpacity
+        className="p-1"
+        onPress={() => router.push({
+          pathname: '../edit', // Ensure this path is correctly defined in your routing configuration
+          params: { name, status }
+        })}
+      >
+        <Edit2 size={20} color="#2F4858" />
+      </TouchableOpacity>
+      <TouchableOpacity className="p-1">
+        <Bell size={20} color="#2F4858" />
+      </TouchableOpacity>
+    </View>
+  </View>
+);
 
 const MedicationList = () => {
   const [fontsLoaded] = useFonts({
