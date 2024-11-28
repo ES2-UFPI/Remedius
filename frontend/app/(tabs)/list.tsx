@@ -6,12 +6,25 @@ import { useFonts } from 'expo-font';
 import { Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 import MedicationStock from '@/components/MedicationStock';
 import AnimatedHeader from '../../components/Header';
+import { router } from 'expo-router';
 
-const MedicationCard = ({ name, color='#E5E5E5' }) => (
+interface MedicationCardProps {
+  name: string;
+  status?: string;
+  color?: string;
+}
+
+const MedicationCard: React.FC<MedicationCardProps> = ({ name, color='#E5E5E5', status='inactive' }) => (
   <View style={{ backgroundColor: color }} className="flex-row justify-between items-center p-4 rounded-lg mb-2">
     <Text className="text-base text-[#2F4858]">{name}</Text>
     <View className="flex-row gap-3">
-      <TouchableOpacity className="p-1">
+      <TouchableOpacity
+        className="p-1"
+        onPress={() => router.push({
+          pathname: '../edit', // Ensure this path is correctly defined in your routing configuration
+          params: { name, status }
+        })}
+      >
         <Edit2 size={20} color="#2F4858" />
       </TouchableOpacity>
       <TouchableOpacity className="p-1">
@@ -51,9 +64,9 @@ const MedicationList = () => {
           <View className="mb-6 mt-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Medicações ativas</Text>
-              <MedicationCard name="Zolpiden" color="#FFE4E4" />
-              <MedicationCard name="Dipirona" color="#E4F2FF" />
-              <MedicationCard name="Mirtazapina" color="#E4FFE8" />
+              <MedicationCard name="Zolpiden" color="#FFE4E4" status='active' />
+              <MedicationCard name="Dipirona" color="#E4F2FF" status='active'/>
+              <MedicationCard name="Mirtazapina" color="#E4FFE8" status='active'/>
             </View>
           </View>
 
@@ -61,8 +74,8 @@ const MedicationList = () => {
           <View className="mb-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Medicações suspensas</Text>
-              <MedicationCard name="Glifage"/>
-              <MedicationCard name="Buscopam"/>
+              <MedicationCard name="Glifage" />
+              <MedicationCard name="Buscopam" />
             </View>
           </View>
 
@@ -81,4 +94,3 @@ const MedicationList = () => {
 }
 
 export default MedicationList;
-

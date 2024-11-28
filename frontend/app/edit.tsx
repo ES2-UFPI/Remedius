@@ -1,36 +1,32 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, useWindowDimensions, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
 import { ArrowLeft } from 'lucide-react-native';
 import { useFonts } from 'expo-font';
 import { Katibeh_400Regular } from '@expo-google-fonts/katibeh';
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams, router } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-const RegisterMedication = () => {
-  const [medicationName, setMedicationName] = useState('');
+const EditMedication = () => {
+  const params = useLocalSearchParams();
+  const [medicationName, setMedicationName] = useState(params.name as string || '');
   const [dosage, setDosage] = useState('');
-  const [dosageType, setDosageType] = useState('1');
+  const [dosageType, setDosageType] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [frequency, setFrequency] = useState('');
   const [startTime, setStartTime] = useState('00:00');
   const [currentStock, setCurrentStock] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [status, setStatus] = useState(params.status as string || 'active');
 
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
   });
+
   const { width } = useWindowDimensions();
   const cardWidth = Math.min(width - 32, 768);
-
-  // Function to check if a date is valid (not in the past)
-  const validateDate = (date: Date) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
-    return date >= today;
-  };
 
   const dosageOptions = [
     { label: 'comprimidos', value: '1' },
@@ -55,21 +51,25 @@ const RegisterMedication = () => {
     return { label: `${hour}:00`, value: `${hour}:00` };
   });
 
-  const clearFormData = () => {
-    setMedicationName('');
-    setDosage('');
-    setStartDate(new Date());
-    setFrequency('');
-    setStartTime('00:00');
-    setCurrentStock('');
-    setAdditionalInfo('');
-  };
-
   const onDateChange = ({ date }) => {
-    if (date && validateDate(date)) {
+    if (date) {
       setStartDate(date);
       setShowDatePicker(false);
     }
+  };
+
+  const handleSave = () => {
+    // Implement save logic here
+    router.back();
+  };
+
+  const handleDelete = () => {
+    // Implement delete logic here
+    router.back();
+  };
+
+  const handleStatusChange = () => {
+    setStatus(status === 'active' ? 'suspended' : 'active');
   };
 
   return (
@@ -77,18 +77,26 @@ const RegisterMedication = () => {
       <View className="flex-1 bg-[#D8F1F5]">
         {/* Header */}
         <View className="flex-row items-center p-4 bg-white shadow">
-          <Link href="/home" onPress={clearFormData} asChild>
+          <Link href="../list" asChild>
             <TouchableOpacity>
               <ArrowLeft size={24} color="#2F4858" />
             </TouchableOpacity>
           </Link>
-          <Text className="text-xl font-semibold ml-4 text-[#2F4858]">Cadastrar medicação</Text>
+          <Text className="text-xl font-semibold ml-4 text-[#2F4858]">Editar medicação</Text>
         </View>
 
         <ScrollView className="flex-1 p-4">
           <View className="items-center">
             <View className="mb-6 mt-6 w-full" style={{ maxWidth: cardWidth }}>
               <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
+                {/* Status Badge */}
+                <View className={`mb-4 self-start rounded-full px-3 py-1 ${status === 'active' ? 'bg-[#E4FFE8]' : 'bg-[#E5E5E5]'
+                  }`}>
+                  <Text className="text-[#2F4858]">
+                    {status === 'active' ? 'Ativo' : 'Suspenso'}
+                  </Text>
+                </View>
+
                 {/* Basic Data */}
                 <View className="mb-6">
                   <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Dados Básicos</Text>
@@ -223,15 +231,29 @@ const RegisterMedication = () => {
                   />
                 </View>
 
-                {/* Footer Buttons */}
-                <View className="flex-row gap-4">
-                  <Link href="/home" onPress={clearFormData} asChild>
-                    <TouchableOpacity className="flex-1 bg-[#B73E3E] p-4 rounded-lg items-center">
-                      <Text className="text-white font-semibold text-lg">Cancelar</Text>
-                    </TouchableOpacity>
-                  </Link>
-                  <TouchableOpacity className="flex-1 bg-[#75B7D1] p-4 rounded-lg items-center">
-                    <Text className="text-white font-semibold text-lg">Confirmar</Text>
+                {/* Action Buttons */}
+                <View className="space-y-3">
+                  <TouchableOpacity
+                    className="bg-[#75B7D1] p-4 rounded-lg items-center"
+                    onPress={handleSave}
+                  >
+                    <Text className="text-white font-semibold text-lg">Salvar alterações</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    className="bg-[#E5E5E5] p-4 rounded-lg items-center"
+                    onPress={handleStatusChange}
+                  >
+                    <Text className="text-[#2F4858] font-semibold text-lg">
+                      {status === 'active' ? 'Suspender medicação' : 'Reativar medicação'}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    className="bg-[#B73E3E] p-4 rounded-lg items-center"
+                    onPress={handleDelete}
+                  >
+                    <Text className="text-white font-semibold text-lg">Excluir medicação</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -243,4 +265,5 @@ const RegisterMedication = () => {
   );
 }
 
-export default RegisterMedication;
+export default EditMedication;
+
