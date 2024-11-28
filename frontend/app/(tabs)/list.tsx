@@ -7,6 +7,20 @@ import { Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 import MedicationStock from '@/components/MedicationStock';
 import AnimatedHeader from '../../components/Header';
 
+const MedicationCard = ({ name, color='#E5E5E5' }) => (
+  <View style={{ backgroundColor: color }} className="flex-row justify-between items-center p-4 rounded-lg mb-2">
+    <Text className="text-base text-[#2F4858]">{name}</Text>
+    <View className="flex-row gap-3">
+      <TouchableOpacity className="p-1">
+        <Edit2 size={20} color="#2F4858" />
+      </TouchableOpacity>
+      <TouchableOpacity className="p-1">
+        <Bell size={20} color="#2F4858" />
+      </TouchableOpacity>
+    </View>
+  </View>
+);
+
 const MedicationList = () => {
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
@@ -14,7 +28,7 @@ const MedicationList = () => {
   const { width } = useWindowDimensions();
   const cardWidth = Math.min(width - 32, 768); // 768px is equivalent to max-w-screen-md
   const scrollY = useRef(new Animated.Value(0)).current; // Gerencia o estado de scroll
-  
+
   return (
     <SafeAreaView className="flex-1 bg-[#D8F1F5]">
 
@@ -31,45 +45,15 @@ const MedicationList = () => {
         )}
         scrollEventThrottle={16} // Atualiza o evento a cada 16ms
       >
-      {/*<ScrollView className="flex-1 p-4">*/}
+        {/*<ScrollView className="flex-1 p-4">*/}
         <View className="items-center">
           {/* Active Medications */}
           <View className="mb-6 mt-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Medicações ativas</Text>
-              <View className="flex-row justify-between items-center p-4 rounded-lg mb-2 bg-[#FFE4E4]">
-                <Text className="text-base text-[#2F4858]">Zolpidem</Text>
-                <View className="flex-row gap-3">
-                  <TouchableOpacity className="p-1">
-                    <Edit2 size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                  <TouchableOpacity className="p-1">
-                    <Bell size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View className="flex-row justify-between items-center p-4 rounded-lg mb-2 bg-[#E4F2FF]">
-                <Text className="text-base text-[#2F4858]">Dipirona</Text>
-                <View className="flex-row gap-3">
-                  <TouchableOpacity className="p-1">
-                    <Edit2 size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                  <TouchableOpacity className="p-1">
-                    <Bell size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View className="flex-row justify-between items-center p-4 rounded-lg mb-2 bg-[#E4FFE8]">
-                <Text className="text-base text-[#2F4858]">Mirtazapina</Text>
-                <View className="flex-row gap-3">
-                  <TouchableOpacity className="p-1">
-                    <Edit2 size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                  <TouchableOpacity className="p-1">
-                    <Bell size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <MedicationCard name="Zolpiden" color="#FFE4E4" />
+              <MedicationCard name="Dipirona" color="#E4F2FF" />
+              <MedicationCard name="Mirtazapina" color="#E4FFE8" />
             </View>
           </View>
 
@@ -77,28 +61,8 @@ const MedicationList = () => {
           <View className="mb-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Medicações suspensas</Text>
-              <View className="flex-row justify-between items-center p-4 rounded-lg mb-2 bg-[#E5E5E5]">
-                <Text className="text-base text-[#2F4858]">Glifage</Text>
-                <View className="flex-row gap-3">
-                  <TouchableOpacity className="p-1">
-                    <Edit2 size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                  <TouchableOpacity className="p-1">
-                    <Bell size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View className="flex-row justify-between items-center p-4 rounded-lg mb-2 bg-[#E5E5E5]">
-                <Text className="text-base text-[#2F4858]">Buscopam</Text>
-                <View className="flex-row gap-3">
-                  <TouchableOpacity className="p-1">
-                    <Edit2 size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                  <TouchableOpacity className="p-1">
-                    <Bell size={20} color="#2F4858" />
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <MedicationCard name="Glifage"/>
+              <MedicationCard name="Buscopam"/>
             </View>
           </View>
 
@@ -106,11 +70,11 @@ const MedicationList = () => {
           <View className="mb-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Estoque de medicações</Text>
-                <MedicationStock />
+              <MedicationStock />
             </View>
           </View>
         </View>
-      {/*</ScrollView>*/}
+        {/*</ScrollView>*/}
       </Animated.ScrollView>
     </SafeAreaView>
   );
