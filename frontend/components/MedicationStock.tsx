@@ -1,68 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 
-// Componente responsável pelo Estoque de Medicamentos
-const MedicationStock = () => {
-  const [medicationStock, setMedicationStock] = useState<
-    { name: string; stock: number; frequency: number; startDate: string }[]
-  >([]);
-
-  // Função para buscar os dados de estoque de medicamentos da API
-  const fetchMedicationStock = async () => {
-    try {
-      // Substitua esta URL pela URL real da API
-      //const response = await fetch('https://api.exemplo.com/medication-stock');
-      //const data = await response.json();
-
-      // Exemplo de dados retornados da API
-      setMedicationStock([
-        { name: 'Dipirona', stock: 10, frequency: 48, startDate: '2024-11-16' },
-        { name: 'Paracetamol', stock: 20, frequency: 24, startDate: '2024-11-15' },
-      ]);
-    } catch (error) {
-      console.error('Erro ao buscar dados de estoque:', error);
-    }
+// Definição de tipo para as medicações
+interface Medicamento {
+  id: number;
+  medicamento: {
+    id: number;
+    nome: string;
+    laboratorio: string;
   };
+  dataInicial: string;
+  frequencia: string;
+  dosagem: number;
+}
 
+// Componente responsável pelo Estoque de Medicamentos
+const MedicationStock = ({ medications }: { medications: Medicamento[] }) => {
   // Função para calcular a duração estimada do estoque em dias
   const calculateStockDuration = (
-    stock: number,
-    frequency: number,
-    startDate: string
+    medication: Medicamento
   ) => {
-    const startDateTime = new Date(startDate).getTime();
-    const dosesPerDay = 24 / frequency;
-    const totalDoses = stock;
+    // Lógica de cálculo de estoque - IMPORTANTE: este é um placeholder
+    // Você precisará implementar a lógica real de contagem de comprimidos
+    const stockQuantity = 30; // Quantidade fixa para demonstração
+    const frequencyHours = parseFloat(medication.frequencia);
+    const dosesPerDay = 24 / frequencyHours;
+    const dosagePerUse = medication.dosagem;
+
+    const totalDoses = stockQuantity / dosagePerUse;
     const totalDays = totalDoses / dosesPerDay;
 
-    const endDate = new Date(startDateTime + totalDays * 24 * 60 * 60 * 1000);
-    return { totalDays: Math.floor(totalDays), endDate };
-  };
+    const startDate = new Date(medication.dataInicial);
+    const endDate = new Date(startDate.getTime() + totalDays * 24 * 60 * 60 * 1000);
 
-  useEffect(() => {
-    fetchMedicationStock();
-  }, []);
+    return { 
+      totalDays: Math.floor(totalDays), 
+      endDate, 
+      stockQuantity 
+    };
+  };
 
   return (
     <ScrollView className="flex-1 bg-[#D8F1F5] rounded-3xl px-4 py-2">
-      {medicationStock.map((medication, index) => {
-        const { totalDays, endDate } = calculateStockDuration(
-          medication.stock,
-          medication.frequency,
-          medication.startDate
-        );
+      {medications.map((medication, index) => {
+        const { totalDays, endDate, stockQuantity } = calculateStockDuration(medication);
 
         return (
-          <View key={index} className="bg-white rounded-2xl p-4 my-3 shadow-md">
+          <View key={medication.id} className="bg-white rounded-2xl p-4 my-3 shadow-md">
             <Text className="text-2xl font-bold text-[#36555E] mb-2">
-              {medication.name}
+              {medication.medicamento.nome.charAt(0).toUpperCase() + medication.medicamento.nome.slice(1)}
             </Text>
             <Text className="text-lg text-black mb-1">
-              Estoque atual: {medication.stock} unidades
+              Estoque atual: {stockQuantity} unidades
             </Text>
             <Text className="text-lg text-black">
               Estoque durará {totalDays} dias (até{' '}
               {endDate.toLocaleDateString('pt-BR')})
+            </Text>
+            <Text className="text-base text-gray-600 mt-1">
+              Laboratório: {medication.medicamento.laboratorio}
             </Text>
           </View>
         );
@@ -72,4 +68,3 @@ const MedicationStock = () => {
 }
 
 export default MedicationStock;
-

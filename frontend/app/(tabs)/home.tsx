@@ -1,11 +1,23 @@
 import MedicationSchedule from '@/components/MedicationSchedule';
-import React, { useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, useWindowDimensions, Animated } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, useWindowDimensions, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Menu, Bell, User, FileText, Plus } from 'lucide-react-native';
 import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
-import Header from '../../components/Header';
+import axios from 'axios';
 import AnimatedHeader from '../../components/Header';
+import { format, parseISO, isPast, isFuture } from 'date-fns';
+
+interface Medication {
+  id: number;
+  medicamento: {
+    id: number;
+    nome: string;
+    laboratorio: string;
+  };
+  dataInicial: string;
+  frequencia: string;
+  dosagem: number;
+}
 
 const MedicationCard = ({ name, dosage, time }) => (
   <View className="w-full flex-row justify-between items-center">
@@ -21,58 +33,77 @@ const MedicationCard = ({ name, dosage, time }) => (
   </View>
 );
 
-/*
-const Header = () => (
-  <View className="flex-row justify-between items-center px-4 py-3">
-    <TouchableOpacity>
-      <Menu size={24} color="#2D3648" />
-    </TouchableOpacity>
-    <Text className="text-[#2D3648] text-xl font-semibold">Remedius</Text>
-    <TouchableOpacity>
-      <Bell size={24} color="#2D3648" />
-    </TouchableOpacity>
-  </View>
-);
-*/
-
 const Home = () => {
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
   });
   const { width } = useWindowDimensions();
-  const cardWidth = Math.min(width - 32, 768); // 768px is equivalent to max-w-screen-md
-  const scrollY = useRef(new Animated.Value(0)).current; // Gerencia o estado de scroll
+  const cardWidth = Math.min(width - 32, 768);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  
+  const [nextMedication, setNextMedication] = useState<Medication | null>(null);
+
+  useEffect(() => {
+    fetchNextMedication();
+  }, []);
+
+  const fetchNextMedication = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/usuarios-medicamentos/1');
+      const medications: Medication[] = response.data;
+      
+      // Ordena as medicações por data e filtra as medicações passadas
+      const upcomingMedications = medications
+        .filter(med => {
+          const medDate = parseISO(med.dataInicial);
+          return isPast(medDate) || isFuture(medDate);
+        })
+        .sort((a, b) => new Date(a.dataInicial).getTime() - new Date(b.dataInicial).getTime());
+
+      if (upcomingMedications.length > 0) {
+        const nextMed = upcomingMedications[0];
+        setNextMedication(nextMed);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar próxima medicação:', error);
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-[#D8F1F5]">
-      {/* Header Animado */}
       <AnimatedHeader scrollY={scrollY} />
 
-      {/* Conteúdo com scroll detectável */}
       <Animated.ScrollView
         className="flex-1"
-        contentContainerStyle={{ paddingTop: 100 }} // Espaço para o header
+        contentContainerStyle={{ paddingTop: 100 }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true } // Usa animações nativas para desempenho
+          { useNativeDriver: true }
         )}
-        scrollEventThrottle={16} // Atualiza o evento a cada 16ms
+        scrollEventThrottle={16}
       >
-      {/*<ScrollView className="flex-1 px-4">*/}
         <View className="items-center">
-          {/* Seção para a próxima medicação */}
+          {/* Próxima medicação */}
           <View className="mb-6 mt-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
-              <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Próxima medicação</Text>
-              <MedicationCard 
-                name="ZOLPIDEM" 
-                dosage="1 comp." 
-                time="HOJE: 07:00" 
-              />
+              <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>
+                Próxima medicação
+              </Text>
+              {nextMedication ? (
+                <MedicationCard 
+                  name={nextMedication.medicamento.nome.toUpperCase()} 
+                  dosage={`${nextMedication.dosagem} comp.`} 
+                  time={`HOJE: ${format(parseISO(nextMedication.dataInicial), 'HH:mm')}`} 
+                />
+              ) : (
+                <Text className="text-[#2D3648] text-lg mt-4">
+                  Nenhuma medicação encontrada
+                </Text>
+              )}
             </View>
           </View>
 
-          {/* Seção para o cronograma de medicações */}
+          {/* Cronograma de medicações */}
           <View className="mb-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Cronograma</Text>
@@ -80,11 +111,9 @@ const Home = () => {
             </View>
           </View>
         </View>
-      {/*</ScrollView>*/}
       </Animated.ScrollView>
     </SafeAreaView>
   );
 }
 
 export default Home;
-

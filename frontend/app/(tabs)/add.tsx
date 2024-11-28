@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, useWindowDimensions, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, useWindowDimensions, Alert } from 'react-native';
 import { ArrowLeft } from 'lucide-react-native';
 import { useFonts } from 'expo-font';
 import { Katibeh_400Regular } from '@expo-google-fonts/katibeh';
@@ -7,9 +7,11 @@ import { Link } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { Provider as PaperProvider } from 'react-native-paper';
+import axios from 'axios';
 
 const RegisterMedication = () => {
   const [medicationName, setMedicationName] = useState('');
+  const [laboratoryName, setLaboratoryName] = useState('Default');
   const [dosage, setDosage] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [frequency, setFrequency] = useState('');
@@ -17,6 +19,7 @@ const RegisterMedication = () => {
   const [currentStock, setCurrentStock] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
@@ -32,14 +35,14 @@ const RegisterMedication = () => {
   };
 
   const frequencyOptions = [
-    { label: '1 em 1 hora', value: '1' },
-    { label: '2 em 2 horas', value: '2' },
-    { label: '4 em 4 horas', value: '4' },
-    { label: '6 em 6 horas', value: '6' },
-    { label: '8 em 8 horas', value: '8' },
-    { label: '12 em 12 horas', value: '12' },
-    { label: 'A cada 24 horas', value: '24' },
-    { label: 'A cada 48 horas', value: '48' },
+    { label: '1 em 1 hora', value: 1 },
+    { label: '2 em 2 horas', value: 2 },
+    { label: '4 em 4 horas', value: 4 },
+    { label: '6 em 6 horas', value: 6 },
+    { label: '8 em 8 horas', value: 8 },
+    { label: '12 em 12 horas', value: 12 },
+    { label: 'A cada 24 horas', value: 24 },
+    { label: 'A cada 48 horas', value: 48 },
   ];
 
   const timeOptions = Array.from({ length: 24 }, (_, i) => {
@@ -49,6 +52,7 @@ const RegisterMedication = () => {
 
   const clearFormData = () => {
     setMedicationName('');
+    setLaboratoryName('');
     setDosage('');
     setStartDate(new Date());
     setFrequency('');
@@ -57,15 +61,58 @@ const RegisterMedication = () => {
     setAdditionalInfo('');
   };
 
-  const onDateChange = ({ date }) => {
+  const onDateChange = ({ date }: { date: Date }) => {
     if (date && validateDate(date)) {
       setStartDate(date);
       setShowDatePicker(false);
     }
   };
 
+  const handleSubmit = async () => {
+    // Validação básica dos campos
+    if (!medicationName.trim() || !dosage.trim() || !frequency.trim() || !currentStock.trim()) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
+      console.log('Campos obrigatórios não preenchidos');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Primeiro, criar o medicamento
+      const createMedicamentoResponse = await axios.post('http://localhost:8080/medicamentos', {
+        nome: medicationName,
+        laboratorio: laboratoryName
+      });
+      const medicamentoId = createMedicamentoResponse.data.id; // Assumindo que a resposta retorna o ID do medicamento
+
+      // Formatar a data e o horário para o formato necessário
+      const formattedDate = `${startDate.toISOString().split('T')[0]}T${startTime}:00`;
+
+      // Adicionar a medicação ao usuário
+      await axios.post('http://localhost:8080/usuarios-medicamentos/1', {
+        medicamentoId: medicamentoId,
+        dataInicial: formattedDate,
+        frequencia: frequency,
+        dosagem: parseFloat(dosage),
+        quant_inicial: parseInt(currentStock || '0'),
+        duracao: 30, // Assumindo que a duração é de 30 dias
+        observacao: additionalInfo
+      });
+
+      // Limpar o formulário após o sucesso
+      clearFormData();
+      Alert.alert('Sucesso', 'Medicação cadastrada com sucesso!');
+      console.log('Medicação cadastrada com sucesso');
+    } catch (error) {
+      console.error('Erro ao cadastrar medicação:', error);
+      Alert.alert('Erro', 'Não foi possível cadastrar a medicação. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <PaperProvider>
       <View className="flex-1 bg-[#D8F1F5]">
         {/* Header */}
         <View className="flex-row items-center p-4 bg-white shadow">
@@ -90,6 +137,15 @@ const RegisterMedication = () => {
                     className="bg-[#F3F3F3] p-3 rounded-lg mb-4 text-lg text-[#2F4858]"
                     value={medicationName}
                     onChangeText={setMedicationName}
+                    placeholder="Nome do medicamento"
+                  />
+
+                  <Text className="text-lg mb-2 text-[#2F4858]">Laboratório</Text>
+                  <TextInput
+                    className="bg-[#F3F3F3] p-3 rounded-lg mb-4 text-lg text-[#2F4858]"
+                    value={laboratoryName}
+                    onChangeText={setLaboratoryName}
+                    placeholder="Nome do laboratório"
                   />
 
                   <Text className="text-lg mb-2 text-[#2F4858]">Dosagem</Text>
@@ -122,6 +178,7 @@ const RegisterMedication = () => {
                           {startDate.toLocaleDateString()}
                         </Text>
                       </TouchableOpacity>
+                      <PaperProvider>
                       <DatePickerModal
                         mode="single"
                         visible={showDatePicker}
@@ -138,6 +195,7 @@ const RegisterMedication = () => {
                         label="Selecione a data de início"
                         cancelLabel="Cancelar"
                       />
+                      </PaperProvider>
                     </View>
                   </View>
 
@@ -180,6 +238,7 @@ const RegisterMedication = () => {
                       value={currentStock}
                       onChangeText={setCurrentStock}
                       keyboardType="numeric"
+                      placeholder="Quantidade de comprimidos"
                     />
                     <View className="bg-[#F3F3F3] px-4 rounded-lg flex-row items-center justify-between min-w-[150px]">
                       <Text className="text-[#2F4858]">Comprimidos</Text>
@@ -204,8 +263,14 @@ const RegisterMedication = () => {
                       <Text className="text-white font-semibold text-lg">Cancelar</Text>
                     </TouchableOpacity>
                   </Link>
-                  <TouchableOpacity className="flex-1 bg-[#75B7D1] p-4 rounded-lg items-center">
-                    <Text className="text-white font-semibold text-lg">Confirmar</Text>
+                  <TouchableOpacity 
+                    className="flex-1 bg-[#75B7D1] p-4 rounded-lg items-center"
+                    onPress={handleSubmit}
+                    disabled={isLoading}
+                  >
+                    <Text className="text-white font-semibold text-lg">
+                      {isLoading ? 'Enviando...' : 'Confirmar'}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -213,7 +278,6 @@ const RegisterMedication = () => {
           </View>
         </ScrollView>
       </View>
-    </PaperProvider>
   );
 }
 
