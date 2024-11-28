@@ -1,6 +1,6 @@
 package com.remedius.remedius.entities;
 
-import java.time.LocalDateTime;
+//import java.time.String;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,18 +21,22 @@ public class UsuarioMedicamentoEntity {
     @JoinColumn(name = "medicacao_id", nullable = false)
     private MedicamentoEntity medicamento;
 
-    private LocalDateTime dataInicial;
+    private String dataInicial;
 
     private String frequencia;
 
-    private double dosagem;
+    private Double dosagem;
 
-    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, LocalDateTime dataInicial,
-            String frequencia) {
+    private Integer quantidadeInicialEstoque;
+
+    public UsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, String dataInicial,
+            String frequencia, Double dosagem, Integer quantidadeInicialEstoque) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.dataInicial = dataInicial;
         this.frequencia = frequencia;
+        this.dosagem = dosagem;
+        this.quantidadeInicialEstoque = quantidadeInicialEstoque;
     }
 
     public UsuarioMedicamentoEntity() {
@@ -51,7 +55,7 @@ public class UsuarioMedicamentoEntity {
         return medicamento;
     }
 
-    public LocalDateTime getDataInicial() {
+    public String getDataInicial() {
         return dataInicial;
     }
 
@@ -59,8 +63,12 @@ public class UsuarioMedicamentoEntity {
         return frequencia;
     }
 
-    public double getDosagem() {
+    public Double getDosagem() {
         return dosagem;
+    }
+
+    public Integer getQuantidadeInicialEstoque() {
+        return quantidadeInicialEstoque;
     }
 
     public void setUsuario(UsuarioEntity usuario) {
@@ -71,7 +79,7 @@ public class UsuarioMedicamentoEntity {
         this.medicamento = medicamento;
     }
 
-    public void setDataInicial(LocalDateTime dataInicial) {
+    public void setDataInicial(String dataInicial) {
         this.dataInicial = dataInicial;
     }
 
@@ -79,13 +87,18 @@ public class UsuarioMedicamentoEntity {
         this.frequencia = frequencia;
     }
 
-    public void setDosagem(double dosagem) {
+    public void setDosagem(Double dosagem) {
         this.dosagem = dosagem;
+    }
+
+    public void setQuantidadeInicialEstoque(Integer quantidadeInicialEstoque) {
+        this.quantidadeInicialEstoque = quantidadeInicialEstoque;
     }
 
     @Override
     public String toString() {
-        return "UsuarioMedicamentoEntity [dataInicial=" + dataInicial + ", frequencia=" + frequencia + ", id=" + id
-                + ", medicamento=" + medicamento + ", usuario=" + usuario + "]";
+        return "UsuarioMedicamentoEntity [dataInicial=" + dataInicial + ", dosagem=" + dosagem + ", frequencia="
+                + frequencia + ", id=" + id + ", medicamento=" + medicamento + ", quantidadeInicialEstoque="
+                + quantidadeInicialEstoque + ", usuario=" + usuario + "]";
     }
 }

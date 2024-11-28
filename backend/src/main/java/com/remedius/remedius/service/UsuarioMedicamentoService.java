@@ -6,10 +6,10 @@ import com.remedius.remedius.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+//import java.time.String;
 import java.util.List;
 
-//import java.time.LocalDateTime;
+//import java.time.String;
 
 @Service
 public class UsuarioMedicamentoService {
@@ -27,10 +27,10 @@ public class UsuarioMedicamentoService {
             MedicamentoRequest medicamentoRequest) {
 
         Long medicamentoId = medicamentoRequest.getMedicamentoId();
-        LocalDateTime dataInicial = medicamentoRequest.getDataInicial();
-                
+        String dataInicial = medicamentoRequest.getDataInicial();
         String frequencia = medicamentoRequest.getFrequencia();
         Double dosagem = medicamentoRequest.getDosagem();
+        Integer quantidadeInicialEstoque = medicamentoRequest.getQuantidadeInicialEstoque();
         
         UsuarioEntity usuario = usuarioService.getUsuarioById(usuarioId);
         MedicamentoEntity medicamento = medicamentoService.getMedicamentoById(medicamentoId);
@@ -41,6 +41,7 @@ public class UsuarioMedicamentoService {
         relacao.setDataInicial(dataInicial);
         relacao.setFrequencia(frequencia);
         relacao.setDosagem(dosagem);
+        relacao.setQuantidadeInicialEstoque(quantidadeInicialEstoque);
 
         usuario.getUsuarioMedicacacoes().add(relacao);
         return usuarioMedicamentoRepository.save(relacao);
