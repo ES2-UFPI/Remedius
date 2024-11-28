@@ -7,13 +7,15 @@ public class MedicamentoRequest {
     private Long medicamentoId;
     private LocalDateTime dataInicial;
     private String frequencia;
-    private double dosagem;
+    private Double dosagem;
+    private Integer quantidadeInicialEstoque;
 
-    public MedicamentoRequest(Long medicamentoId, LocalDateTime dataInicial, String frequencia, double dosagem) {
+    public MedicamentoRequest(Long medicamentoId, LocalDateTime dataInicial, String frequencia, Double dosagem, Integer quantidadeInicialEstoque) {
         this.medicamentoId = medicamentoId;
         this.dataInicial = dataInicial;
         this.frequencia = frequencia;
         this.dosagem = dosagem;
+        this.quantidadeInicialEstoque = quantidadeInicialEstoque;
     }
 
     public Long getMedicamentoId() {
@@ -32,6 +34,10 @@ public class MedicamentoRequest {
         return this.dosagem;
     }
 
+    public Integer getQuantidadeInicialEstoque() {
+        return this.quantidadeInicialEstoque;
+    }
+
     public void setDataInicial(LocalDateTime dataInicial) {
         this.dataInicial = dataInicial;
     }
@@ -42,6 +48,10 @@ public class MedicamentoRequest {
 
     public void setDosagem(double dosagem) {
         this.dosagem = dosagem;
+    }
+
+    public void setQuantidadeInicialEstoque(Integer quantidadeInicialEstoque) {
+        this.quantidadeInicialEstoque = quantidadeInicialEstoque;
     }
 
 }

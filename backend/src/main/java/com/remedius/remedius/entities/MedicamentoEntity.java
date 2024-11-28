@@ -23,6 +23,10 @@ public class MedicamentoEntity {
     @NonNull
     private String laboratorio;
 
+    @Column(name = "cor")
+    @NonNull
+    private String cor;
+
     @OneToMany(mappedBy = "medicamento", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UsuarioMedicamentoEntity> usuarioMedicacoes = new HashSet<>();
 
@@ -30,7 +34,6 @@ public class MedicamentoEntity {
         this.nome = nome;
         this.laboratorio = laboratorio;
     }
-
 
 
     public MedicamentoEntity(){
@@ -48,6 +51,10 @@ public class MedicamentoEntity {
         return laboratorio;
     }
 
+    public String getCor() {
+        return cor;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -56,14 +63,17 @@ public class MedicamentoEntity {
         this.nome = nome;
     }
 
-
     public void setLaboratorio(String laboratorio) {
         this.laboratorio = laboratorio;
     }
 
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+
     @Override
     public String toString() {
-        return "MedicamentoModel , laboratorio=" + laboratorio + ", nome=" + nome
+        return "MedicamentoModel , laboratorio=" + laboratorio + ", nome=" + nome + ", cor" + cor
                 + "]";
     }
 }

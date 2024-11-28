@@ -24,7 +24,7 @@ public class EstoqueUsuarioMedicamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> getEstoqueById(@PathVariable int id) {
+    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> getEstoqueById(@PathVariable Long id) {
         Optional<EstoqueUsuarioMedicamentoEntity> Estoque = EstoqueService.getEstoqueById(id);
         return Estoque.map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
@@ -38,14 +38,14 @@ public class EstoqueUsuarioMedicamentoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EstoqueUsuarioMedicamentoEntity> updateEstoque(
-            @PathVariable int id, @RequestBody EstoqueUsuarioMedicamentoEntity updatedEstoque) {
+            @PathVariable Long id, @RequestBody EstoqueUsuarioMedicamentoEntity updatedEstoque) {
         Optional<EstoqueUsuarioMedicamentoEntity> Estoque = EstoqueService.updateEstoque(id, updatedEstoque);
         return Estoque.map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEstoque(@PathVariable int id) {
+    public ResponseEntity<Void> deleteEstoque(@PathVariable Long id) {
         boolean deleted = EstoqueService.deleteEstoque(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }

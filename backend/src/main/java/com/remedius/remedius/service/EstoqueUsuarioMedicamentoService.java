@@ -21,7 +21,7 @@ public class EstoqueUsuarioMedicamentoService {
     }
 
     // Find Estoque by ID
-    public Optional<EstoqueUsuarioMedicamentoEntity> getEstoqueById(int id) {
+    public Optional<EstoqueUsuarioMedicamentoEntity> getEstoqueById(Long id) {
         return EstoqueRepository.findById(id);
     }
 
@@ -31,7 +31,7 @@ public class EstoqueUsuarioMedicamentoService {
     }
 
     // Update an existing Estoque record
-    public Optional<EstoqueUsuarioMedicamentoEntity> updateEstoque(int id, EstoqueUsuarioMedicamentoEntity updatedEstoque) {
+    public Optional<EstoqueUsuarioMedicamentoEntity> updateEstoque(Long id, EstoqueUsuarioMedicamentoEntity updatedEstoque) {
         return EstoqueRepository.findById(id).map(Estoque -> {
             Estoque.setQuantidade(updatedEstoque.getQuantidade());
             Estoque.setUltimaCompra(updatedEstoque.getUltimaCompra());
@@ -41,7 +41,7 @@ public class EstoqueUsuarioMedicamentoService {
     }
 
     // Delete a Estoque record
-    public boolean deleteEstoque(int id) {
+    public boolean deleteEstoque(Long id) {
         if (EstoqueRepository.existsById(id)) {
             EstoqueRepository.deleteById(id);
             return true;

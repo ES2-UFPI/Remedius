@@ -11,7 +11,7 @@ public class EstoqueUsuarioMedicamentoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -43,7 +43,7 @@ public class EstoqueUsuarioMedicamentoEntity {
         this.status = status;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
