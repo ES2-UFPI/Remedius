@@ -48,7 +48,7 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="home"
           options={{
-            title: 'home',
+            title: 'Home Page',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="home-outline" color={color} size={size} />
             )
@@ -56,7 +56,7 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="list"
           options={{
-            title: 'list',
+            title: 'Minhas Medicações',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="list-outline" color={color} size={size} />
             )
@@ -64,15 +64,15 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="add"
           options={{
-            title: 'add',
+            title: 'Adicionar Medicação',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="add" color={color} size={size} />
             )
           }} />
         <Tabs.Screen
-          name="placeholder"
+          name="inventory"
           options={{
-            title: 'placeholder',
+            title: 'Estoque de Medicações',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="document-text-outline" color={color} size={size} />
             )
@@ -80,7 +80,7 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="profile"
           options={{
-            title: 'profile',
+            title: 'Meu Perfil',
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="person-outline" color={color} size={size} />
             )
