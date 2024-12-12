@@ -18,4 +18,8 @@ public interface UsuarioMedicamentoRepository extends JpaRepository<UsuarioMedic
     // Busca todas as instâncias de relacionamento para um medicamento específico pelo ID do medicamento
     @Query("SELECT um FROM UsuarioMedicamentoEntity um WHERE um.medicamento.id = :medicamentoId")
     List<UsuarioMedicamentoEntity> findByMedicamentoId(@Param("medicamentoId") Integer medicamentoId);
+
+    // Busca uma instância de relacionamento pelo ID do usuário e ID do medicamento
+    @Query("SELECT um FROM UsuarioMedicamentoEntity um WHERE um.usuario.id = :usuarioId AND um.medicamento.id = :medicamentoId")
+    UsuarioMedicamentoEntity findByUsuarioMedicamentoId(@Param("usuarioId") Integer usuarioId, @Param("medicamentoId") Long medicamentoId);
 }

@@ -37,12 +37,21 @@ public class UsuarioMedicamentoController {
      * @param frequencia  Frequência da medicação.
      * @return A relação criada entre o usuário e a medicação.
      */
+
     @PostMapping("/{usuarioId}")
     public UsuarioMedicamentoEntity addMedicationToUser(
             @PathVariable Integer usuarioId,
             @RequestBody MedicamentoRequest medicamentoRequest) {
 
-        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario( usuarioId,medicamentoRequest);
+        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(usuarioId,medicamentoRequest);
+        return relacao;
+    }
+
+    @PutMapping("/{usuarioMedicacaoId}")
+    public UsuarioMedicamentoEntity updateMedication(
+            @PathVariable Integer usuarioMedicacaoId,
+            @RequestBody MedicamentoRequest medicamentoRequest) {
+        UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.atualizarMedicamentoDoUsuario(usuarioMedicacaoId, medicamentoRequest);
         return relacao;
     }
 
@@ -53,7 +62,7 @@ public class UsuarioMedicamentoController {
      * @return Sem conteúdo ao remover com sucesso.
      */
     @DeleteMapping("/{usuarioMedicacaoId}")
-    public ResponseEntity<Void> removerMedicamentoDoUsuario(@PathVariable Integer usuarioMedicacaoId) {
+    public ResponseEntity<Void> removeMedicationToUser(@PathVariable Integer usuarioMedicacaoId) {
         usuarioMedicamentoService.removerMedicamentoDoUsuario(usuarioMedicacaoId);
         return ResponseEntity.noContent().build();
     }
