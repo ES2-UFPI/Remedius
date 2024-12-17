@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface EstoqueUsuarioMedicamentoRepository extends JpaRepository<EstoqueUsuarioMedicamentoEntity, Long> {
@@ -23,6 +22,4 @@ public interface EstoqueUsuarioMedicamentoRepository extends JpaRepository<Estoq
     @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.quantidade >= :minQuantidade")
     List<EstoqueUsuarioMedicamentoEntity> findByMinQuantidade(@Param("minQuantidade") int minQuantidade);
 
-    // Buscar Estoque pelo ID
-    Optional<EstoqueUsuarioMedicamentoEntity> findById(Long id);
 }

@@ -58,17 +58,20 @@ public class UsuarioMedicamentoService {
     public UsuarioMedicamentoEntity atualizarMedicamentoDoUsuario(Integer usuarioMedicamentoId,
             MedicamentoRequest medicamentoRequest) {
         UsuarioMedicamentoEntity relacao = usuarioMedicamentoRepository.findById(usuarioMedicamentoId).get();
-        Long medicamentoId = medicamentoRequest.getMedicamentoId();
-        String dataInicial = medicamentoRequest.getDataInicial();
-        String frequencia = medicamentoRequest.getFrequencia();
-        Double dosagem = medicamentoRequest.getDosagem();
-        MedicamentoEntity medicamento = medicamentoService.getMedicamentoById(medicamentoId);
 
-        relacao.setMedicamento(medicamento);
-        relacao.setDataInicial(dataInicial);
-        relacao.setFrequencia(frequencia);
-        relacao.setDosagem(dosagem);
-
+        if (medicamentoRequest.getDataInicial() != null) {
+            relacao.setDataInicial(medicamentoRequest.getDataInicial());
+        }
+        if (medicamentoRequest.getFrequencia() != null) {
+            relacao.setFrequencia(medicamentoRequest.getFrequencia());
+        }
+        if (medicamentoRequest.getDosagem() != null) {
+            relacao.setDosagem(medicamentoRequest.getDosagem());
+        }
+        if (medicamentoRequest.getQuantidadeInicialEstoque() != null) {
+            relacao.setQuantidadeInicialEstoque(medicamentoRequest.getQuantidadeInicialEstoque());
+        }
+        
         return usuarioMedicamentoRepository.save(relacao);
     }
 }

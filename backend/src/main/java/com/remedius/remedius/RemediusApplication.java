@@ -9,5 +9,4 @@ public class RemediusApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RemediusApplication.class, args);
 	}
-
 }
