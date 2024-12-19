@@ -30,7 +30,7 @@ public class MedicamentoRequest {
         return this.frequencia;
     }
 
-    public double getDosagem() {
+    public Double getDosagem() {
         return this.dosagem;
     }
 
