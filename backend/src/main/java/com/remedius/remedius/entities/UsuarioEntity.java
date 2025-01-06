@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true)
     private String nome;
@@ -43,7 +43,7 @@ public class UsuarioEntity {
         this.senha = senha;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -69,6 +69,10 @@ public class UsuarioEntity {
 
     public LocalDate getDataNascimento() {
         return dataNascimento;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setNome(String nome) {
