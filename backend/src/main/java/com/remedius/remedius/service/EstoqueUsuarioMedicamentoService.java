@@ -1,5 +1,6 @@
 package com.remedius.remedius.service;
 
+import com.remedius.remedius.DTOs.EstoqueUsuarioMedicamentoRequest;
 import com.remedius.remedius.entities.*;
 import com.remedius.remedius.repository.*;
 
@@ -15,37 +16,64 @@ public class EstoqueUsuarioMedicamentoService {
     @Autowired
     private EstoqueUsuarioMedicamentoRepository EstoqueRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private MedicamentoRepository medicamentoRepository;
+
     // List all Estoque records
     public List<EstoqueUsuarioMedicamentoEntity> getAllEstoques() {
         return EstoqueRepository.findAll();
     }
 
     // Find Estoque by ID
-    public Optional<EstoqueUsuarioMedicamentoEntity> getEstoqueById(Long id) {
-        return EstoqueRepository.findById(id);
+    public List<EstoqueUsuarioMedicamentoEntity> getEstoqueByUserId(Long id) {
+        return EstoqueRepository.findByUserId(id);
     }
 
-    // Create a new Estoque record
-    public EstoqueUsuarioMedicamentoEntity createEstoque(EstoqueUsuarioMedicamentoEntity Estoque) {
-        return EstoqueRepository.save(Estoque);
-    }
+    // // Create a new Estoque record
+    // public EstoqueUsuarioMedicamentoEntity createEstoque(EstoqueUsuarioMedicamentoEntity Estoque) {
+    //     return EstoqueRepository.save(Estoque);
+    // }
 
     // Update an existing Estoque record
-    public Optional<EstoqueUsuarioMedicamentoEntity> updateEstoque(Long id, EstoqueUsuarioMedicamentoEntity updatedEstoque) {
-        return EstoqueRepository.findById(id).map(Estoque -> {
-            Estoque.setQuantidade(updatedEstoque.getQuantidade());
-            Estoque.setUltimaCompra(updatedEstoque.getUltimaCompra());
-            Estoque.setStatus(updatedEstoque.getStatus());
-            return EstoqueRepository.save(Estoque);
-        });
+    public EstoqueUsuarioMedicamentoEntity updateEstoqueByUserMedicationId(EstoqueUsuarioMedicamentoRequest updatedEstoqueRequest) {
+    EstoqueUsuarioMedicamentoEntity estoqueExistente = EstoqueRepository.findByUserMedicationId(updatedEstoqueRequest.getUsuarioId(), updatedEstoqueRequest.getMedicamentoId());
+    EstoqueUsuarioMedicamentoEntity updatedEstoque = new EstoqueUsuarioMedicamentoEntity();
+
+    if (estoqueExistente == null) {
+        // Validar a existência de UsuarioEntity e MedicamentoEntity
+        Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findById(updatedEstoqueRequest.getUsuarioId());
+        Optional<MedicamentoEntity> medicamentoOptional = medicamentoRepository.findById(updatedEstoqueRequest.getMedicamentoId());
+
+        if (usuarioOptional.isPresent() && medicamentoOptional.isPresent()) {
+            updatedEstoque.setUsuario(usuarioOptional.get());
+            updatedEstoque.setMedicamento(medicamentoOptional.get());
+            // Atualizar os campos do estoque existente
+            updatedEstoque.setQuantidade(updatedEstoqueRequest.getQuantidade());
+            updatedEstoque.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
+            updatedEstoque.setStatus(updatedEstoqueRequest.getStatus());
+            return EstoqueRepository.save(updatedEstoque);
+        } else {
+            throw new IllegalArgumentException("Usuario or Medicamento does not exist");
+        }
     }
 
-    // Delete a Estoque record
-    public boolean deleteEstoque(Long id) {
-        if (EstoqueRepository.existsById(id)) {
-            EstoqueRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
+    // Atualizar os campos do estoque existente
+    estoqueExistente.setQuantidade(updatedEstoqueRequest.getQuantidade());
+    estoqueExistente.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
+    estoqueExistente.setStatus(updatedEstoqueRequest.getStatus());
+
+    return EstoqueRepository.save(estoqueExistente);
+}
+
+    // // Delete a Estoque record
+    // public boolean deleteEstoque(Long id) {
+    //     if (EstoqueRepository.existsById(id)) {
+    //         EstoqueRepository.deleteById(id);
+    //         return true;
+    //     }
+    //     return false;
+    // }
 }

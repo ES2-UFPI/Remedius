@@ -13,7 +13,7 @@ public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Integer>
 
     // Busca um usuário pelo id (usado em getUsuarioById)
     @Query("SELECT u FROM UsuarioEntity u WHERE u.id = :id")
-    Optional<UsuarioEntity> findById(@Param("id") int id);
+    Optional<UsuarioEntity> findById(@Param("id") Long id);
 
     // Busca um usuário pelo e-mail
     @Query("SELECT u FROM UsuarioEntity u WHERE u.email = :email")

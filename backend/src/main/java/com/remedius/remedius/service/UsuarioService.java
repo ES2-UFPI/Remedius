@@ -27,7 +27,7 @@ public class UsuarioService {
     }
 
     // GET: Retorna um usuário pelo ID
-    public UsuarioEntity getUsuarioById(Integer id) {
+    public UsuarioEntity getUsuarioById(Long id) {
         Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
         return usuario.orElse(null);
     }
