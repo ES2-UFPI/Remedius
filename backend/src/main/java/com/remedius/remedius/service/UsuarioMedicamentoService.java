@@ -23,7 +23,7 @@ public class UsuarioMedicamentoService {
     @Autowired
     private MedicamentoService medicamentoService;
 
-    public UsuarioMedicamentoEntity adicionarMedicamentoAoUsuario(Integer usuarioId,
+    public UsuarioMedicamentoEntity adicionarMedicamentoAoUsuario(Long usuarioId,
             MedicamentoRequest medicamentoRequest) {
 
         Long medicamentoId = medicamentoRequest.getMedicamentoId();

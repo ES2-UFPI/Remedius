@@ -40,7 +40,7 @@ public class UsuarioMedicamentoController {
 
     @PostMapping("/{usuarioId}")
     public UsuarioMedicamentoEntity addMedicationToUser(
-            @PathVariable Integer usuarioId,
+            @PathVariable Long usuarioId,
             @RequestBody MedicamentoRequest medicamentoRequest) {
 
         UsuarioMedicamentoEntity relacao = usuarioMedicamentoService.adicionarMedicamentoAoUsuario( usuarioId,medicamentoRequest);

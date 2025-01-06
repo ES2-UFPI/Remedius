@@ -12,14 +12,19 @@ import java.util.List;
 public interface EstoqueUsuarioMedicamentoRepository extends JpaRepository<EstoqueUsuarioMedicamentoEntity, Long> {
 
     // Buscar Estoques pelo ID do usuário
-    List<EstoqueUsuarioMedicamentoEntity> findByUsuarioId(Long usuarioId);
+    @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.usuario.id = :usuarioId")
+    List<EstoqueUsuarioMedicamentoEntity> findByUserId(@Param("usuarioId") Long usuarioId);
 
-    // Consulta customizada para buscar estoques por status
-    @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.status = :status")
-    List<EstoqueUsuarioMedicamentoEntity> findByStatus(@Param("status") String status);
+    // Buscar Estoques pelo ID do medicamento
+    @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.medicamento.id = :medicamentoId")
+    EstoqueUsuarioMedicamentoEntity findByMedicationId(@Param("medicamentoId") Long medicamentoId);
 
-    // Consulta customizada para buscar estoques por quantidade mínima
-    @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.quantidade >= :minQuantidade")
-    List<EstoqueUsuarioMedicamentoEntity> findByMinQuantidade(@Param("minQuantidade") int minQuantidade);
+    // // Consulta customizada para buscar estoques por status
+    // @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.status = :status")
+    // List<EstoqueUsuarioMedicamentoEntity> findByStatus(@Param("status") String status);
+
+    // // Consulta customizada para buscar estoques por quantidade mínima
+    // @Query("SELECT e FROM EstoqueUsuarioMedicamentoEntity e WHERE e.quantidade >= :minQuantidade")
+    // List<EstoqueUsuarioMedicamentoEntity> findByMinQuantidade(@Param("minQuantidade") int minQuantidade);
 
 }
