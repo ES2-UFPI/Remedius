@@ -18,6 +18,9 @@ public class MedicamentoRequest {
         this.quantidadeInicialEstoque = quantidadeInicialEstoque;
     }
 
+    public MedicamentoRequest() {
+    }
+
     public Long getMedicamentoId() {
         return this.medicamentoId;
     }
@@ -36,6 +39,10 @@ public class MedicamentoRequest {
 
     public Integer getQuantidadeInicialEstoque() {
         return this.quantidadeInicialEstoque;
+    }
+
+    public void setMedicamentoId(Long medicamentoId) {
+        this.medicamentoId = medicamentoId;
     }
 
     public void setDataInicial(String dataInicial) {
