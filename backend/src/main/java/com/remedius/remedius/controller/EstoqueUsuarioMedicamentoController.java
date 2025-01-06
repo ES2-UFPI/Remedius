@@ -49,4 +49,10 @@ public class EstoqueUsuarioMedicamentoController {
     //     boolean deleted = EstoqueService.deleteEstoque(id);
     //     return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     // }
+
+    @GetMapping("/duracao/{usuarioId}/{medicamentoId}")
+    public ResponseEntity<Integer> calcularDuracaoEstoque(@PathVariable Long usuarioId, @PathVariable Long medicamentoId) {
+        int duracao = EstoqueService.calcularDuracaoEstoque(usuarioId, medicamentoId);
+        return ResponseEntity.ok(duracao);
+    }
 }
