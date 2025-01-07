@@ -67,6 +67,10 @@ public class EstoqueUsuarioMedicamentoEntity {
         return status;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
