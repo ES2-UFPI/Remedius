@@ -54,4 +54,24 @@ public class UsuarioMedicamentoService {
     public List<UsuarioMedicamentoEntity> buscarMedicamentosDoUsuario(Integer usuarioId) {
         return usuarioMedicamentoRepository.findByUsuarioId(usuarioId);
     }
+
+    public UsuarioMedicamentoEntity atualizarMedicamentoDoUsuario(Integer usuarioMedicamentoId,
+            MedicamentoRequest medicamentoRequest) {
+        UsuarioMedicamentoEntity relacao = usuarioMedicamentoRepository.findById(usuarioMedicamentoId).get();
+
+        if (medicamentoRequest.getDataInicial() != null) {
+            relacao.setDataInicial(medicamentoRequest.getDataInicial());
+        }
+        if (medicamentoRequest.getFrequencia() != null) {
+            relacao.setFrequencia(medicamentoRequest.getFrequencia());
+        }
+        if (medicamentoRequest.getDosagem() != null) {
+            relacao.setDosagem(medicamentoRequest.getDosagem());
+        }
+        if (medicamentoRequest.getQuantidadeInicialEstoque() != null) {
+            relacao.setQuantidadeInicialEstoque(medicamentoRequest.getQuantidadeInicialEstoque());
+        }
+        
+        return usuarioMedicamentoRepository.save(relacao);
+    }
 }

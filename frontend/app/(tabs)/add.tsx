@@ -27,11 +27,26 @@ const RegisterMedication = () => {
   const { width } = useWindowDimensions();
   const cardWidth = Math.min(width - 32, 768);
 
-  // Function to check if a date is valid (not in the past)
+  // função para checar se uma data é válida e não está no passado
   const validateDate = (date: Date) => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
+    today.setHours(0, 0, 0, 0); // resete o tempo para comparar apenas a data
     return date >= today;
+  };
+
+  const validateTime = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60;
+  };
+
+  const validateDosage = (dosage: string) => {
+    const dosageValue = parseFloat(dosage);
+    return dosageValue > 0 && dosageValue <= 100; // Exemplo de intervalo razoável
+  };
+
+  const validateStock = (stock: string) => {
+    const stockValue = parseInt(stock, 10);
+    return stockValue >= 0;
   };
 
   const frequencyOptions = [
@@ -73,6 +88,27 @@ const RegisterMedication = () => {
     if (!medicationName.trim() || !dosage.trim() || !frequency.trim() || !currentStock.trim()) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
       console.log('Campos obrigatórios não preenchidos');
+      return;
+    }
+
+    // Validação de horário
+    if (!validateTime(startTime)) {
+      Alert.alert('Erro', 'Por favor, insira um horário válido.');
+      console.log('Horário inválido');
+      return;
+    }
+
+    // Validação de dosagem
+    if (!validateDosage(dosage)) {
+      Alert.alert('Erro', 'Por favor, insira uma dosagem válida.');
+      console.log('Dosagem inválida');
+      return;
+    }
+
+    // Validação de estoque atual
+    if (!validateStock(currentStock)) {
+      Alert.alert('Erro', 'Por favor, insira uma quantidade de estoque válida.');
+      console.log('Estoque inválido');
       return;
     }
 
