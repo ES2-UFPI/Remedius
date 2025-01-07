@@ -9,6 +9,7 @@ public class EstoqueUsuarioMedicamentoRequest {
     private int quantidade;
     private LocalDateTime ultimaCompra;
     private String status;
+    private int duracao_estimada;
 
     public EstoqueUsuarioMedicamentoRequest() {
     }
@@ -19,6 +20,7 @@ public class EstoqueUsuarioMedicamentoRequest {
         this.quantidade = quantidade;
         this.ultimaCompra = ultimaCompra;
         this.status = status;
+        this.duracao_estimada = 0;
     }
 
     public Long getUsuarioId() {
@@ -59,5 +61,13 @@ public class EstoqueUsuarioMedicamentoRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getDuracao_estimada() {
+        return duracao_estimada;
+    }
+
+    public void setDuracao_estimada(int duracao_estimada) {
+        this.duracao_estimada = duracao_estimada;
     }
 }

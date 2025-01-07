@@ -32,7 +32,12 @@ public class EstoqueUsuarioMedicamentoService {
 
     // Find Estoque by ID
     public List<EstoqueUsuarioMedicamentoEntity> getEstoqueByUserId(Long id) {
-        return estoqueRepository.findByUserId(id);
+        List<EstoqueUsuarioMedicamentoEntity> lista_estoquesRepository = estoqueRepository.findByUserId(id);
+        for (EstoqueUsuarioMedicamentoEntity estoque : lista_estoquesRepository) {
+            int duracaoEstimada = calcularDuracaoEstoque(estoque.getUsuario().getId(), estoque.getMedicamento().getId());
+            estoque.setDuracao_estimada(duracaoEstimada);
+        }
+        return lista_estoquesRepository;
     }
 
     // // Create a new Estoque record
@@ -57,6 +62,7 @@ public class EstoqueUsuarioMedicamentoService {
                 updatedEstoque.setQuantidade(updatedEstoqueRequest.getQuantidade());
                 updatedEstoque.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
                 updatedEstoque.setStatus(updatedEstoqueRequest.getStatus());
+                updatedEstoque.setDuracao_estimada(calcularDuracaoEstoque(updatedEstoqueRequest.getUsuarioId(), updatedEstoqueRequest.getMedicamentoId()));
                 return estoqueRepository.save(updatedEstoque);
             } else {
                 throw new IllegalArgumentException("Usuario or Medicamento does not exist");
@@ -67,6 +73,7 @@ public class EstoqueUsuarioMedicamentoService {
         estoqueExistente.setQuantidade(updatedEstoqueRequest.getQuantidade());
         estoqueExistente.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
         estoqueExistente.setStatus(updatedEstoqueRequest.getStatus());
+        estoqueExistente.setDuracao_estimada(updatedEstoqueRequest.getDuracao_estimada());
 
         return estoqueRepository.save(estoqueExistente);
     }
@@ -105,15 +112,19 @@ public class EstoqueUsuarioMedicamentoService {
         // Calcular consumo diário
         double consumoDiario = dosagem * dosesPorDia;
 
+        System.out.println("Consumo diário: " + consumoDiario);
+        System.out.println("Quantidade: " + quantidade);
+
         // Calcular duração do estoque
-        return (int) Math.floor(quantidade / consumoDiario);
+        return ((int) Math.floor(quantidade / consumoDiario))+1;
     }
 
     private int calcularDosesPorDia(String frequencia) {
         if (frequencia.endsWith("h")) {
-            int horas = Integer.parseInt(frequencia.replace("h", ""));
+            int horas = Integer.parseInt(frequencia.replace(".0h", ""));
             return 24 / horas;
         }
-        throw new IllegalArgumentException("Frequência inválida: " + frequencia);
+        int horas = Integer.parseInt(frequencia.replace(".0", ""));
+        return 24 / horas;
     }
 }
