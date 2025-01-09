@@ -35,18 +35,40 @@ public class EstoqueUsuarioMedicamentoService {
         List<EstoqueUsuarioMedicamentoEntity> lista_estoquesRepository = estoqueRepository.findByUserId(id);
         for (EstoqueUsuarioMedicamentoEntity estoque : lista_estoquesRepository) {
             int duracaoEstimada = calcularDuracaoEstoque(estoque.getUsuario().getId(), estoque.getMedicamento().getId());
-            estoque.setDuracao_estimada(duracaoEstimada);
+            estoque.setDuracaoEstimada(duracaoEstimada);
         }
         return lista_estoquesRepository;
     }
 
-    // // Create a new Estoque record
-    // public EstoqueUsuarioMedicamentoEntity createEstoque(EstoqueUsuarioMedicamentoEntity Estoque) {
-    //     return EstoqueRepository.save(Estoque);
-    // }
+    // Get estoque by ID
+    public Optional<EstoqueUsuarioMedicamentoEntity> getEstoqueById(Long id) {
+        return estoqueRepository.findById(id);
+    }
+
+    // Create Estoque
+    public EstoqueUsuarioMedicamentoEntity createEstoque(EstoqueUsuarioMedicamentoRequest estoqueRequest) {
+        EstoqueUsuarioMedicamentoEntity estoque = new EstoqueUsuarioMedicamentoEntity();
+
+        // Validar a existência de UsuarioEntity e MedicamentoEntity
+        Optional<UsuarioEntity> usuarioOptional = usuarioRepository.findById(estoqueRequest.getUsuarioId());
+        Optional<MedicamentoEntity> medicamentoOptional = medicamentoRepository.findById(estoqueRequest.getMedicamentoId());
+
+        if (usuarioOptional.isPresent() && medicamentoOptional.isPresent()) {
+            estoque.setUsuario(usuarioOptional.get());
+            estoque.setMedicamento(medicamentoOptional.get());
+            estoque.setQuantidade(estoqueRequest.getQuantidade());
+            estoque.setUltimaCompra(estoqueRequest.getUltimaCompra());
+            estoque.setStatus(estoqueRequest.getStatus());
+            estoque.setDuracaoEstimada(calcularDuracaoEstoque(estoqueRequest.getUsuarioId(), estoqueRequest.getMedicamentoId()));
+            return estoqueRepository.save(estoque);
+        } else {
+            throw new IllegalArgumentException("Usuario or Medicamento does not exist");
+        }
+    }
+
 
     // Update an existing Estoque record
-    public EstoqueUsuarioMedicamentoEntity updateEstoqueByUserMedicationId(EstoqueUsuarioMedicamentoRequest updatedEstoqueRequest) {
+    public Optional<EstoqueUsuarioMedicamentoEntity> updateEstoqueByUserMedicationId(EstoqueUsuarioMedicamentoRequest updatedEstoqueRequest) {
         EstoqueUsuarioMedicamentoEntity estoqueExistente = estoqueRepository.findByUserMedicationId(updatedEstoqueRequest.getUsuarioId(), updatedEstoqueRequest.getMedicamentoId());
         EstoqueUsuarioMedicamentoEntity updatedEstoque = new EstoqueUsuarioMedicamentoEntity();
 
@@ -62,8 +84,8 @@ public class EstoqueUsuarioMedicamentoService {
                 updatedEstoque.setQuantidade(updatedEstoqueRequest.getQuantidade());
                 updatedEstoque.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
                 updatedEstoque.setStatus(updatedEstoqueRequest.getStatus());
-                updatedEstoque.setDuracao_estimada(calcularDuracaoEstoque(updatedEstoqueRequest.getUsuarioId(), updatedEstoqueRequest.getMedicamentoId()));
-                return estoqueRepository.save(updatedEstoque);
+                updatedEstoque.setDuracaoEstimada(calcularDuracaoEstoque(updatedEstoqueRequest.getUsuarioId(), updatedEstoqueRequest.getMedicamentoId()));
+                return Optional.of(estoqueRepository.save(updatedEstoque));
             } else {
                 throw new IllegalArgumentException("Usuario or Medicamento does not exist");
             }
@@ -73,19 +95,20 @@ public class EstoqueUsuarioMedicamentoService {
         estoqueExistente.setQuantidade(updatedEstoqueRequest.getQuantidade());
         estoqueExistente.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
         estoqueExistente.setStatus(updatedEstoqueRequest.getStatus());
-        estoqueExistente.setDuracao_estimada(updatedEstoqueRequest.getDuracao_estimada());
+        estoqueExistente.setDuracaoEstimada(updatedEstoqueRequest.getDuracao_estimada());
 
-        return estoqueRepository.save(estoqueExistente);
+        return Optional.of(estoqueRepository.save(updatedEstoque));
     }
 
-    // // Delete a Estoque record
-    // public boolean deleteEstoque(Long id) {
-    //     if (EstoqueRepository.existsById(id)) {
-    //         EstoqueRepository.deleteById(id);
-    //         return true;
-    //     }
-    //     return false;
-    // }
+    // Delete Estoque by ID
+    public boolean deleteEstoqueById(Long id) {
+        if (estoqueRepository.existsById(id)) {
+            estoqueRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 
     // Calcular duração estimada do estoque
     public int calcularDuracaoEstoque(Long usuarioId, Long medicamentoId) {

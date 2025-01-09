@@ -28,7 +28,7 @@ public class EstoqueUsuarioMedicamentoEntity {
 
     @Column(name = "quantidade", nullable = false)
     @NonNull
-    private int quantidade;
+    private Integer quantidade;
 
     @Column(name = "ultima_compra", nullable = false)
     private LocalDateTime ultimaCompra;
@@ -39,18 +39,18 @@ public class EstoqueUsuarioMedicamentoEntity {
 
     @Column(name = "duracao_estimada", nullable = false)
     @NonNull
-    private int duracao_estimada;
+    private Integer duracaoEstimada;
 
     public EstoqueUsuarioMedicamentoEntity() {
     }
 
-    public EstoqueUsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, int quantidade, LocalDateTime ultimaCompra, String status) {
+    public EstoqueUsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, Integer quantidade, LocalDateTime ultimaCompra, String status) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.quantidade = quantidade;
         this.ultimaCompra = ultimaCompra;
         this.status = status;
-        this.duracao_estimada = 0;
+        this.duracaoEstimada = 0;
     }
 
     public Long getId() {
@@ -65,7 +65,7 @@ public class EstoqueUsuarioMedicamentoEntity {
         return medicamento;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
@@ -89,7 +89,7 @@ public class EstoqueUsuarioMedicamentoEntity {
         this.medicamento = medicamento;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -101,12 +101,12 @@ public class EstoqueUsuarioMedicamentoEntity {
         this.status = status;
     }
 
-    public int getDuracao_estimada() {
-        return duracao_estimada;
+    public Integer getDuracaoEstimada() {
+        return duracaoEstimada;
     }
 
-    public void setDuracao_estimada(int duracao_estimada) {
-        this.duracao_estimada = duracao_estimada;
+    public void setDuracaoEstimada(Integer duracaoEstimada) {
+        this.duracaoEstimada = duracaoEstimada;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class EstoqueUsuarioMedicamentoEntity {
                 ", quantidade=" + quantidade +
                 ", ultimaCompra=" + ultimaCompra +
                 ", status='" + status + '\'' +
-                ", duracao_estimada=" + duracao_estimada +
+                ", duração_estimada=" + duracaoEstimada +
                 '}';
     }
 }
