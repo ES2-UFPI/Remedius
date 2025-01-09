@@ -42,11 +42,4 @@ public class EstoqueUsuarioMedicamentoController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Precisa disso mesmo???
-    @GetMapping("/duracao/{usuarioId}/{medicamentoId}")
-    public ResponseEntity<Integer> calcularDuracaoEstoque(@PathVariable Long usuarioId,
-            @PathVariable Long medicamentoId) {
-        int duracao = EstoqueService.calcularDuracaoEstoque(usuarioId, medicamentoId);
-        return ResponseEntity.ok(duracao);
-    }
 }
