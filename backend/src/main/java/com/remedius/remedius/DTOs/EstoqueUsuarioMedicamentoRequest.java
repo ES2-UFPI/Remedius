@@ -6,15 +6,15 @@ public class EstoqueUsuarioMedicamentoRequest {
 
     private Long usuarioId;
     private Long medicamentoId;
-    private int quantidade;
+    private Integer quantidade;
     private LocalDateTime ultimaCompra;
     private String status;
-    private int duracao_estimada;
+    private Integer duracao_estimada;
 
     public EstoqueUsuarioMedicamentoRequest() {
     }
 
-    public EstoqueUsuarioMedicamentoRequest(Long usuarioId, Long medicamentoId, int quantidade,
+    public EstoqueUsuarioMedicamentoRequest(Long usuarioId, Long medicamentoId, Integer quantidade,
             LocalDateTime ultimaCompra, String status) {
         this.usuarioId = usuarioId;
         this.medicamentoId = medicamentoId;
@@ -40,11 +40,11 @@ public class EstoqueUsuarioMedicamentoRequest {
         this.medicamentoId = medicamentoId;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -64,11 +64,11 @@ public class EstoqueUsuarioMedicamentoRequest {
         this.status = status;
     }
 
-    public int getDuracaoEstimada() {
+    public Integer getDuracaoEstimada() {
         return duracao_estimada;
     }
 
-    public void setDuracao_estimada(int duracao_estimada) {
+    public void setDuracao_estimada(Integer duracao_estimada) {
         this.duracao_estimada = duracao_estimada;
     }
 }
