@@ -11,7 +11,7 @@ import axios from 'axios';
 
 const RegisterMedication = () => {
   const [medicationName, setMedicationName] = useState('');
-  const [laboratoryName, setLaboratoryName] = useState('Default');
+  const [laboratoryName, setLaboratoryName] = useState('');
   const [dosage, setDosage] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [frequency, setFrequency] = useState('');
@@ -132,7 +132,6 @@ const RegisterMedication = () => {
         frequencia: frequency,
         dosagem: parseFloat(dosage),
         quant_inicial: parseInt(currentStock || '0'),
-        duracao: 30, // Assumindo que a duração é de 30 dias
         observacao: additionalInfo
       });
 
