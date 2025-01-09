@@ -1,5 +1,7 @@
+
 package com.remedius.remedius.controller;
 
+import com.remedius.remedius.DTOs.EstoqueUsuarioMedicamentoRequest;
 import com.remedius.remedius.entities.*;
 import com.remedius.remedius.service.*;
 
@@ -8,45 +10,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+// import java.util.Optional;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/Estoque")
+@RequestMapping("/estoque")
 public class EstoqueUsuarioMedicamentoController {
 
     @Autowired
     private EstoqueUsuarioMedicamentoService EstoqueService;
 
-    @GetMapping
-    public ResponseEntity<List<EstoqueUsuarioMedicamentoEntity>> getAllEstoques() {
-        List<EstoqueUsuarioMedicamentoEntity> Estoques = EstoqueService.getAllEstoques();
-        return ResponseEntity.ok(Estoques);
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> getEstoqueById(@PathVariable Long id) {
-        Optional<EstoqueUsuarioMedicamentoEntity> Estoque = EstoqueService.getEstoqueById(id);
-        return Estoque.map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<EstoqueUsuarioMedicamentoEntity>> getEstoqueByUserId(@PathVariable Long id) {
+        List<EstoqueUsuarioMedicamentoEntity> estoques = EstoqueService.getEstoqueByUserId(id);
+        return ResponseEntity.ok(estoques);
     }
 
     @PostMapping
-    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> createEstoque(@RequestBody EstoqueUsuarioMedicamentoEntity Estoque) {
+    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> createEstoque(
+            @RequestBody EstoqueUsuarioMedicamentoRequest Estoque) {
         EstoqueUsuarioMedicamentoEntity newEstoque = EstoqueService.createEstoque(Estoque);
         return ResponseEntity.ok(newEstoque);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> updateEstoque(
-            @PathVariable Long id, @RequestBody EstoqueUsuarioMedicamentoEntity updatedEstoque) {
-        Optional<EstoqueUsuarioMedicamentoEntity> Estoque = EstoqueService.updateEstoque(id, updatedEstoque);
+    @PutMapping()
+    public ResponseEntity<EstoqueUsuarioMedicamentoEntity> updateEstoqueByMedicationId(
+            @RequestBody EstoqueUsuarioMedicamentoRequest updatedEstoque) {
+        Optional<EstoqueUsuarioMedicamentoEntity> Estoque = EstoqueService
+                .updateEstoqueByUserMedicationId(updatedEstoque);
         return Estoque.map(ResponseEntity::ok)
-                    .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEstoque(@PathVariable Long id) {
-        boolean deleted = EstoqueService.deleteEstoque(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
-    }
 }

@@ -2,12 +2,17 @@ package com.remedius.remedius.entities;
 
 import java.time.LocalDateTime;
 
+// import org.springframework.beans.factory.annotation.Autowired;
+
+// import com.remedius.remedius.service.EstoqueUsuarioMedicamentoService;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "estoque_usuario_medicacoes")
 public class EstoqueUsuarioMedicamentoEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,24 +28,29 @@ public class EstoqueUsuarioMedicamentoEntity {
 
     @Column(name = "quantidade", nullable = false)
     @NonNull
-    private int quantidade;
+    private Integer quantidade;
 
     @Column(name = "ultima_compra", nullable = false)
     private LocalDateTime ultimaCompra;
 
     @Column(name = "status", nullable = false)
     @NonNull
-    private String status; 
+    private String status;
+
+    @Column(name = "duracao_estimada", nullable = false)
+    @NonNull
+    private Integer duracaoEstimada;
 
     public EstoqueUsuarioMedicamentoEntity() {
     }
 
-    public EstoqueUsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, int quantidade, LocalDateTime ultimaCompra, String status) {
+    public EstoqueUsuarioMedicamentoEntity(UsuarioEntity usuario, MedicamentoEntity medicamento, Integer quantidade, LocalDateTime ultimaCompra, String status) {
         this.usuario = usuario;
         this.medicamento = medicamento;
         this.quantidade = quantidade;
         this.ultimaCompra = ultimaCompra;
         this.status = status;
+        this.duracaoEstimada = 0;
     }
 
     public Long getId() {
@@ -55,7 +65,7 @@ public class EstoqueUsuarioMedicamentoEntity {
         return medicamento;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
@@ -79,7 +89,7 @@ public class EstoqueUsuarioMedicamentoEntity {
         this.medicamento = medicamento;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -91,6 +101,14 @@ public class EstoqueUsuarioMedicamentoEntity {
         this.status = status;
     }
 
+    public Integer getDuracaoEstimada() {
+        return duracaoEstimada;
+    }
+
+    public void setDuracaoEstimada(Integer duracaoEstimada) {
+        this.duracaoEstimada = duracaoEstimada;
+    }
+
     @Override
     public String toString() {
         return "EstoqueUsuarioMedicacoesEntity{" +
@@ -100,6 +118,7 @@ public class EstoqueUsuarioMedicamentoEntity {
                 ", quantidade=" + quantidade +
                 ", ultimaCompra=" + ultimaCompra +
                 ", status='" + status + '\'' +
+                ", duração_estimada=" + duracaoEstimada +
                 '}';
     }
 }

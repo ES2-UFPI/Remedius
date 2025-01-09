@@ -1,5 +1,6 @@
 
 package com.remedius.remedius.controller;
+
 import com.remedius.remedius.DTOs.MedicamentoRequest;
 import com.remedius.remedius.entities.UsuarioMedicamentoEntity;
 import com.remedius.remedius.service.UsuarioMedicamentoService;
@@ -15,13 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-
-
-
 
 public class UsuarioMedicamentoControllerTest {
 
@@ -41,9 +39,10 @@ public class UsuarioMedicamentoControllerTest {
 
     @Test
     public void testGetUserMedications() throws Exception {
-        List<UsuarioMedicamentoEntity> medicacoes = Arrays.asList(new UsuarioMedicamentoEntity(), new UsuarioMedicamentoEntity());
+        List<UsuarioMedicamentoEntity> medicacoes = Arrays.asList(new UsuarioMedicamentoEntity(),
+                new UsuarioMedicamentoEntity());
         when(usuarioMedicamentoService.buscarMedicamentosDoUsuario(anyInt())).thenReturn(medicacoes);
-        
+
         mockMvc.perform(get("/usuarios-medicamentos/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(medicacoes.size()));
@@ -52,7 +51,8 @@ public class UsuarioMedicamentoControllerTest {
     @Test
     public void testAddMedicationToUser() throws Exception {
         UsuarioMedicamentoEntity relacao = new UsuarioMedicamentoEntity();
-        when(usuarioMedicamentoService.adicionarMedicamentoAoUsuario(anyInt(), any(MedicamentoRequest.class))).thenReturn(relacao);
+        when(usuarioMedicamentoService.adicionarMedicamentoAoUsuario(anyLong(), any(MedicamentoRequest.class)))
+                .thenReturn(relacao);
 
         mockMvc.perform(post("/usuarios-medicamentos/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -64,7 +64,8 @@ public class UsuarioMedicamentoControllerTest {
     @Test
     public void testUpdateMedication() throws Exception {
         UsuarioMedicamentoEntity relacao = new UsuarioMedicamentoEntity();
-        when(usuarioMedicamentoService.atualizarMedicamentoDoUsuario(anyInt(), any(MedicamentoRequest.class))).thenReturn(relacao);
+        when(usuarioMedicamentoService.atualizarMedicamentoDoUsuario(anyInt(), any(MedicamentoRequest.class)))
+                .thenReturn(relacao);
 
         mockMvc.perform(put("/usuarios-medicamentos/1")
                 .contentType(MediaType.APPLICATION_JSON)

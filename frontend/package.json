@@ -40,6 +40,7 @@
     "expo-system-ui": "~4.0.4",
     "expo-web-browser": "^14.0.0",
     "frontend": "file:",
+    "lightningcss": "^1.28.2",
     "lucide-react-native": "^0.460.0",
     "nativewind": "^4.1.23",
     "react-native-gesture-handler": "~2.20.2",

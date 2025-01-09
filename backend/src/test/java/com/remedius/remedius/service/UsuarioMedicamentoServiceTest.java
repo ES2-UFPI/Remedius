@@ -1,4 +1,5 @@
 package com.remedius.remedius.service;
+
 import com.remedius.remedius.DTOs.MedicamentoRequest;
 import com.remedius.remedius.entities.*;
 import com.remedius.remedius.repository.UsuarioMedicamentoRepository;
@@ -11,11 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
-
-
-
-
 
 @ExtendWith(MockitoExtension.class)
 public class UsuarioMedicamentoServiceTest {
@@ -60,11 +56,12 @@ public class UsuarioMedicamentoServiceTest {
 
     @Test
     public void testAdicionarMedicamentoAoUsuario() {
-        when(usuarioService.getUsuarioById(1)).thenReturn(usuario);
+        when(usuarioService.getUsuarioById(1L)).thenReturn(usuario);
         when(medicamentoService.getMedicamentoById(1L)).thenReturn(medicamento);
         when(usuarioMedicamentoRepository.save(any(UsuarioMedicamentoEntity.class))).thenReturn(usuarioMedicamento);
 
-        UsuarioMedicamentoEntity result = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(1, medicamentoRequest);
+        UsuarioMedicamentoEntity result = usuarioMedicamentoService.adicionarMedicamentoAoUsuario(1L,
+                medicamentoRequest);
 
         // printar o result
         System.out.println(result);
@@ -104,7 +101,8 @@ public class UsuarioMedicamentoServiceTest {
         when(usuarioMedicamentoRepository.findById(1)).thenReturn(Optional.of(usuarioMedicamento));
         when(usuarioMedicamentoRepository.save(any(UsuarioMedicamentoEntity.class))).thenReturn(usuarioMedicamento);
 
-        UsuarioMedicamentoEntity result = usuarioMedicamentoService.atualizarMedicamentoDoUsuario(1, medicamentoRequest);
+        UsuarioMedicamentoEntity result = usuarioMedicamentoService.atualizarMedicamentoDoUsuario(1,
+                medicamentoRequest);
 
         assertNotNull(result);
         assertEquals("2023-01-01", result.getDataInicial());
