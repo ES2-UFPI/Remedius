@@ -95,7 +95,7 @@ public class EstoqueUsuarioMedicamentoService {
         estoqueExistente.setQuantidade(updatedEstoqueRequest.getQuantidade());
         estoqueExistente.setUltimaCompra(updatedEstoqueRequest.getUltimaCompra());
         estoqueExistente.setStatus(updatedEstoqueRequest.getStatus());
-        estoqueExistente.setDuracaoEstimada(updatedEstoqueRequest.getDuracao_estimada());
+        estoqueExistente.setDuracaoEstimada(updatedEstoqueRequest.getDuracaoEstimada());
 
         return Optional.of(estoqueRepository.save(updatedEstoque));
     }
@@ -143,11 +143,8 @@ public class EstoqueUsuarioMedicamentoService {
     }
 
     private int calcularDosesPorDia(String frequencia) {
-        if (frequencia.endsWith("h")) {
-            int horas = Integer.parseInt(frequencia.replace(".0h", ""));
-            return 24 / horas;
-        }
-        int horas = Integer.parseInt(frequencia.replace(".0", ""));
+        String aux = frequencia.replace("h", "");
+        int horas = Integer.parseInt(aux);
         return 24 / horas;
     }
 }

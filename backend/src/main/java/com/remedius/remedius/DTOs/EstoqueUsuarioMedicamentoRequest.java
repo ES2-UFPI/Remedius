@@ -14,7 +14,8 @@ public class EstoqueUsuarioMedicamentoRequest {
     public EstoqueUsuarioMedicamentoRequest() {
     }
 
-    public EstoqueUsuarioMedicamentoRequest(Long usuarioId, Long medicamentoId, int quantidade, LocalDateTime ultimaCompra, String status) {
+    public EstoqueUsuarioMedicamentoRequest(Long usuarioId, Long medicamentoId, int quantidade,
+            LocalDateTime ultimaCompra, String status) {
         this.usuarioId = usuarioId;
         this.medicamentoId = medicamentoId;
         this.quantidade = quantidade;
@@ -63,7 +64,7 @@ public class EstoqueUsuarioMedicamentoRequest {
         this.status = status;
     }
 
-    public int getDuracao_estimada() {
+    public int getDuracaoEstimada() {
         return duracao_estimada;
     }
 
