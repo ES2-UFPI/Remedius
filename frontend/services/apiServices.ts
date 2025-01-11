@@ -1,16 +1,16 @@
 // criar uma classe que implementa funções para fazer requisições para a API
-import { medicamentoEntity } from '../entities/medicamentoEntity';
+import { MedicamentoEntity } from '../entities/medicamentoEntity'; // Ensure this path is correct
 import axios from 'axios';
 import { Alert } from 'react-native';
 
-class ApiServices {
+export class ApiServices {
   
     // função para criar um medicamento
-    async createMedicamento(medicamento: medicamentoEntity) {
+    async createMedicamento(nome: string, laboratorio: string) {
         try {
             const createMedicamentoResponse = await axios.post(`http://localhost:8080/medicamentos`, {
-                nome: medicamento.nome,
-                laboratorio: medicamento.laboratorio,
+                nome: nome,
+                laboratorio: laboratorio,
             });
             const medicamentoId = createMedicamentoResponse.data.id;
             return medicamentoId;
@@ -20,10 +20,10 @@ class ApiServices {
     }
 
     // função para adicionar medicação ao usuário
-    async addMedicamentoUsuario(medicamento: medicamentoEntity, usuarioId: number) {
+    async addMedicamentoUsuario(medicamento: MedicamentoEntity, usuarioId: number) {
         const formattedDate = `${medicamento.dataInicial.toISOString().split('T')[0]}T${medicamento.horaInicial}:00`;
         try {
-            await axios.post('http://localhost:8080/usuarios-medicamentos/${usuarioId}', {
+            await axios.post(`http://localhost:8080/usuarios-medicamentos/${usuarioId}`, {
                 medicamentoId: medicamento.id,
                 dataInicial: formattedDate,
                 frequencia: medicamento.frequencia,
@@ -38,7 +38,7 @@ class ApiServices {
     };
 
     // função para adicionar estoque ao medicamento
-    async addEstoque(medicamento: medicamentoEntity, usuarioId: number) {
+    async addEstoque(medicamento: MedicamentoEntity, usuarioId: number) {
         try {
             await axios.post(`http://localhost:8080/estoque`, {
                 usuarioId: usuarioId,

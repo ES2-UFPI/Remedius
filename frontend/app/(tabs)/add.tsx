@@ -7,6 +7,7 @@ import { Link } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { Provider as PaperProvider } from 'react-native-paper';
+import { ApiServices } from '../../services/apiServices'; // Importar a classe ApiServices
 import axios from 'axios';
 
 const RegisterMedication = () => {
@@ -114,31 +115,32 @@ const RegisterMedication = () => {
 
     setIsLoading(true);
 
-    try {
-      // Primeiro, criar o medicamento
-      const createMedicamentoResponse = await axios.post('http://localhost:8080/medicamentos', {
-        nome: medicationName,
-        laboratorio: laboratoryName
-      });
-      const medicamentoId = createMedicamentoResponse.data.id; // Assumindo que a resposta retorna o ID do medicamento
+    // criar entidade de medicamento
+    const medicamento = {
+      id: 0,
+      nome: medicationName,
+      laboratorio: laboratoryName,
+      dosagem: dosage,
+      dataInicial: startDate,
+      frequencia: frequency,
+      horaInicial: startTime,
+      quantidade: currentStock,
+      observacao: additionalInfo,
+      status: null
+    };
 
-      // Formatar a data e o horário para o formato necessário
-      const formattedDate = `${startDate.toISOString().split('T')[0]}T${startTime}:00`;
+    // criar instância da classe ApiServices
+    const apiServices = new ApiServices();
 
-      // Adicionar a medicação ao usuário
-      await axios.post('http://localhost:8080/usuarios-medicamentos/1', {
-        medicamentoId: medicamentoId,
-        dataInicial: formattedDate,
-        frequencia: frequency,
-        dosagem: parseFloat(dosage),
-        quant_inicial: parseInt(currentStock || '0'),
-        observacao: additionalInfo
-      });
-
-      // Limpar o formulário após o sucesso
+    // chamar a função createMedicamento da classe ApiServices
+    try{
+      const medicamentoId = await apiServices.createMedicamento(medicationName, laboratoryName);
+      medicamento.id = parseInt(medicamentoId);
+      // chamar a função addMedicamentoUsuario da classe ApiServices
+      await apiServices.addMedicamentoUsuario(medicamento, 1);
+      // chamar a função addEstoque da classe ApiServices
+      await apiServices.addEstoque(medicamento, 1);
       clearFormData();
-      Alert.alert('Sucesso', 'Medicação cadastrada com sucesso!');
-      console.log('Medicação cadastrada com sucesso');
     } catch (error) {
       console.error('Erro ao cadastrar medicação:', error);
       Alert.alert('Erro', 'Não foi possível cadastrar a medicação. Tente novamente.');
