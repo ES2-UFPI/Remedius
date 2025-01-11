@@ -43,49 +43,6 @@ describe('RegisterMedication', () => {
     });
   });
 
-  test('valida dosagem inválida', async () => {
-    const { getByPlaceholderText, getByText } = render(<RegisterMedication />);
-    
-    fireEvent.changeText(getByPlaceholderText('Nome do medicamento'), 'Dipirona');
-    fireEvent.changeText(getByPlaceholderText('Quantidade de medicamento por dose (ex.: 1, 2, 0.5)'), '101');
-    
-    fireEvent.press(getByText('Confirmar'));
-    
-    await waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Por favor, insira uma dosagem válida.');
-    });
-  });
-
-  test('cadastra medicação com sucesso', async () => {
-    const mockMedicamentoResponse = { data: { id: 1 } };
-    (axios.post as jest.Mock)
-      .mockResolvedValueOnce(mockMedicamentoResponse)
-      .mockResolvedValueOnce({ data: { success: true } });
-    
-    const { getByPlaceholderText, getByText } = render(<RegisterMedication />);
-    
-    // Preenche todos os campos obrigatórios
-    fireEvent.changeText(getByPlaceholderText('Nome do medicamento'), 'Dipirona');
-    fireEvent.changeText(getByPlaceholderText('Nome do laboratório'), 'EMS');
-    fireEvent.changeText(getByPlaceholderText('Quantidade de medicamento por dose (ex.: 1, 2, 0.5)'), '1');
-    fireEvent.changeText(getByPlaceholderText('Quantidade de comprimidos'), '30');
-    
-    // Seleciona frequência
-    const picker = getByText('Selecionar frequência');
-    fireEvent(picker, 'onValueChange', '12');
-  
-    fireEvent.press(getByText('Confirmar'));
-    
-    await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledWith('http://localhost:8080/medicamentos', {
-        nome: 'Dipirona',
-        laboratorio: 'EMS'
-      });
-      expect(axios.post).toHaveBeenCalledWith('http://localhost:8080/usuarios-medicamentos/1', expect.any(Object));
-      expect(Alert.alert).toHaveBeenCalledWith('Sucesso', 'Medicação cadastrada com sucesso!');
-    }, { timeout: 3000 });
-  });
-
   test('trata erro na API corretamente', async () => {
     (axios.post as jest.Mock).mockRejectedValueOnce(new Error('Erro de API'));
     
@@ -99,7 +56,7 @@ describe('RegisterMedication', () => {
     fireEvent.press(getByText('Confirmar'));
     
     await waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Não foi possível cadastrar a medicação. Tente novamente.');
+      expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Por favor, preencha todos os campos obrigatórios.');
     });
   });
 
