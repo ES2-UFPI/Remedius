@@ -23,7 +23,7 @@ const mockMedicacoes = [
       cor: "#E6F3FF"
     },
     quantidade: 15,
-    status: "ativo",
+    status: "Ativo",
     duracaoEstimada: 20
   },
   {
@@ -35,7 +35,7 @@ const mockMedicacoes = [
       cor: "#FFE6E6"
     },
     quantidade: 10,
-    status: "suspenso",
+    status: "Suspenso",
     duracaoEstimada: 15
   }
 ];

@@ -14,7 +14,7 @@ interface Medication {
   };
   quantidade: number;
   ultimaCompra: string;
-  status: 'ativo' | 'suspenso';
+  status: 'Ativo' | 'Suspenso';
   duracaoEstimada: number;
 }
 
@@ -22,7 +22,7 @@ interface MedicationCardProps {
   name: string;
   quantity: number;
   estimatedDuration: number;
-  status: 'ativo' | 'suspenso';
+  status: 'Ativo' | 'Suspenso';
   onEdit: () => void;
   onNotification: () => void;
 }
@@ -54,7 +54,7 @@ const MedicationCard = ({
   });
 
   const getBgColor = () => {
-    if (status === 'suspenso') return 'bg-gray-200';
+    if (status === 'Suspenso') return 'bg-gray-200';
     return color ? `bg-[${color}]` : 'bg-blue-100'; // Use color from API or fallback
   };
 
@@ -120,8 +120,8 @@ const Inventory = () => {
     }
   };
 
-  const activeMedications = medications.filter(med => med.status === 'ativo');
-  const suspendedMedications = medications.filter(med => med.status === 'suspenso');
+  const activeMedications = medications.filter(med => med.status === 'Ativo');
+  const suspendedMedications = medications.filter(med => med.status === 'Suspenso');
 
   if (!fontsLoaded) {
     return null;

@@ -135,6 +135,15 @@ const RegisterMedication = () => {
         observacao: additionalInfo
       });
 
+      // adicionar o estoque à medicação
+      await axios.post('http://localhost:8080/estoque', {
+        usuarioId: 1,
+        medicamentoId: medicamentoId,
+        quantidade: parseInt(currentStock || '0'),
+        ultimaCompra: new Date().toISOString(),
+        status: 'Ativo'
+      });
+
       // Limpar o formulário após o sucesso
       clearFormData();
       Alert.alert('Sucesso', 'Medicação cadastrada com sucesso!');
@@ -253,6 +262,7 @@ const RegisterMedication = () => {
                       selectedValue={frequency}
                       onValueChange={(itemValue) => setFrequency(itemValue)}
                       className='bg-[#F3F3F3] p-3 rounded-lg'
+                      testID="frequency-picker"
                     >
                       <Picker.Item label="Selecionar frequência" value="" />
                       {frequencyOptions.map((option) => (
