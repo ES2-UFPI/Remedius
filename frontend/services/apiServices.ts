@@ -1,14 +1,12 @@
-// criar uma classe que implementa funções para fazer requisições para a API
-import { MedicamentoEntity } from '../entities/medicamentoEntity'; // Ensure this path is correct
 import axios from 'axios';
+import { MedicationPrototype } from '../utils/MedicationPrototype';
 import { Alert } from 'react-native';
 
 export class ApiServices {
-  
-    // função para criar um medicamento
-    async createMedicamento(nome: string, laboratorio: string) {
+    // função para criar um novo medicamento
+    async createMedicamento(nome: string, laboratorio: string | null) {
         try {
-            const createMedicamentoResponse = await axios.post(`http://localhost:8080/medicamentos`, {
+            const createMedicamentoResponse = await axios.post('http://localhost:8080/medicamentos', {
                 nome: nome,
                 laboratorio: laboratorio,
             });
@@ -20,7 +18,7 @@ export class ApiServices {
     }
 
     // função para adicionar medicação ao usuário
-    async addMedicamentoUsuario(medicamento: MedicamentoEntity, usuarioId: number) {
+    async addMedicamentoUsuario(medicamento: MedicationPrototype, usuarioId: number) {
         const formattedDate = `${medicamento.dataInicial.toISOString().split('T')[0]}T${medicamento.horaInicial}:00`;
         try {
             await axios.post(`http://localhost:8080/usuarios-medicamentos/${usuarioId}`, {
@@ -36,15 +34,15 @@ export class ApiServices {
             console.error('Erro ao cadastrar medicação:', error);
             Alert.alert('Não foi possível cadastrar a medicação. Tente novamente.'); 
         }
-    };
+    }
 
     // função para adicionar estoque ao medicamento
-    async addEstoque(medicamento: MedicamentoEntity, usuarioId: number) {
+    async addEstoque(medicamento: MedicationPrototype, usuarioId: number) {
         try {
             await axios.post(`http://localhost:8080/estoque`, {
                 usuarioId: usuarioId,
                 medicamentoId: medicamento.id,
-                quantidade: parseInt(medicamento.quantidade|| '0'),
+                quantidade: parseInt(medicamento.quantidade || '0'),
                 ultimaCompra: new Date().toISOString(),
                 status: 'Ativo'
             });
