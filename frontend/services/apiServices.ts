@@ -30,6 +30,7 @@ export class ApiServices {
                 dosagem: parseFloat(medicamento.dosagem),
                 quant_inicial: parseInt(medicamento.quantidade || '0'),
                 observacao: medicamento.observacao,
+                duracaoTratamento: medicamento.duracaoTratamento
             });
         } catch (error) {
             console.error('Erro ao cadastrar medicação:', error);
