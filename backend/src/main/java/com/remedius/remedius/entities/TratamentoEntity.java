@@ -2,6 +2,10 @@ package com.remedius.remedius.entities;
 
 import java.time.LocalDateTime;
 
+import com.remedius.remedius.enums.StatusTratamentoEnum;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @AllArgsConstructor
@@ -36,6 +39,9 @@ public class TratamentoEntity {
     private Double dosagem;
 
     private String observacao;
+
+    @Enumerated(EnumType.STRING)
+    private StatusTratamentoEnum status;
 
     private Boolean ativo;
 
