@@ -6,6 +6,7 @@ import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 import axios from 'axios';
 import AnimatedHeader from '../../components/Header';
 import { format, parseISO, isPast, isFuture } from 'date-fns';
+import RecentMedications from '@/entities/RecentMedications';
 
 interface Medication {
   id: number;
@@ -110,6 +111,10 @@ const Home = () => {
               <MedicationSchedule />
             </View>
           </View>
+
+          {/* Seção para Medicações Recentes (Medicações que não foi atualizado pelo usuário
+          a informação de que tomou a medicação) */}
+          <RecentMedications />
         </View>
       </Animated.ScrollView>
     </SafeAreaView>
