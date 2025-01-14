@@ -18,7 +18,8 @@ const EditMedication = () => {
   const [currentStock, setCurrentStock] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [status, setStatus] = useState(params.status as string || 'active');
+  const [status, setStatus] = useState(params.status as string || 'Ativo');
+  const [duracaoTratamento, setDuracaoTratamento] = useState('');
 
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
@@ -163,7 +164,7 @@ const EditMedication = () => {
                   </View>
 
                   <Text className="text-lg mb-2 text-[#2F4858]">Frequência</Text>
-                  <View className="bg-[#F3F3F3] rounded-lg">
+                  <View className="bg-[#F3F3F3] rounded-lg mb-4">
                     <Picker
                       selectedValue={frequency}
                       onValueChange={(itemValue) => setFrequency(itemValue)}
@@ -175,6 +176,20 @@ const EditMedication = () => {
                       ))}
                     </Picker>
                   </View>
+
+                  <Text className="text-lg mb-2 text-[#2F4858]">Duração do Tratamento</Text>
+                    <View className="flex-row gap-2">
+                      <TextInput
+                        className="flex-1 bg-[#F3F3F3] p-3 rounded-lg text-lg text-[#2F4858]"
+                        value={duracaoTratamento}
+                        onChangeText={setDuracaoTratamento}
+                        keyboardType="numeric"
+                        placeholder="Preencha com a duração do tratamento em número de dias"
+                      />
+                      <View className="bg-[#F3F3F3] px-4 rounded-lg flex-row items-center justify-between min-w-[150px]">
+                        <Text className="text-[#2F4858]">Dias</Text>
+                      </View>
+                    </View>
                 </View>
 
                 {/* Additional Details */}
