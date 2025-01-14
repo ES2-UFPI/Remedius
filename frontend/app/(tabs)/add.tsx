@@ -9,6 +9,7 @@ import { DatePickerModal } from 'react-native-paper-dates';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { ApiServices } from '../../services/apiServices'; // Importar a classe ApiServices
 import axios from 'axios';
+import { parse } from 'date-fns';
 
 const RegisterMedication = () => {
   const [medicationName, setMedicationName] = useState('');
@@ -21,6 +22,7 @@ const RegisterMedication = () => {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [duracaoTratamento, setDuracaoTratamento] = useState('');
 
   const [fontsLoaded] = useFonts({
     Katibeh_400Regular,
@@ -126,7 +128,8 @@ const RegisterMedication = () => {
       horaInicial: startTime,
       quantidade: currentStock,
       observacao: additionalInfo,
-      status: null
+      status: null,
+      duracao: parseInt(duracaoTratamento),
     };
 
     // criar instância da classe ApiServices
@@ -250,7 +253,7 @@ const RegisterMedication = () => {
                   </View>
 
                   <Text className="text-lg mb-2 text-[#2F4858]">Frequência</Text>
-                  <View className="bg-[#F3F3F3] rounded-lg">
+                  <View className="bg-[#F3F3F3] rounded-lg mb-4">
                     <Picker
                       selectedValue={frequency}
                       onValueChange={(itemValue) => setFrequency(itemValue)}
@@ -262,6 +265,20 @@ const RegisterMedication = () => {
                         <Picker.Item key={option.value} label={option.label} value={option.value} />
                       ))}
                     </Picker>
+                  </View>
+
+                  <Text className="text-lg mb-2 text-[#2F4858]">Duração do Tratamento</Text>
+                  <View className="flex-row gap-2">
+                    <TextInput
+                      className="flex-1 bg-[#F3F3F3] p-3 rounded-lg text-lg text-[#2F4858]"
+                      value={duracaoTratamento}
+                      onChangeText={setDuracaoTratamento}
+                      keyboardType="numeric"
+                      placeholder="Preencha com a duração do tratamento em número de dias"
+                    />
+                    <View className="bg-[#F3F3F3] px-4 rounded-lg flex-row items-center justify-between min-w-[150px]">
+                      <Text className="text-[#2F4858]">Dias</Text>
+                    </View>
                   </View>
                 </View>
 

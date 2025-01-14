@@ -10,6 +10,7 @@ type MedicamentoEntity = {
     quantidade: string;
     observacao: string;
     status: string | null;
+    duracaoTratamento: number;
     };
 
 export type { MedicamentoEntity };
