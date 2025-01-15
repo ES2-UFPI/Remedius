@@ -107,31 +107,32 @@ public class EstoqueUsuarioMedicamentoService {
 
     // Calcular duração estimada do estoque
     public int calcularDuracaoEstoque(EstoqueUsuarioMedicamentoRequest estoqueRequest) {
-        // Buscar UsuárioMedicamento
-        Long usuarioId = estoqueRequest.getUsuarioId();
-        Long medicamentoId = estoqueRequest.getMedicamentoId();
-        UsuarioMedicamentoEntity usuarioMedicamento = usuarioMedicamentoRepository
-                .findByUsuarioIdAndMedicamentoId(usuarioId, medicamentoId);
-        if (usuarioMedicamento == null) {
-            throw new IllegalArgumentException("Relação Usuário-Medicamento não encontrada.");
-        }
+        return 0;
+        // // Buscar UsuárioMedicamento
+        // Long usuarioId = estoqueRequest.getUsuarioId();
+        // Long medicamentoId = estoqueRequest.getMedicamentoId();
+        // UsuarioMedicamentoEntity usuarioMedicamento = usuarioMedicamentoRepository
+        //         .findByUsuarioIdAndMedicamentoId(usuarioId, medicamentoId);
+        // if (usuarioMedicamento == null) {
+        //     throw new IllegalArgumentException("Relação Usuário-Medicamento não encontrada.");
+        // }
 
-        // Extrair dados necessários
-        int quantidade = estoqueRequest.getQuantidade();
-        double dosagem = usuarioMedicamento.getDosagem();
-        String frequencia = usuarioMedicamento.getFrequencia();
+        // // Extrair dados necessários
+        // int quantidade = estoqueRequest.getQuantidade();
+        // double dosagem = usuarioMedicamento.getDosagem();
+        // String frequencia = usuarioMedicamento.getFrequencia();
 
-        // Converter frequência em doses diárias
-        int dosesPorDia = calcularDosesPorDia(frequencia);
+        // // Converter frequência em doses diárias
+        // int dosesPorDia = calcularDosesPorDia(frequencia);
 
-        // Calcular consumo diário
-        double consumoDiario = dosagem * dosesPorDia;
+        // // Calcular consumo diário
+        // double consumoDiario = dosagem * dosesPorDia;
 
-        System.out.println("Consumo diário: " + consumoDiario);
-        System.out.println("Quantidade: " + quantidade);
+        // System.out.println("Consumo diário: " + consumoDiario);
+        // System.out.println("Quantidade: " + quantidade);
 
-        // Calcular duração do estoque
-        return ((int) Math.floor(quantidade / consumoDiario)) + 1;
+        // // Calcular duração do estoque
+        // return ((int) Math.floor(quantidade / consumoDiario)) + 1;
     }
 
     private int calcularDosesPorDia(String frequencia) {
