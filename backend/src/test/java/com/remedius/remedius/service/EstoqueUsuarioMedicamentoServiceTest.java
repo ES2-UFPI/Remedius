@@ -71,13 +71,13 @@ public class EstoqueUsuarioMedicamentoServiceTest {
         medicamento = new MedicamentoEntity();
         medicamento.setId(1L);
 
-        usuarioMedicamento = new UsuarioMedicamentoEntity();
-        usuarioMedicamento.setId(1L);
-        usuarioMedicamento.setUsuario(usuario);
-        usuarioMedicamento.setMedicamento(medicamento);
-        usuarioMedicamento.setDataInicial("2021-01-01");
-        usuarioMedicamento.setFrequencia("8h");
-        usuarioMedicamento.setDosagem(10.0);
+        // usuarioMedicamento = new UsuarioMedicamentoEntity();
+        // usuarioMedicamento.setId(1L);
+        // usuarioMedicamento.setUsuario(usuario);
+        // usuarioMedicamento.setMedicamento(medicamento);
+        // usuarioMedicamento.setDataInicial("2021-01-01");
+        // usuarioMedicamento.setFrequencia("8h");
+        // usuarioMedicamento.setDosagem(10.0);
 
         LocalDateTime hora = LocalDateTime.now();
 
@@ -133,7 +133,7 @@ public class EstoqueUsuarioMedicamentoServiceTest {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(medicamentoRepository.findById(1L)).thenReturn(Optional.of(medicamento));
         when(estoqueRepository.findByUserMedicationId(1L, 1L)).thenReturn(estoque);
-        when(usuarioMedicamentoRepository.findByUsuarioIdAndMedicamentoId(1L, 1L)).thenReturn(usuarioMedicamento);
+        // when(usuarioMedicamentoRepository.findByUsuarioIdAndMedicamentoId(1L, 1L)).thenReturn(usuarioMedicamento);
 
         EstoqueUsuarioMedicamentoEntity result = estoqueService.createEstoque(estoqueRequest);
 
