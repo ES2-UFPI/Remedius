@@ -8,7 +8,6 @@ import com.remedius.remedius.repository.*;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 //import java.time.String;
@@ -23,6 +22,12 @@ public class UsuarioMedicamentoService {
     private final UsuarioMedicamentoRepository usuarioMedicamentoRepository;
     private final UsuarioRepository usuarioRepository;
     private final MedicamentoRepository medicamentoRepository;
+
+
+    public List<UsuarioMedicamentoEntity> listarMedicamentos() {
+        return usuarioMedicamentoRepository.findAll();
+    }
+
 
     public UsuarioMedicamentoEntity adicionarMedicamento(UsuarioMedicamentoRequest request) {
         if (usuarioMedicamentoRepository.existsByUsuarioIdAndMedicamentoId(

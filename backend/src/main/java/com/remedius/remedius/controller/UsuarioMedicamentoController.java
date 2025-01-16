@@ -17,6 +17,12 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioMedicamentoController {
     private final UsuarioMedicamentoService usuarioMedicamentoService;
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Iterable<UsuarioMedicamentoEntity>> listarMedicamentos() {
+        return ResponseEntity.ok(usuarioMedicamentoService.listarMedicamentos());
+    }
+
     @PostMapping
     public ResponseEntity<UsuarioMedicamentoEntity> adicionarMedicamento(
             @RequestBody @Valid UsuarioMedicamentoRequest request) {
@@ -27,6 +33,7 @@ public class UsuarioMedicamentoController {
     public ResponseEntity<UsuarioMedicamentoEntity> atualizarMedicamento(
             @PathVariable Long id,
             @RequestBody @Valid UsuarioMedicamentoRequest request) {
+                //TODO : Criar um DTO pro Update
         return ResponseEntity.ok(usuarioMedicamentoService.atualizarMedicamento(id, request));
     }
 
