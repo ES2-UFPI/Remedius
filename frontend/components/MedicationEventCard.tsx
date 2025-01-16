@@ -1,18 +1,18 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 export interface MedicationEventProps {
   nome: string;
   dosagem: string;
-  horario: string;
+  horario: Date;
   cor: string;
   status: 'tomado' | 'rejeitado' | 'pendente';
 }
 
 const statusColors = {
-  tomado: 'bg-green-500',
-  rejeitado: 'bg-red-500',
-  pendente: 'bg-gray-400',
+  tomado: 'green',
+  rejeitado: 'red',
+  pendente: 'gray',
 };
 
 const MedicationEventCard: React.FC<MedicationEventProps> = ({
@@ -23,26 +23,63 @@ const MedicationEventCard: React.FC<MedicationEventProps> = ({
   status
 }) => {
   return (
-    <View className={`bg-[#${cor}] rounded-xl p-4 mb-2 relative`}>
+    <View style={[styles.card, { backgroundColor: `#${cor}` }]}>
       {/* Indicador do status do evento */}
       <View 
-        className={`absolute top-2 right-2 w-3 h-3 rounded-full ${statusColors[status]}`}
+        style={[styles.statusIndicator, { backgroundColor: statusColors[status] }]}
       />
       
       {/* Informações da medicação */}
-      <Text className="text-[#2D3648] text-lg font-bold mb-1">
+      <Text style={styles.nome}>
         {nome}
       </Text>
-      <View className="flex-row justify-between items-center">
-        <Text className="text-[#2D3648] text-base">
+      <View style={styles.infoContainer}>
+        <Text style={styles.dosagem}>
           {dosagem}
         </Text>
-        <Text className="text-[#2D3648] text-sm font-medium">
-          {horario}
+        <Text style={styles.horario}>
+          {horario.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </Text>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 8,
+    position: 'relative',
+  },
+  statusIndicator: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+  },
+  nome: {
+    color: '#2D3648',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dosagem: {
+    color: '#2D3648',
+    fontSize: 16,
+  },
+  horario: {
+    color: '#2D3648',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+});
 
 export default MedicationEventCard;
