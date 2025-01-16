@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.remedius.remedius.enums.StatusTratamentoEnum;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class TratamentoEntity {
     @Id
 

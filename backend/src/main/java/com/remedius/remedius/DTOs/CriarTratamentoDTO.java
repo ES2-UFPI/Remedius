@@ -2,15 +2,9 @@ package com.remedius.remedius.DTOs;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-
-@AllArgsConstructor
-
-@NoArgsConstructor
 public class CriarTratamentoDTO {
 
     private Long usuarioMedicamentoId;
@@ -23,5 +17,5 @@ public class CriarTratamentoDTO {
 
     private Double dosagem;
 
-    private String observacao; //Opcional
+    private String observacao; // Opcional
 }

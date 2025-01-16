@@ -1,9 +1,8 @@
 package com.remedius.remedius.service;
 
-import java.time.LocalDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.remedius.remedius.DTOs.AtualizarTratamentoDTO;
 import com.remedius.remedius.DTOs.CriarTratamentoDTO;
@@ -13,23 +12,17 @@ import com.remedius.remedius.repository.TratamentoRepository;
 import com.remedius.remedius.repository.UsuarioMedicamentoRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
+@Service
+@RequiredArgsConstructor
 public class TratamentoService {
     private final TratamentoRepository tratamentoRepository;
 
     private final UsuarioMedicamentoRepository usuarioMedicamentoRepository;
     // TODO: Adicionar Evento Repository
 
-    @Autowired
 
-    public TratamentoService(TratamentoRepository tratamentoRepository,
-            UsuarioMedicamentoRepository usuarioMedicamentoRepository) {
-
-        this.tratamentoRepository = tratamentoRepository;
-
-        this.usuarioMedicamentoRepository = usuarioMedicamentoRepository;
-
-    }
 
     @Transactional
     public TratamentoEntity criarTratamento(CriarTratamentoDTO dto) throws Exception {
