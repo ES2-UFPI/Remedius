@@ -19,7 +19,7 @@ const MedicationEventCard: React.FC<MedicationEventProps> = ({
   nome,
   dosagem,
   horario,
-  cor = 'E8F4F6',
+  cor,
   status
 }) => {
   return (
