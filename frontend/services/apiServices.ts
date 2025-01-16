@@ -51,4 +51,24 @@ export class ApiServices {
             Alert.alert('Não foi possível adicionar estoque ao medicamento. Tente novamente.');
         }
     }
+
+    // função para buscar medicações recentes sem status atualizado
+    async getMedicacoesRecentes(usuarioId: number) {
+        try {
+            // IMPLEMENTAR
+        } catch (error) {
+            console.error('Erro ao buscar medicações recentes:', error);
+        }
+        return [];
+    }
+
+    // função para atualizar status da medicação
+    async updateStatusMedicacao(medicacaoId: number, status: string) {
+        try {
+            // IMPLEMENTAR
+        } catch (error) {
+            console.error('Erro ao atualizar status da medicação:', error);
+        }
+    }
+
 }

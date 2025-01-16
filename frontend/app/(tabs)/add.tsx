@@ -129,7 +129,7 @@ const RegisterMedication = () => {
       quantidade: currentStock,
       observacao: additionalInfo,
       status: null,
-      duracao: parseInt(duracaoTratamento),
+      duracaoTratamento: parseInt(duracaoTratamento),
     };
 
     // criar instância da classe ApiServices
