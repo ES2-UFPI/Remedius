@@ -103,7 +103,7 @@ const RegisterMedication = () => {
 
     setIsLoading(true);
 
-    // criar entidade de medicamento
+    // criar entidade de medicamento clonada
     const clonedMedication = medication.clone();
 
     // criar instância da classe ApiServices
