@@ -1,7 +1,7 @@
 export interface MedicationData {
   id: number;
   nome: string;
-  laboratorio: string | null;
+  laboratorio: string;
   dataInicial: Date;
   horaInicial: string;
   frequencia: string;
@@ -9,14 +9,14 @@ export interface MedicationData {
   quantidade: string;
   observacao: string;
   status: string | null;
-  duracaoTratamento: number;
+  duracaoTratamento: string;
 }
 
 export class MedicationPrototype implements MedicationData {
   constructor(
     public id: number = 0,
     public nome: string = '',
-    public laboratorio: string | null = null,
+    public laboratorio: string = 'Generico',
     public dataInicial: Date = new Date(),
     public horaInicial: string = '08:00',
     public frequencia: string = '12 em 12 horas',
@@ -24,7 +24,7 @@ export class MedicationPrototype implements MedicationData {
     public quantidade: string = '',
     public observacao: string = 'Tomar com água',
     public status: string | null = null,
-    public duracaoTratamento: number = 0
+    public duracaoTratamento: string = ''
   ) { }
 
   clone(): MedicationPrototype {
@@ -43,8 +43,33 @@ export class MedicationPrototype implements MedicationData {
     );
   }
 
+  setId(id: number): this {
+    this.id = id;
+    return this;
+  }
+
   setNome(nome: string): this {
     this.nome = nome;
+    return this;
+  }
+
+  setLaboratorio(laboratorio: string): this {
+    this.laboratorio = laboratorio;
+    return this;
+  }
+
+  setDataInicial(dataInicial: Date): this {
+    this.dataInicial = dataInicial;
+    return this;
+  }
+
+  setHorarioInicio(horaInicial: string): this {
+    this.horaInicial = horaInicial;
+    return this;
+  }
+  
+  setFrequencia(frequencia: string): this {
+    this.frequencia = frequencia;
     return this;
   }
 
@@ -53,23 +78,13 @@ export class MedicationPrototype implements MedicationData {
     return this;
   }
 
-  setFrequencia(frequencia: string): this {
-    this.frequencia = frequencia;
+  setQuantidade(quantidade: string): this {
+    this.quantidade = quantidade;
     return this;
   }
 
-  setHorarioInicio(horaInicial: string): this {
-    this.horaInicial = horaInicial;
-    return this;
-  }
-
-  setInformacoesAdicionais(observacao: string): this {
+  setObservacao(observacao: string): this {
     this.observacao = observacao;
-    return this;
-  }
-
-  setLaboratorio(laboratorio: string | null): this {
-    this.laboratorio = laboratorio;
     return this;
   }
 
@@ -78,7 +93,7 @@ export class MedicationPrototype implements MedicationData {
     return this;
   }
 
-  setDuracaoTratamento(duracao: number): this {
+  setDuracaoTratamento(duracao: string): this {
     this.duracaoTratamento = duracao;
     return this;
   }

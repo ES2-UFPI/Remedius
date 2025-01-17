@@ -10,8 +10,8 @@ export class ApiServices {
                 nome: nome,
                 laboratorio: laboratorio,
             });
-            const medicamentoId = createMedicamentoResponse.data.id;
-            return medicamentoId;
+            return createMedicamentoResponse.data.id;
+            
         } catch (error) {
             console.error(error);
         }
