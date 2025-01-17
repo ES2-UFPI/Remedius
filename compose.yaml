@@ -1,9 +1,0 @@
-services:
-  postgres:
-    image: 'postgres:14'
-    environment:
-      - 'POSTGRES_DB=remedius_db'
-      - 'POSTGRES_PASSWORD=remedius123'
-      - 'POSTGRES_USER=remedius'
-    ports:
-      - '5432:5432'
