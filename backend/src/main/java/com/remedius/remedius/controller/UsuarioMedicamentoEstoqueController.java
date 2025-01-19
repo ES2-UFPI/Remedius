@@ -1,49 +1,45 @@
 package com.remedius.remedius.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.remedius.remedius.entities.*;
-import com.remedius.remedius.service.*;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.remedius.remedius.DTOs.AtualizarEstoqueDTO;
+import com.remedius.remedius.DTOs.CriarEstoqueDTO;
+import com.remedius.remedius.entities.UsuarioMedicamentoEstoqueEntity;
+import com.remedius.remedius.service.UsuarioMedicamentoEstoqueService;
 
 @RestController
 @RequestMapping("/estoque")
 public class UsuarioMedicamentoEstoqueController {
 
-    private final UsuarioMedicamentoEstoqueService service;
+    private final UsuarioMedicamentoEstoqueService estoqueService;
 
-    public UsuarioMedicamentoEstoqueController(UsuarioMedicamentoEstoqueService service) {
-        this.service = service;
+    public UsuarioMedicamentoEstoqueController(UsuarioMedicamentoEstoqueService estoqueService) {
+        this.estoqueService = estoqueService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<UsuarioMedicamentoEstoqueEntity>> getAllEstoques() {
-        return ResponseEntity.ok(service.getAllEstoques());
+    @PostMapping
+    public ResponseEntity<UsuarioMedicamentoEstoqueEntity> criarEstoque(@RequestBody CriarEstoqueDTO estoque)
+            throws NotFoundException {
+
+        UsuarioMedicamentoEstoqueEntity estoqueCriado = estoqueService.criarEstoque(estoque);
+
+        return ResponseEntity.ok(estoqueCriado);
+
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioMedicamentoEstoqueEntity> getEstoqueById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.getEstoqueById(id));
-    }
+    @PutMapping
+    public ResponseEntity<UsuarioMedicamentoEstoqueEntity> atualizarEstoque(@RequestBody AtualizarEstoqueDTO dto)
+            throws Exception {
 
-    @PutMapping("/acrescimo/{id}")
-    public ResponseEntity<UsuarioMedicamentoEstoqueEntity> updateEstoqueAcrescimo(
-            @PathVariable Integer id,
-            @RequestBody UsuarioMedicamentoEstoqueEntity updatedEstoque) {
-        return ResponseEntity.ok(service.updateEstoqueAcrescimo(id, updatedEstoque));
-    }
+        UsuarioMedicamentoEstoqueEntity estoque = estoqueService.atualizarEstoque(dto);
 
-    @PutMapping("/decrescimo/{id}")
-    public ResponseEntity<UsuarioMedicamentoEstoqueEntity> updateEstoqueDecrescimo(
-            @PathVariable Integer id,
-            @RequestBody UsuarioMedicamentoEstoqueEntity updatedEstoque) {
-        return ResponseEntity.ok(service.updateEstoqueDecrescimo(id, updatedEstoque));
-    }
+        return ResponseEntity.ok(estoque);
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEstoque(@PathVariable Integer id) {
-        service.deleteEstoque(id);
-        return ResponseEntity.noContent().build();
     }
 }

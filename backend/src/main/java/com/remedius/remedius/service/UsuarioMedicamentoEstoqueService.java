@@ -1,71 +1,105 @@
 package com.remedius.remedius.service;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 // import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-// import org.springframework.web.bind.annotation.*;
-import com.remedius.remedius.entities.*;
-import com.remedius.remedius.repository.*;
-// import com.remedius.remedius.service.*;
-import java.util.List;
-import java.util.Optional;
+
+import com.remedius.remedius.DTOs.AtualizarEstoqueDTO;
+import com.remedius.remedius.DTOs.CriarEstoqueDTO;
+import com.remedius.remedius.entities.UsuarioMedicamentoEntity;
+import com.remedius.remedius.entities.UsuarioMedicamentoEstoqueEntity;
+import com.remedius.remedius.enums.StatusEstoque;
+import com.remedius.remedius.repository.UsuarioMedicamentoEstoqueRepository;
+import com.remedius.remedius.repository.UsuarioMedicamentoRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UsuarioMedicamentoEstoqueService {
 
-    private final UsuarioMedicamentoEstoqueRepository repository;
+    private final UsuarioMedicamentoEstoqueRepository medicamentoEstoqueRepository;
 
-    public UsuarioMedicamentoEstoqueService(UsuarioMedicamentoEstoqueRepository repository) {
-        this.repository = repository;
+    private final UsuarioMedicamentoRepository usuarioMedicamentoRepository;
+
+    public UsuarioMedicamentoEstoqueService(
+            UsuarioMedicamentoEstoqueRepository medicamentoEstoqueRepository,
+            UsuarioMedicamentoRepository usuarioMedicamentoRepository) {
+        this.medicamentoEstoqueRepository = medicamentoEstoqueRepository;
+        this.usuarioMedicamentoRepository = usuarioMedicamentoRepository;
     }
 
-    public List<UsuarioMedicamentoEstoqueEntity> getAllEstoques() {
-        return repository.findAll();
+    @Transactional
+    public UsuarioMedicamentoEstoqueEntity criarEstoque(CriarEstoqueDTO estoque) throws NotFoundException {
+
+        UsuarioMedicamentoEntity usuarioMedicamento = usuarioMedicamentoRepository
+                .findById(estoque.getUsuarioMedicamentoId())
+                .orElseThrow(() -> new NotFoundException());
+
+        UsuarioMedicamentoEstoqueEntity estoqueCriado = new UsuarioMedicamentoEstoqueEntity();
+
+        estoqueCriado.setUsuarioMedicamento(usuarioMedicamento);
+
+        estoqueCriado.setQuantidade(estoque.getQuantidade());
+
+        estoqueCriado.setStatus(estoque.getStatus());
+
+        estoqueCriado.setUltimaCompra(estoque.getUltimaCompra());
+
+        return medicamentoEstoqueRepository.save(estoqueCriado);
+
     }
 
+    @Transactional
+    public UsuarioMedicamentoEstoqueEntity atualizarEstoque(AtualizarEstoqueDTO dto) throws Exception {
 
+        UsuarioMedicamentoEstoqueEntity estoque = medicamentoEstoqueRepository.findByIdWithRelationships(dto.getId())
 
-    public UsuarioMedicamentoEstoqueEntity getEstoqueById(Integer id) {
-        return repository.findById(id).orElse(null);
-    }
+                .orElseThrow(() -> new NotFoundException());
 
-    public Optional<UsuarioMedicamentoEstoqueEntity> getEstoqueByUsuarioMedicacoesId(Integer usuarioMedicacoesId) {
-        return repository.findByUsuarioMedicacoesId(usuarioMedicacoesId);
-    }
+        if (dto.getQuantidade() != null) {
 
-    public UsuarioMedicamentoEstoqueEntity createEstoque(UsuarioMedicamentoEstoqueEntity estoque) {
-        return repository.save(estoque);
-    }
+            // Se quantidade for zero, atualiza status para FINALIZADO
 
-    public UsuarioMedicamentoEstoqueEntity updateEstoqueAcrescimo(Integer id, UsuarioMedicamentoEstoqueEntity updatedEstoque) {
-        UsuarioMedicamentoEstoqueEntity estoque = getEstoqueById(id);
-        if (estoque == null) {
-            return createEstoque(estoque);
+            if (dto.getQuantidade() == 0) {
+
+                estoque.setStatus(StatusEstoque.FINALIZADO);
+
+            }
+
+            estoque.setQuantidade(dto.getQuantidade());
+
         }
-        estoque.setQuantidade(estoque.getQuantidade() + updatedEstoque.getQuantidade());
-        estoque.setUltimaCompra(updatedEstoque.getUltimaCompra());
-        estoque.setStatus(updatedEstoque.getStatus());
-        return repository.save(estoque);
-    }
 
-    public UsuarioMedicamentoEstoqueEntity updateEstoqueDecrescimo(Integer id, UsuarioMedicamentoEstoqueEntity updatedEstoque) {
-        UsuarioMedicamentoEstoqueEntity estoque = getEstoqueById(id);
-        if (estoque == null) {
-            return createEstoque(estoque);
-        }
-        Integer diferenca_de_estoque = estoque.getQuantidade() - updatedEstoque.getQuantidade();
-        if (diferenca_de_estoque < 0) {
-            return null;
-        }else{
-            estoque.setQuantidade(diferenca_de_estoque);
-            estoque.setUltimaCompra(estoque.getUltimaCompra());
-            estoque.setStatus(updatedEstoque.getStatus());
-            return repository.save(estoque);
-        }
-    }
+        if (dto.getStatus() != null) {
 
-    public void deleteEstoque(Integer id) {
-        UsuarioMedicamentoEstoqueEntity estoque = getEstoqueById(id);
-        repository.delete(estoque);
+            // Se status for FINALIZADO, zera a quantidade
+
+            if (dto.getStatus() == StatusEstoque.FINALIZADO) {
+
+                estoque.setQuantidade(0);
+
+            }
+
+            estoque.setStatus(dto.getStatus());
+
+        }
+
+        if (dto.getUltimaCompra() != null) {
+
+            if (dto.getUltimaCompra().isAfter(LocalDateTime.now())) {
+
+                throw new Exception("Data de última compra não pode ser futura");
+
+            }
+
+            estoque.setUltimaCompra(dto.getUltimaCompra());
+
+        }
+
+        return medicamentoEstoqueRepository.save(estoque);
+
     }
 }
