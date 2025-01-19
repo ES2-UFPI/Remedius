@@ -1,65 +1,42 @@
 package com.remedius.remedius.entities;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import com.remedius.remedius.enums.StatusEstoque;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
+
 @Entity
+
 @Table(name = "medicamento_estoques")
+
 public class UsuarioMedicamentoEstoqueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "usuario_medicacoes_id", nullable = false)
-    private Integer usuarioMedicacoesId;
+    @OneToOne
+    @JoinColumn(name = "usuario_medicamento_id", unique = true)
+    private UsuarioMedicamentoEntity usuarioMedicamento;
 
     private Integer quantidade;
 
-    @Column(name = "ultima_compra")
     private LocalDateTime ultimaCompra;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
 
-    public Integer getId() {
-        return id;
-    }
+    private StatusEstoque status;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUsuarioMedicacoesId() {
-        return usuarioMedicacoesId;
-    }
-
-    public void setUsuarioMedicacoesId(Integer usuarioMedicacoesId) {
-        this.usuarioMedicacoesId = usuarioMedicacoesId;
-    }
-
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public LocalDateTime getUltimaCompra() {
-        return ultimaCompra;
-    }
-
-    public void setUltimaCompra(LocalDateTime ultimaCompra) {
-        this.ultimaCompra = ultimaCompra;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    
 }
