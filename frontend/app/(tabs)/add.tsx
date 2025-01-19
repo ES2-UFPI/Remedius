@@ -7,7 +7,7 @@ import { Link } from 'expo-router';
 import { Picker } from '@react-native-picker/picker';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { ApiServices } from '../../services/apiServices'; // Importar a classe ApiServices
+import { ApiServices }  from '../../services/apiServices'; // Importar a classe ApiServices
 import axios from 'axios';
 import { parse } from 'date-fns';
 
