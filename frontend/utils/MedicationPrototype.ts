@@ -85,6 +85,7 @@ export class MedicationPrototype implements MedicationData {
 
   setObservacao(observacao: string): this {
     this.observacao = observacao;
+
     return this;
   }
 
@@ -92,6 +93,7 @@ export class MedicationPrototype implements MedicationData {
     this.status = status;
     return this;
   }
+
 
   setDuracaoTratamento(duracao: string): this {
     this.duracaoTratamento = duracao;

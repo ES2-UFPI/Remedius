@@ -35,6 +35,6 @@ public class UsuarioMedicamentoEntity {
     // @OneToOne(mappedBy = "usuarioMedicamento")
     // private MedicamentoEstoqueEntity estoque;
     
-    // @OneToMany(mappedBy = "usuarioMedicamento")
-    // private List<TratamentoEntity> tratamentos;
+    @OneToMany(mappedBy = "usuarioMedicamento")
+    private List<TratamentoEntity> tratamentos;
 }
