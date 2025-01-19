@@ -99,18 +99,14 @@ const AddMedication = () => {
     try {
       const apiServices = new ApiServices()
 
-      // Create the medication first
       const medicationId = await apiServices.createMedicamento(medication.nome, medication.laboratorio)
 
       if (medicationId) {
-        // Update the medication object with the new ID
         setMedication((prev) => prev.clone().setId(medicationId))
 
-        // Add the medication to the user
-        await apiServices.addMedicamentoUsuario(medication, 1) // Assuming user ID is 1
+        const id_usuarioMedicamento: number = await apiServices.addMedicamentoUsuario(medication, 1)
 
-        // Add the stock for the medication
-        await apiServices.addEstoque(medication, 1) // Assuming user ID is 1
+        await apiServices.addEstoque(medication, id_usuarioMedicamento)
 
         Alert.alert("Sucesso", "Medicação adicionada com sucesso")
         router.back()
