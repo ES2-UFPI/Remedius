@@ -114,9 +114,9 @@ const RegisterMedication = () => {
       const medicamentoId = await apiServices.createMedicamento(clonedMedication.nome, clonedMedication.laboratorio);
       clonedMedication.setId(parseInt(medicamentoId));
       // chamar a função addMedicamentoUsuario da classe ApiServices
-      await apiServices.addMedicamentoUsuario(clonedMedication, 1);
+      const id_usuarioMedicamento: number = await apiServices.addMedicamentoUsuario(clonedMedication, 1);
       // chamar a função addEstoque da classe ApiServices
-      await apiServices.addEstoque(clonedMedication, 1);
+      await apiServices.addEstoque(clonedMedication, id_usuarioMedicamento);
       clearFormData();
     } catch (error) {
       console.error('Erro ao cadastrar medicação:', error);
