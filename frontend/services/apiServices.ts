@@ -10,8 +10,8 @@ export class ApiServices {
                 nome: nome,
                 laboratorio: laboratorio,
             });
-            const medicamentoId = createMedicamentoResponse.data.id;
-            return medicamentoId;
+            return createMedicamentoResponse.data.id;
+            
         } catch (error) {
             console.error(error);
         }
@@ -51,7 +51,6 @@ export class ApiServices {
             Alert.alert('Não foi possível adicionar estoque ao medicamento. Tente novamente.');
         }
     }
-
     // função para buscar medicações recentes sem status atualizado
     async getMedicacoesRecentes(usuarioId: number) {
         try {
