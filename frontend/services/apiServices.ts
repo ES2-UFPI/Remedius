@@ -21,7 +21,7 @@ export class ApiServices {
     async addMedicamentoUsuario(medicamento: MedicationPrototype, usuarioId: number) {
         const formattedDate = `${medicamento.dataInicial.toISOString().split('T')[0]}T${medicamento.horaInicial}:00`;
         try {
-            await axios.post(`http://localhost:8080/usuarios-medicamentos/${usuarioId}`, {
+            await axios.post(`http://localhost:8080/usuario-medicamentos/${usuarioId}`, {
                 medicamentoId: medicamento.id,
                 dataInicial: formattedDate,
                 frequencia: medicamento.frequencia,
