@@ -10,6 +10,7 @@ export interface MedicationData {
   observacao: string;
   status: string | null;
   duracaoTratamento: string;
+  cor: string | null;
 }
 
 export class MedicationPrototype implements MedicationData {
@@ -24,7 +25,8 @@ export class MedicationPrototype implements MedicationData {
     public quantidade: string = '',
     public observacao: string = '',
     public status: string | null = null,
-    public duracaoTratamento: string = ''
+    public duracaoTratamento: string = '',
+    public cor: string | null = null
   ) { }
 
   clone(): MedicationPrototype {
@@ -39,7 +41,8 @@ export class MedicationPrototype implements MedicationData {
       this.quantidade,
       this.observacao,
       this.status,
-      this.duracaoTratamento
+      this.duracaoTratamento,
+      this.cor
     );
   }
 
@@ -55,7 +58,8 @@ export class MedicationPrototype implements MedicationData {
       json.quantidade,
       json.observacao,
       json.status,
-      json.duracaoTratamento
+      json.duracaoTratamento,
+      json.cor
     );
   }
 
@@ -113,6 +117,11 @@ export class MedicationPrototype implements MedicationData {
 
   setDuracaoTratamento(duracao: string): this {
     this.duracaoTratamento = duracao;
+    return this;
+  }
+
+  setCor(cor: string | null): this {
+    this.cor = cor;
     return this;
   }
 }
