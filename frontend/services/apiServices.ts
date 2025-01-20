@@ -4,38 +4,52 @@ import { Alert } from 'react-native';
 
 export class ApiServices {
     // função para criar um novo medicamento
-    async createMedicamento(nome: string, laboratorio: string | null) {
+    async createMedicamento(nome: string, laboratorio: string | null): Promise <number> {
         try {
             const createMedicamentoResponse = await axios.post('http://localhost:8080/medicamentos', {
                 nome: nome,
-                laboratorio: laboratorio,
+                laboratorio: laboratorio
             });
             return createMedicamentoResponse.data.id;
-            
         } catch (error) {
             console.error(error);
         }
+        return 0;
     }
 
     // função para adicionar medicação ao usuário
     async addMedicamentoUsuario(medicamento: MedicationPrototype, usuarioId: number): Promise<number> {
-        const formattedDate = `${medicamento.dataInicial.toISOString().split('T')[0]}T${medicamento.horaInicial}:00`;
         try {
-            const id_usuarioMedicamento: number = await axios.post(`http://localhost:8080/usuarios-medicamentos/${usuarioId}`, {
+            const relacoes = await axios.post(`http://localhost:8080/usuario-medicamentos`, {
                 medicamentoId: medicamento.id,
-                dataInicial: formattedDate,
-                frequencia: medicamento.frequencia,
-                dosagem: parseFloat(medicamento.dosagem),
-                quant_inicial: parseInt(medicamento.quantidade || '0'),
-                observacao: medicamento.observacao,
-                duracaoTratamento: medicamento.duracaoTratamento
+                usuario_id: usuarioId,
+                cor: "vermelho"
             });
+            const id_usuarioMedicamento = relacoes.data.id;
             return id_usuarioMedicamento;
         } catch (error) {
             console.error('Erro ao cadastrar medicação:', error);
             Alert.alert('Não foi possível cadastrar a medicação. Tente novamente.'); 
         }
         return 0;
+    }
+
+    async addTratamento(medicamento: MedicationPrototype, id_usuarioMedicamento: number, usuario_id: number) {
+        const formattedDate = `${medicamento.dataInicial.toISOString().split('T')[0]}T${medicamento.horaInicial}:00`;
+        try {
+            const response = await axios.post(`http://localhost:8080/tratamentos`, {
+                usuarioMedicamentoId: id_usuarioMedicamento,
+                dataInicial: formattedDate,
+                frequencia: parseInt(medicamento.frequencia),
+                duracao: medicamento.duracaoTratamento,
+                dosagem: parseFloat(medicamento.dosagem),
+                observacao: medicamento.observacao,
+               }
+            );
+        } catch (error) {
+            console.error('Erro ao cadastrar medicação:', error);
+            Alert.alert('Não foi possível cadastrar a medicação. Tente novamente.'); 
+        }
     }
 
     // função para adicionar estoque ao medicamento

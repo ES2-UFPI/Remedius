@@ -99,14 +99,17 @@ const AddMedication = () => {
     try {
       const apiServices = new ApiServices()
 
-      const medicationId = await apiServices.createMedicamento(medication.nome, medication.laboratorio)
+      const medicationId: number = await apiServices.createMedicamento(medication.nome, medication.laboratorio)
 
       if (medicationId) {
         setMedication((prev) => prev.clone().setId(medicationId))
+        medication.setId(medicationId)
 
         const id_usuarioMedicamento: number = await apiServices.addMedicamentoUsuario(medication, 1)
 
         await apiServices.addEstoque(medication, id_usuarioMedicamento)
+
+        await apiServices.addTratamento(medication, id_usuarioMedicamento, 1)
 
         Alert.alert("Sucesso", "Medicação adicionada com sucesso")
         router.back()
