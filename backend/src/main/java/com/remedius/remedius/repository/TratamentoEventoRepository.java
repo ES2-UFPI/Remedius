@@ -14,6 +14,30 @@ import com.remedius.remedius.entities.TratamentoEventoEntity;
 @Repository
 public interface TratamentoEventoRepository extends JpaRepository<TratamentoEventoEntity, Long> {
     @Query("""
+        SELECT new com.remedius.remedius.dto.EventoAtivoPorUsuarioDTO(
+            te.id,
+            m.nome,
+            m.laboratorio,
+            te.horario,
+            t.dosagem,
+            um.cor,
+            te.status
+        )
+        FROM TratamentoEvento te
+        JOIN te.tratamento t
+        JOIN t.usuarioMedicamento um
+        JOIN um.medicamento m
+        WHERE t.ativo = true
+        AND um.usuario.id = :usuarioId
+        AND te.horario < :agora
+        AND te.status = 'ESQUECIDO'
+        ORDER BY te.horario DESC
+        """)
+    List<EventoAtivoPorUsuarioDTO> findEventosAtrasadosPorUsuario(
+            Long usuarioId, 
+            LocalDateTime agora);
+
+    @Query("""
         SELECT new com.remedius.remedius.DTOs.EventoAtivoPorUsuarioDTO(
             te.id,
             m.nome,

@@ -45,4 +45,11 @@ public class TratamentoEventoController {
         TratamentoEventoEntity evento = tratamentoEventoService.atualizarStatusEvento(dto);
         return ResponseEntity.ok(evento);
     }
+
+    @GetMapping("/usuario/{usuarioId}/atrasados")
+    public ResponseEntity<List<EventoAtivoPorUsuarioDTO>> buscarEventosAtrasados(
+            @PathVariable Long usuarioId) {
+        List<EventoAtivoPorUsuarioDTO> eventos = tratamentoEventoService.buscarEventosAtrasados(usuarioId);
+        return ResponseEntity.ok(eventos);
+    }
 }

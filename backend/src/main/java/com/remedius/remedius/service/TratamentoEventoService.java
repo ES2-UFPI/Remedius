@@ -24,6 +24,13 @@ public class TratamentoEventoService {
     public List<EventoAtivoPorUsuarioDTO> buscarEventosAtivos(Long usuarioId, LocalDateTime inicio, LocalDateTime fim) {
         return tratamentoEventoRepository.findEventosAtivosPorUsuario(usuarioId, inicio, fim);
     }
+
+    public List<EventoAtivoPorUsuarioDTO> buscarEventosAtrasados(Long usuarioId) {
+        return tratamentoEventoRepository.findEventosAtrasadosPorUsuario(
+            usuarioId, 
+            LocalDateTime.now()
+        );
+    }
     
     public TratamentoEventoEntity atualizarStatusEvento(TratamentoEventoUpdateDTO dto) {
         TratamentoEventoEntity evento = tratamentoEventoRepository.findByIdWithRelationships(dto.getId())
