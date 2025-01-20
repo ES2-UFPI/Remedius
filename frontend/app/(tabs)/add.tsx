@@ -26,7 +26,12 @@ const AddMedication = () => {
   const updateMedication = (key: keyof MedicationPrototype, value: any) => {
     setMedication((prev) => {
       const updated = prev.clone()
-      return (updated as any)[`set${key.charAt(0).toUpperCase() + key.slice(1)}`](value)
+      if (typeof updated[key] === "function") {
+        return (updated[key] as Function)(value)
+      } else {
+        ;(updated as any)[key] = value
+        return updated
+      }
     })
   }
 
