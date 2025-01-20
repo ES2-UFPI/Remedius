@@ -20,7 +20,7 @@ import com.remedius.remedius.service.TratamentoEventoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/tratamento-eventos")
+@RequestMapping("/eventos")
 public class TratamentoEventoController {
     
     private final TratamentoEventoService tratamentoEventoService;
@@ -30,7 +30,7 @@ public class TratamentoEventoController {
         this.tratamentoEventoService = tratamentoEventoService;
     }
     
-    @GetMapping("/usuario/{usuarioId}")
+    @GetMapping("/{usuarioId}")
     public ResponseEntity<List<EventoAtivoPorUsuarioDTO>> buscarEventosAtivos(
             @PathVariable Long usuarioId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,

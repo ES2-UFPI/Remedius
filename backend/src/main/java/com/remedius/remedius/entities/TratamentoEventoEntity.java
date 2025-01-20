@@ -1,6 +1,8 @@
 package com.remedius.remedius.entities;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.remedius.remedius.enums.StatusEventoEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,6 +25,7 @@ public class TratamentoEventoEntity {
     
     @ManyToOne
     @JoinColumn(name = "tratamentos")
+    @JsonIgnore
     private TratamentoEntity tratamento;
     
     private LocalDateTime horario;

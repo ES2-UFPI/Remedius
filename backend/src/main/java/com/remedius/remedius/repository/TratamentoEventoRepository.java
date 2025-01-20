@@ -14,7 +14,7 @@ import com.remedius.remedius.entities.TratamentoEventoEntity;
 @Repository
 public interface TratamentoEventoRepository extends JpaRepository<TratamentoEventoEntity, Long> {
     @Query("""
-        SELECT new com.example.dto.EventoAtivoPorUsuarioDTO(
+        SELECT new com.remedius.remedius.DTOs.EventoAtivoPorUsuarioDTO(
             te.id,
             m.nome,
             m.laboratorio,
@@ -23,7 +23,7 @@ public interface TratamentoEventoRepository extends JpaRepository<TratamentoEven
             um.cor,
             te.status
         )
-        FROM TratamentoEvento te
+        FROM TratamentoEventoEntity te
         JOIN te.tratamento t
         JOIN t.usuarioMedicamento um
         JOIN um.medicamento m
@@ -39,11 +39,14 @@ public interface TratamentoEventoRepository extends JpaRepository<TratamentoEven
             
     @Query("""
         SELECT te
-        FROM TratamentoEvento te
+        FROM TratamentoEventoEntity te
         JOIN FETCH te.tratamento t
         JOIN FETCH t.usuarioMedicamento um
-        JOIN FETCH um.medicamento
+        JOIN FETCH um.medicamento m
         WHERE te.id = :id
         """)
     Optional<TratamentoEventoEntity> findByIdWithRelationships(Long id);
+
+    // Deletar eventos que tem o tratamento id = tratamentoId
+    void deleteByTratamentoId(Long tratamentoId);
 }

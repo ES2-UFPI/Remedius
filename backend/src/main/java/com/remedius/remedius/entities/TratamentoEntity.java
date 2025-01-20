@@ -1,7 +1,9 @@
 package com.remedius.remedius.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.remedius.remedius.enums.StatusTratamentoEnum;
 
 import jakarta.persistence.Entity;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,7 +32,8 @@ public class TratamentoEntity {
 
     @ManyToOne
 
-    @JoinColumn(name = "usuario_medicacoes_id")
+    @JoinColumn(name = "usuario_medicamento_id")
+    @JsonIgnore
     private UsuarioMedicamentoEntity usuarioMedicamento;
 
     private LocalDateTime dataInicial;
@@ -48,7 +52,6 @@ public class TratamentoEntity {
     private Boolean ativo;
 
     // TODO: Criar a relação com Evento
-    // @OneToMany(mappedBy = "tratamento");
-
-    // private List<TratamentoEvento> eventos;
+    @OneToMany(mappedBy = "tratamento")
+    private List<TratamentoEventoEntity> eventos;
 }
