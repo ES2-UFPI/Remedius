@@ -167,7 +167,7 @@ const MedicationList = () => {
               >
                 Medicações suspensas
               </Text>
-              {suspendedMedications.length === 0 ? ( <Text className="text-gray-800 text-lg mt-4">Nenhuma medicação ativa</Text>
+              {suspendedMedications.length === 0 ? ( <Text className="text-gray-800 text-lg mt-4">Nenhuma medicação suspensa</Text>
                 ) : (suspendedMedications.map((medication, index) => (
                 <MedicationCard
                   key={medication.id}
