@@ -16,13 +16,13 @@ export class MedicationPrototype implements MedicationData {
   constructor(
     public id: number = 0,
     public nome: string = '',
-    public laboratorio: string = 'Generico',
+    public laboratorio: string = '',
     public dataInicial: Date = new Date(),
     public horaInicial: string = '08:00',
     public frequencia: string = '12 em 12 horas',
     public dosagem: string = '',
     public quantidade: string = '',
-    public observacao: string = 'Tomar com água',
+    public observacao: string = '',
     public status: string | null = null,
     public duracaoTratamento: string = ''
   ) { }
@@ -40,6 +40,22 @@ export class MedicationPrototype implements MedicationData {
       this.observacao,
       this.status,
       this.duracaoTratamento
+    );
+  }
+
+  static fromJSON(json: any): MedicationPrototype {
+    return new MedicationPrototype(
+      json.id,
+      json.nome,
+      json.laboratorio,
+      new Date(json.dataInicial),
+      json.horaInicial,
+      json.frequencia,
+      json.dosagem,
+      json.quantidade,
+      json.observacao,
+      json.status,
+      json.duracaoTratamento
     );
   }
 
@@ -67,7 +83,7 @@ export class MedicationPrototype implements MedicationData {
     this.horaInicial = horaInicial;
     return this;
   }
-  
+
   setFrequencia(frequencia: string): this {
     this.frequencia = frequencia;
     return this;
