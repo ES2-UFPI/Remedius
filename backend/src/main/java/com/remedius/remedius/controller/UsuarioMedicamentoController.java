@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
+
 @RestController
 @RequestMapping("/usuario-medicamentos")
 @RequiredArgsConstructor
@@ -18,9 +19,14 @@ public class UsuarioMedicamentoController {
     private final UsuarioMedicamentoService usuarioMedicamentoService;
 
 
-    @GetMapping("/{id}")
+    @GetMapping
     public ResponseEntity<Iterable<UsuarioMedicamentoEntity>> listarMedicamentos() {
         return ResponseEntity.ok(usuarioMedicamentoService.listarMedicamentos());
+    }
+
+    @GetMapping("/{usuarioId}")
+    public ResponseEntity<Iterable<UsuarioMedicamentoEntity>> listarMedicamentosUsuarioId(@PathVariable("usuarioId") Long usuarioId) {
+        return ResponseEntity.ok(usuarioMedicamentoService.listarMedicamentosUsuarioId(usuarioId));
     }
 
     @PostMapping
