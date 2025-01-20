@@ -1,13 +1,17 @@
 package com.remedius.remedius.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDateTime;
+
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.remedius.remedius.DTOs.AtualizarTratamentoDTO;
 import com.remedius.remedius.DTOs.CriarTratamentoDTO;
 import com.remedius.remedius.entities.TratamentoEntity;
+import com.remedius.remedius.entities.TratamentoEventoEntity;
 import com.remedius.remedius.entities.UsuarioMedicamentoEntity;
+import com.remedius.remedius.enums.StatusEventoEnum;
+import com.remedius.remedius.repository.TratamentoEventoRepository;
 import com.remedius.remedius.repository.TratamentoRepository;
 import com.remedius.remedius.repository.UsuarioMedicamentoRepository;
 
@@ -21,8 +25,7 @@ public class TratamentoService {
 
     private final UsuarioMedicamentoRepository usuarioMedicamentoRepository;
     // TODO: Adicionar Evento Repository
-
-
+    private final TratamentoEventoRepository tratamentoEventoRepository;
 
     @Transactional
     public TratamentoEntity criarTratamento(CriarTratamentoDTO dto) throws Exception {
@@ -119,11 +122,7 @@ public class TratamentoService {
 
         tratamento = tratamentoRepository.save(tratamento);
 
-        // Se houve alteração em parâmetros que afetam os eventos, recalcula-os
-        // TODO: Implementar método para gerar eventos de tratamento
         if (recalcularEventos) {
-
-            // tratamentoEventoRepository.deleteByTratamentoId(tratamento.getId());
 
             gerarEventosTratamento(tratamento);
 
@@ -143,8 +142,7 @@ public class TratamentoService {
         }
 
         // Primeiro deleta os eventos associados
-        // TODO: Implementar método para deletar eventos de tratamento
-        // tratamentoEventoRepository.deleteByTratamentoId(id);
+        tratamentoEventoRepository.deleteByTratamentoId(id);
 
         // Depois deleta o tratamento
 
@@ -152,36 +150,33 @@ public class TratamentoService {
 
     }
 
-    // TODO: Implementar método para gerar eventos de tratamento
     private void gerarEventosTratamento(TratamentoEntity tratamento) {
 
-        // LocalDateTime dataHoraAtual = tratamento.getDataInicial();
+        LocalDateTime dataHoraAtual = tratamento.getDataInicial();
 
-        // int eventosGerados = 0;
+        int eventosGerados = 0;
 
-        // int horasTotal = tratamento.getDuracao() * 24; // Converte duração de dias
-        // para horas
+        int horasTotal = tratamento.getDuracao() * 24; // Converte duração de diaspara horas
 
-        // int intervaloHoras = 24 / tratamento.getFrequencia(); // Calcula intervalo em
-        // horas entre eventos
+        int intervaloHoras = 24 / tratamento.getFrequencia(); // Calcula intervalo em horas entre eventos
 
-        // while (eventosGerados < (horasTotal / intervaloHoras)) {
+        while (eventosGerados < (horasTotal / intervaloHoras)) {
 
-        // TratamentoEvento evento = new TratamentoEvento();
+            TratamentoEventoEntity evento = new TratamentoEventoEntity();
 
-        // evento.setTratamento(tratamento);
+            evento.setTratamento(tratamento);
 
-        // evento.setHorario(dataHoraAtual);
+            evento.setHorario(dataHoraAtual);
 
-        // evento.setStatus(StatusEvento.TOMADO); // Status inicial
+            evento.setStatus(StatusEventoEnum.AGENDADO); // Status inicial
 
-        // tratamentoEventoRepository.save(evento);
+            tratamentoEventoRepository.save(evento);
 
-        // dataHoraAtual = dataHoraAtual.plusHours(intervaloHoras);
+            dataHoraAtual = dataHoraAtual.plusHours(intervaloHoras);
 
-        // eventosGerados++;
+            eventosGerados++;
 
-        // }
+        }
 
     }
 }
