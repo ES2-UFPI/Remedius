@@ -1,7 +1,11 @@
 package com.remedius.remedius.controller;
 
+import java.util.List;
+
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,5 +45,15 @@ public class UsuarioMedicamentoEstoqueController {
 
         return ResponseEntity.ok(estoque);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<Iterable<UsuarioMedicamentoEstoqueEntity>> listarEstoques() {
+        return ResponseEntity.ok(estoqueService.listarEstoques());
+    }
+
+    @GetMapping("/{usuarioMedicamentoId}")
+    public ResponseEntity<List<UsuarioMedicamentoEstoqueEntity>> listarEstoquePorUsuarioMedicamentoId(@PathVariable("usuarioMedicamentoId") Long usuarioMedicamentoId) throws NotFoundException {
+        return ResponseEntity.ok(estoqueService.listarEstoquePorUsuarioMedicamentoId(usuarioMedicamentoId));
     }
 }

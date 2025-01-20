@@ -1,6 +1,7 @@
 package com.remedius.remedius.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 // import org.springframework.beans.factory.annotation.Autowired;
@@ -101,5 +102,13 @@ public class UsuarioMedicamentoEstoqueService {
 
         return medicamentoEstoqueRepository.save(estoque);
 
+    }
+
+    public List<UsuarioMedicamentoEstoqueEntity> listarEstoques() {
+        return medicamentoEstoqueRepository.findAll();
+    }
+
+    public List<UsuarioMedicamentoEstoqueEntity> listarEstoquePorUsuarioMedicamentoId(Long id) throws NotFoundException {
+        return medicamentoEstoqueRepository.findByUsuarioMedicamentoId(id);
     }
 }

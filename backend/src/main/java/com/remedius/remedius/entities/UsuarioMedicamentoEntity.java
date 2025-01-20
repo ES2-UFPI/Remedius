@@ -2,6 +2,8 @@ package com.remedius.remedius.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,6 +34,7 @@ public class UsuarioMedicamentoEntity {
     private String cor;
 
     @OneToOne(mappedBy = "usuarioMedicamento")
+    @JsonIgnore
     private UsuarioMedicamentoEstoqueEntity estoque;
 
     @OneToMany(mappedBy = "usuarioMedicamento")

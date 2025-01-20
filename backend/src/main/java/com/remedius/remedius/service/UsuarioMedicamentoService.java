@@ -28,6 +28,9 @@ public class UsuarioMedicamentoService {
         return usuarioMedicamentoRepository.findAll();
     }
 
+    public List<UsuarioMedicamentoEntity> listarMedicamentosUsuarioId(Long usuarioId) {
+        return usuarioMedicamentoRepository.findByUsuarioId(usuarioId);
+    }
 
     public UsuarioMedicamentoEntity adicionarMedicamento(UsuarioMedicamentoRequest request) {
         if (usuarioMedicamentoRepository.existsByUsuarioIdAndMedicamentoId(

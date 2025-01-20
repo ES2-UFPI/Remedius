@@ -2,6 +2,7 @@ package com.remedius.remedius.entities;
 
 import java.time.LocalDateTime;
 
+// import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.remedius.remedius.enums.StatusEstoque;
 
 import jakarta.persistence.Entity;
