@@ -1,9 +1,12 @@
 package com.remedius.remedius.controller;
 
+import java.util.List;
+
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,11 +46,24 @@ public class TratamentoController {
     }
 
     @DeleteMapping("/{id}")
-
     public ResponseEntity<Void> deletarTratamento(@PathVariable Long id) throws NotFoundException {
         tratamentoService.deletarTratamento(id);
 
         return ResponseEntity.noContent().build();
 
     }
+
+    @GetMapping
+    public ResponseEntity<List<TratamentoEntity>> getTratamento() throws NotFoundException {
+        return ResponseEntity.ok(tratamentoService.getTratamento());
+
+    }
+
+    @GetMapping("/{usuarioMedicamentoId}")
+    public ResponseEntity<List<TratamentoEntity>> getTratamentoByUsuarioMedicamentoId(
+            @PathVariable Long usuarioMedicamentoId) {
+        return ResponseEntity.ok(tratamentoService.getTratamentoByUsuarioMedicamentoId(usuarioMedicamentoId));
+
+    }
+
 }

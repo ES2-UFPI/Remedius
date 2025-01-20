@@ -1,6 +1,7 @@
 package com.remedius.remedius.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -178,5 +179,13 @@ public class TratamentoService {
 
         }
 
+    }
+
+    public List<TratamentoEntity> getTratamento() throws NotFoundException {
+        return tratamentoRepository.findAll();
+    }
+
+    public List<TratamentoEntity> getTratamentoByUsuarioMedicamentoId(Long usuarioMedicamentoId) {
+        return tratamentoRepository.findByUsuarioMedicamentoId(usuarioMedicamentoId);
     }
 }
