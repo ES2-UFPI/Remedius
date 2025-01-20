@@ -22,7 +22,7 @@ export class ApiServices {
         try {
             const relacoes = await axios.post(`http://localhost:8080/usuario-medicamentos`, {
                 medicamentoId: medicamento.id,
-                usuario_id: usuarioId,
+                usuarioId: usuarioId,
                 cor: "vermelho"
             });
             const id_usuarioMedicamento = relacoes.data.id;

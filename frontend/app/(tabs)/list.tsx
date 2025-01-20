@@ -104,7 +104,7 @@ const MedicationList = () => {
   useEffect(() => {
     const fetchMedications = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/usuario-medicamentos/1")
+        const response = await axios.get("http://localhost:8080/usuario-medicamentos")
 
         // separa as medicações ativas e suspensas
         // nota: a API não retorna medicações suspensas ainda, então usamos um placeholder
