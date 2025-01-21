@@ -7,15 +7,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
+// Repository
 @Repository
-public interface UsuarioMedicamentoRepository extends JpaRepository<UsuarioMedicamentoEntity, Integer> {
+public interface UsuarioMedicamentoRepository extends JpaRepository<UsuarioMedicamentoEntity, Long> {
+    Optional<UsuarioMedicamentoEntity> findByUsuarioIdAndMedicamentoId(Long usuarioId, Long medicamentoId);
+    boolean existsByUsuarioIdAndMedicamentoId(Long usuarioId, Long medicamentoId);
 
-    // Busca todas as medicações de um usuário específico pelo ID do usuário
-    @Query("SELECT um FROM UsuarioMedicamentoEntity um WHERE um.usuario.id = :usuarioId")
-    List<UsuarioMedicamentoEntity> findByUsuarioId(@Param("usuarioId") Integer usuarioId);
-
-    // Busca todas as instâncias de relacionamento para um medicamento específico pelo ID do medicamento
-    @Query("SELECT um FROM UsuarioMedicamentoEntity um WHERE um.medicamento.id = :medicamentoId")
-    List<UsuarioMedicamentoEntity> findByMedicamentoId(@Param("medicamentoId") Integer medicamentoId);
+    @Query("SELECT u FROM UsuarioMedicamentoEntity u WHERE u.usuario.id = :usuarioId")
+    List<UsuarioMedicamentoEntity> findByUsuarioId(@Param("usuarioId") Long usuarioId);
 }

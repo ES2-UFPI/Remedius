@@ -6,6 +6,8 @@ import { useFonts, Katibeh_400Regular } from '@expo-google-fonts/katibeh';
 import axios from 'axios';
 import AnimatedHeader from '../../components/Header';
 import { format, parseISO, isPast, isFuture } from 'date-fns';
+import MedicationScheduleMock from '@/components/MedicationScheduleMock';
+import RecentMedications from '@/entities/RecentMedications';
 
 interface Medication {
   id: number;
@@ -19,7 +21,13 @@ interface Medication {
   dosagem: number;
 }
 
-const MedicationCard = ({ name, dosage, time }) => (
+interface MedicationCardProps {
+  name: string;
+  dosage: string;
+  time: string;
+}
+
+const MedicationCard: React.FC<MedicationCardProps> = ({ name, dosage, time }) => (
   <View className="w-full flex-row justify-between items-center">
     <View className="flex-1">
       <Text className="text-[#2D3648] text-2xl sm:text-3xl font-bold mb-1">{name}</Text>
@@ -107,9 +115,13 @@ const Home = () => {
           <View className="mb-6 w-full" style={{ maxWidth: cardWidth }}>
             <View className="bg-white rounded-2xl p-4 sm:p-6 relative shadow-md">
               <Text className="text-[#36555E] text-4xl sm:text-5xl font-light" style={{ fontFamily: 'Katibeh_400Regular' }}>Cronograma</Text>
-              <MedicationSchedule />
+              <MedicationScheduleMock />
             </View>
           </View>
+
+          {/* Seção para Medicações Recentes (Medicações que não foi atualizado pelo usuário
+          a informação de que tomou a medicação) */}
+          <RecentMedications />
         </View>
       </Animated.ScrollView>
     </SafeAreaView>

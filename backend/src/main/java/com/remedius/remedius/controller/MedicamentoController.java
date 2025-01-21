@@ -21,7 +21,7 @@ public class MedicamentoController {
         return ResponseEntity.ok(medicamentos);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<MedicamentoEntity> getMedicamentoByName(@PathVariable String name) {
         MedicamentoEntity medicamento = medicamentoService.getMedicamentoByName(name);
         return ResponseEntity.ok(medicamento);

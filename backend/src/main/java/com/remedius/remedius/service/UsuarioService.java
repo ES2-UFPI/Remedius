@@ -27,13 +27,13 @@ public class UsuarioService {
     }
 
     // GET: Retorna um usuário pelo ID
-    public UsuarioEntity getUsuarioById(Integer id) {
+    public UsuarioEntity getUsuarioById(Long id) {
         Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
         return usuario.orElse(null);
     }
 
     // PUT: Atualiza um usuário existente pelo ID
-    public UsuarioEntity updateUsuarioById(Integer id, UsuarioEntity usuario) {
+    public UsuarioEntity updateUsuarioById(Long id, UsuarioEntity usuario) {
         
         Optional<UsuarioEntity> existingUsuario = usuarioRepository.findById(id);
 
@@ -50,13 +50,13 @@ public class UsuarioService {
     }
 
     // DELETE: Deleta um usuário pelo ID
-    public void deleteUsuarioById(Integer id) {
+    public void deleteUsuarioById(Long id) {
         Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
         usuario.ifPresent(usuarioRepository::delete);
     }
 
     // Método para buscar todas as medicações associadas a um usuário específico
-    public Set<UsuarioMedicamentoEntity> buscarMedicacoesDoUsuario(Integer usuarioId) {
+    public Set<UsuarioMedicamentoEntity> buscarMedicacoesDoUsuario(Long usuarioId) {
         Optional<UsuarioEntity> usuario = usuarioRepository.findById(usuarioId);
         return usuario.map(UsuarioEntity::getUsuarioMedicacacoes)
                       .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
