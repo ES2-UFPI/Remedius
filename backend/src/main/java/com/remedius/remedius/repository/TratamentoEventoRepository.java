@@ -14,7 +14,7 @@ import com.remedius.remedius.entities.TratamentoEventoEntity;
 @Repository
 public interface TratamentoEventoRepository extends JpaRepository<TratamentoEventoEntity, Long> {
     @Query("""
-        SELECT new com.remedius.remedius.dto.EventoAtivoPorUsuarioDTO(
+        SELECT new com.remedius.remedius.DTOs.EventoAtivoPorUsuarioDTO(
             te.id,
             m.nome,
             m.laboratorio,
@@ -23,7 +23,7 @@ public interface TratamentoEventoRepository extends JpaRepository<TratamentoEven
             um.cor,
             te.status
         )
-        FROM TratamentoEvento te
+        FROM TratamentoEventoEntity te
         JOIN te.tratamento t
         JOIN t.usuarioMedicamento um
         JOIN um.medicamento m

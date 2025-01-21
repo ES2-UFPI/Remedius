@@ -23,6 +23,20 @@ public class UsuarioMedicamentoService {
     private final UsuarioRepository usuarioRepository;
     private final MedicamentoRepository medicamentoRepository;
 
+    private UsuarioEntity findUsuarioById(Long id) {
+        return usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    }
+
+    private MedicamentoEntity findMedicamentoById(Long id) {
+        return medicamentoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Medicamento não encontrado"));
+    }
+
+    public UsuarioMedicamentoEntity findUsuarioMedicamentoById(Long id) {
+        return usuarioMedicamentoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Relação usuário-medicamento não encontrada"));
+    }
 
     public List<UsuarioMedicamentoEntity> listarMedicamentos() {
         return usuarioMedicamentoRepository.findAll();
@@ -38,11 +52,13 @@ public class UsuarioMedicamentoService {
             throw new IllegalStateException("Medicamento já associado a este usuário");
         }
 
-        UsuarioEntity usuario = usuarioRepository.findById(request.getUsuarioId())
-            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-            
-        MedicamentoEntity medicamento = medicamentoRepository.findById(request.getMedicamentoId())
-            .orElseThrow(() -> new RuntimeException("Medicamento não encontrado"));
+        // UsuarioEntity usuario = usuarioRepository.findById(request.getUsuarioId())
+        UsuarioEntity usuario = findUsuarioById(request.getUsuarioId());
+            // .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        // MedicamentoEntity medicamento = medicamentoRepository.findById(request.getMedicamentoId())
+        MedicamentoEntity medicamento = findMedicamentoById(request.getMedicamentoId());
+            // .orElseThrow(() -> new RuntimeException("Medicamento não encontrado"));
 
         UsuarioMedicamentoEntity usuarioMedicamento = new UsuarioMedicamentoEntity();
         usuarioMedicamento.setUsuario(usuario);
@@ -53,8 +69,9 @@ public class UsuarioMedicamentoService {
     }
 
     public UsuarioMedicamentoEntity atualizarMedicamento(Long id, UsuarioMedicamentoRequest request) {
-        UsuarioMedicamentoEntity usuarioMedicamento = usuarioMedicamentoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Relação usuário-medicamento não encontrada"));
+        // UsuarioMedicamentoEntity usuarioMedicamento = usuarioMedicamentoRepository.findById(id)
+        UsuarioMedicamentoEntity usuarioMedicamento = findUsuarioMedicamentoById(id);
+            // .orElseThrow(() -> new RuntimeException("Relação usuário-medicamento não encontrada"));
 
         // Se houver mudança de usuário ou medicamento, verifica se já existe a relação
         if (!usuarioMedicamento.getUsuario().getId().equals(request.getUsuarioId()) ||
@@ -65,11 +82,13 @@ public class UsuarioMedicamentoService {
                 throw new IllegalStateException("Medicamento já associado a este usuário");
             }
 
-            UsuarioEntity novoUsuario = usuarioRepository.findById(request.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+            // UsuarioEntity novoUsuario = usuarioRepository.findById(request.getUsuarioId())
+               UsuarioEntity novoUsuario = findUsuarioById(request.getUsuarioId()); 
+                // .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
             
-            MedicamentoEntity novoMedicamento = medicamentoRepository.findById(request.getMedicamentoId())
-                .orElseThrow(() -> new RuntimeException("Medicamento não encontrado"));
+            // MedicamentoEntity novoMedicamento = medicamentoRepository.findById(request.getMedicamentoId())
+               MedicamentoEntity novoMedicamento = findMedicamentoById(request.getMedicamentoId());
+                // .orElseThrow(() -> new RuntimeException("Medicamento não encontrado"));
 
             usuarioMedicamento.setUsuario(novoUsuario);
             usuarioMedicamento.setMedicamento(novoMedicamento);
