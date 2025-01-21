@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, SafeAreaView, useWindowDimens
 import { ArrowLeft, Edit, Bell, ChevronDown, ChevronUp } from "lucide-react-native"
 import { useFonts, Katibeh_400Regular } from "@expo-google-fonts/katibeh"
 import axios from "axios"
+import { type StockObserver, StockNotifier } from "../../observers/StockObservers"
 
 const BACKGROUND_COLORS = ["bg-blue-100", "bg-purple-100", "bg-yellow-100", "bg-pink-100", "bg-green-100"]
 
@@ -21,6 +22,15 @@ interface Medication {
   quantidade: number
   ultimaCompra: string
   status: "ATIVO" | "SUSPENSO"
+}
+
+const stockNotifier = new StockNotifier()
+
+class InventoryManager implements StockObserver {
+  update(medication: string, quantity: number) {
+    console.log(`Estoque atualizado: ${medication} - Quantidade: ${quantity}`)
+    // Aqui você pode adicionar lógica para atualizar a UI ou fazer outras ações
+  }
 }
 
 interface MedicationCardProps {
@@ -132,10 +142,15 @@ const Inventory = () => {
   const scrollY = useRef(new Animated.Value(0)).current
 
   const [medications, setMedications] = useState<Medication[]>([])
+  const [inventoryManager] = useState(() => new InventoryManager())
 
   useEffect(() => {
     fetchMedications()
-  }, [])
+    stockNotifier.addObserver(inventoryManager)
+    return () => {
+      stockNotifier.removeObserver(inventoryManager)
+    }
+  }, [inventoryManager])
 
   const fetchMedications = async () => {
     try {
@@ -190,7 +205,10 @@ const Inventory = () => {
                       status={med.status}
                       color={med.usuarioMedicamento.cor}
                       index={index}
-                      onEdit={() => console.log("Edit", med.usuarioMedicamento.medicamento.nome)}
+                      onEdit={() => {
+                        console.log("Edit", med.usuarioMedicamento.medicamento.nome)
+                        stockNotifier.notifyObservers(med.usuarioMedicamento.medicamento.nome, med.quantidade)
+                      }}
                       onNotification={() => console.log("Notification", med.usuarioMedicamento.medicamento.nome)}
                     />
                   ))
@@ -219,7 +237,10 @@ const Inventory = () => {
                       status={med.status}
                       color={med.usuarioMedicamento.cor}
                       index={index + activeMedications.length}
-                      onEdit={() => console.log("Edit", med.usuarioMedicamento.medicamento.nome)}
+                      onEdit={() => {
+                        console.log("Edit", med.usuarioMedicamento.medicamento.nome)
+                        stockNotifier.notifyObservers(med.usuarioMedicamento.medicamento.nome, med.quantidade)
+                      }}
                       onNotification={() => console.log("Notification", med.usuarioMedicamento.medicamento.nome)}
                     />
                   ))
