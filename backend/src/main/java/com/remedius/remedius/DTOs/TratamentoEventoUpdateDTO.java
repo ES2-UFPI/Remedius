@@ -19,4 +19,9 @@ public class TratamentoEventoUpdateDTO {
     @NotNull
     @Enumerated(EnumType.STRING)
     private StatusEventoEnum status;
+
+    public TratamentoEventoUpdateDTO(long eventoId, StatusEventoEnum status) {
+        this.id = eventoId;
+        this.status = status;
+    }
 }
